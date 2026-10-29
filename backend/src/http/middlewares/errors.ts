@@ -37,8 +37,11 @@ export function errorHandler(logger: Logger): ErrorRequestHandler {
     const appError = toAppError(err);
     const requestId: string = res.locals.requestId ?? 'desconhecido';
     if (appError.httpStatus >= 500) {
-      // Só o nome e as linhas da pilha: a mensagem de erros de terceiros pode trazer valores.
-      const stack = (err as Error)?.stack?.split('\n').slice(1).join('\n');
+      // Só o nome e as linhas "at …" da pilha: a mensagem (às vezes em várias linhas) pode trazer valores.
+      const stack = (err as Error)?.stack
+        ?.split('\n')
+        .filter((line) => /^\s+at /.test(line))
+        .join('\n');
       logger.error({ requestId, err: { name: (err as Error)?.name, stack } }, 'erro interno');
     }
     const body: ErrorBody = {

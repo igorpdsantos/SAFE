@@ -1,4 +1,4 @@
-import DecimalJs from 'decimal.js';
+import { Decimal as DecimalJs } from 'decimal.js';
 
 /**
  * Decimal do SAFE: 40 dígitos e arredondamento half-up (SPEC-01 §4.1).

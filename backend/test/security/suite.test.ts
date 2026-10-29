@@ -125,15 +125,13 @@ describe('T-13.2 – cabeçalhos e cookies', () => {
     const s = await loginAccepted(app, 'cookies@exemplo.com');
     await seedArticle(s);
     collect(
-      await s
-        .send('post', `${V}/terms/accept`)
-        .send({
-          termsVersion: '1.0',
-          privacyVersion: '1.0',
-          acceptTerms: true,
-          acknowledgePrivacy: true,
-          ageConfirmed: true,
-        }),
+      await s.send('post', `${V}/terms/accept`).send({
+        termsVersion: '1.0',
+        privacyVersion: '1.0',
+        acceptTerms: true,
+        acknowledgePrivacy: true,
+        ageConfirmed: true,
+      }),
     );
     collect(
       await s

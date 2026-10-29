@@ -55,8 +55,8 @@
 - [x] **T-01.5** `A` `lib/errors.ts` (`AppError`) + tratador de erros + 404 JSON (§4.2) · início 2026-10-29 18:00 · Igor + IA · feito 2026-10-29 18:02
 - [x] **T-01.6** `A` Logger `pino` com `redact` + `requestId` + log de acesso sem corpo (§4.3) · início 2026-10-29 18:02 · Igor + IA · feito 2026-10-29 18:02
 - [x] **T-01.7** `A` App Express com middlewares na ordem do §4.4 + `GET /api/v1/health` · início 2026-10-29 18:02 · Igor + IA · feito 2026-10-29 18:02
-- [~] **T-01.8** `A` Frontend Vite + React + TS vazio com proxy `/api` (mesma origem) · início 2026-10-29 18:02 · Igor + IA
-- [ ] **T-01.9** `A` GitHub Actions: lint → typecheck → test → cobertura → `npm audit --audit-level=high`
+- [x] **T-01.8** `A` Frontend Vite + React + TS vazio com proxy `/api` (mesma origem) · início 2026-10-29 18:02 · Igor + IA · feito 2026-10-29 18:03
+- [~] **T-01.9** `A` GitHub Actions: lint → typecheck → test → cobertura → `npm audit --audit-level=high` · início 2026-10-29 18:03 · Igor + IA
 - [ ] **T-01.10** `A` Atualizar o README existente (seções 5, 6 e 7) com os comandos, scripts e arquivos de configuração reais → pronto quando: todos os critérios de aceite da SPEC-01 §5 passam
 
 ## Fase 2 · Motor e projeção — [SPEC-05](specs/SPEC-05-motor-ire.md), [SPEC-06](specs/SPEC-06-projecao.md)

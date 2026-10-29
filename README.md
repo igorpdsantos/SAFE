@@ -1,0 +1,444 @@
+# SAFE — Sistema de Apoio à decisão Financeira e prevenção do Endividamento
+
+O SAFE é um sistema web que ajuda uma pessoa a **descobrir, antes de assinar**, o que uma compra parcelada ou um empréstimo vai fazer com o orçamento dela.
+
+O usuário cadastra renda, despesas, dívidas e reserva. O SAFE calcula o **índice de risco de endividamento (IRE)**, uma nota de 0 a 1, e mostra o que mais pesa nela. Antes de contratar algo, o usuário **simula** a compra e compara o risco de hoje com o risco depois da compra, com uma explicação em linguagem simples. O SAFE **não decide** pelo usuário e **não recomenda** produtos nem investimentos.
+
+Projeto de TCC do curso de Engenharia de Software da Universidade São Judas Tadeu (2026), orientado pelo Prof. Nelson Aguiar. O artigo correspondente é *"Prevenção do superendividamento por meio da tecnologia: a abordagem de simulação financeira do SAFE"*.
+
+> **Status (29/10/2026):** especificação completa e **nenhum código ainda**. Entrega do software: **02/11/2026**. O progresso fica no [`TASKS.md`](TASKS.md); rode `node scripts/tasks-status.mjs` para ver o painel.
+
+---
+
+## Sumário
+1. [Comece por aqui](#1-comece-por-aqui)
+2. [Mapa dos documentos](#2-mapa-dos-documentos)
+3. [Como o SAFE funciona](#3-como-o-safe-funciona)
+4. [Arquitetura e stack](#4-arquitetura-e-stack)
+5. [Estrutura de pastas](#5-estrutura-de-pastas)
+6. [Rodando o projeto](#6-rodando-o-projeto)
+7. [Arquivos de configuração](#7-arquivos-de-configuração)
+8. [Modo de trabalho](#8-modo-de-trabalho)
+9. [Trabalhando com IA](#9-trabalhando-com-ia)
+10. [Regras que valem para todo o código](#10-regras-que-valem-para-todo-o-código)
+11. [Testes e avaliação do modelo](#11-testes-e-avaliação-do-modelo)
+12. [Vocabulário do projeto](#12-vocabulário-do-projeto)
+13. [Perguntas frequentes](#13-perguntas-frequentes)
+14. [Equipe](#14-equipe)
+
+---
+
+## 1. Comece por aqui
+
+### Sou uma pessoa e vou programar
+1. Leia este README inteiro (15 minutos).
+2. Leia o [`CONTRIBUTING.md`](CONTRIBUTING.md): trilhas, branches e PRs.
+3. Abra o [`TASKS.md`](TASKS.md), veja os marcos (M1–M5) e as tarefas da sua trilha.
+4. Antes de cada tarefa, leia a spec dela em [`specs/`](specs/) (o índice está no [`SPECS.md`](SPECS.md)).
+5. Leia o [`SEGURANCA_LGPD.md`](SEGURANCA_LGPD.md) antes de mexer em login, cookies, formulários, logs, exportação ou exclusão de dados.
+6. Dúvida de regra de negócio ou fórmula → [`PRD.md`](PRD.md).
+
+### Sou uma IA (Claude, Codex, Cursor, Copilot, Gemini…)
+Leia o [`CLAUDE.md`](CLAUDE.md) inteiro **antes de qualquer ação**. Ele vale para qualquer IA; o [`AGENTS.md`](AGENTS.md) só aponta para ele. Resumo:
+- descubra a trilha pela branch (`a/…` ou `b/…`; na dúvida, pergunte);
+- marque a tarefa como `[~]` e dê push antes de codar;
+- siga a spec;
+- marque `[x]` só com testes passando;
+- nunca mexa na `main` nem nas tarefas da outra trilha.
+
+### Só quero entender o projeto
+Leia as seções 3 e 4 deste README, depois o [`PRD.md`](PRD.md) §1–§7.
+
+---
+
+## 2. Mapa dos documentos
+
+| Arquivo | Para que serve | Quem lê |
+|---|---|---|
+| [`README.md`](README.md) | Porta de entrada: visão geral, estrutura, como rodar e como trabalhar | Todos |
+| [`PRD.md`](PRD.md) | **O quê e por quê:** problema, escopo, modelo matemático completo, requisitos (RF/RNF), modelo de dados, API, decisões D-01…D-15, plano até a entrega | Todos |
+| [`SEGURANCA_LGPD.md`](SEGURANCA_LGPD.md) | **Privacidade e segurança:** bases legais, dados permitidos e proibidos, login, sessão, cookies, `localStorage`, criptografia, logs, direitos do titular, incidentes. Decisões S-01…S-09 | Todos que mexem em dados de usuário |
+| [`SPECS.md`](SPECS.md) | Índice das 15 especificações, com resumo, dependências e cobertura dos requisitos | Quem vai implementar |
+| [`specs/SPEC-NN-*.md`](specs/) | **Como, em detalhe:** contratos (tipos e JSON), regras, telas, erros e critérios de aceite de cada parte | Quem implementa aquela parte |
+| [`TASKS.md`](TASKS.md) | **Execução:** 105 tarefas `T-NN.M` com trilha e status `[ ]` / `[~]` / `[x]`, marcos de merge, bloqueios | Todos, todo dia |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md) | Fluxo do GitHub: trilhas, branches, commits, PRs, revisão, merge, arquivos com risco de conflito, regras para IAs | Quem programa |
+| [`CLAUDE.md`](CLAUDE.md) | Manual para IAs (e pessoas): ordem de leitura, fluxo obrigatório, stack, regras do motor, linguagem, segurança, convenções | IAs e quem programa |
+| [`AGENTS.md`](AGENTS.md) | Atalho para IAs que procuram esse nome de arquivo; aponta para o `CLAUDE.md` | IAs |
+| [`scripts/tasks-status.mjs`](scripts/tasks-status.mjs) | Painel do `TASKS.md` (progresso por fase e por trilha) | Todos |
+
+**Hierarquia em caso de conflito:** `SEGURANCA_LGPD.md` (em privacidade e segurança) › `PRD.md` › `specs/` › artigo e especificação originais. Se uma spec contradiz o PRD, a spec é corrigida antes de codar.
+
+**Fontes originais** (na pasta acima de `SAFE/`, só para consulta):
+- `artigo_completo.tex`: o artigo, com o modelo do IRE nas Seções 5 e 6;
+- `Plataforma de Apoio a Decisao Financeira Pessoal.pdf`: a especificação de requisitos inicial;
+- `Relatorio_Inconsistencias_TCC.docx`: correções pendentes no artigo e na especificação.
+
+---
+
+## 3. Como o SAFE funciona
+
+### 3.1 O que o usuário faz
+```
+Entrar com Google → aceitar termos (18+) → cadastrar renda, despesas, dívidas e reserva
+      → ver o painel (índice de risco + o que mais pesa)
+      → simular uma compra parcelada antes de contratar (nada é salvo no orçamento)
+      → acompanhar a projeção dos próximos meses e a evolução do risco
+      → exportar ou excluir seus dados quando quiser
+```
+
+### 3.2 O índice de risco (IRE)
+Quatro indicadores, cada um convertido para um risco entre 0 e 1 e somados com pesos:
+
+| Indicador | Em palavras simples | Cálculo | Risco (0 a 1) | Peso |
+|---|---|---|---|---|
+| Comprometimento da renda (CR) | Quanto da renda vai para parcelas | parcelas ÷ renda | CR ÷ 0,50 (máx. 1) | **40%** |
+| Capacidade de pagamento (CP) | Quanto sobra no mês | renda − despesas − parcelas | 1 − CP ÷ (30% da renda), entre 0 e 1 | **30%** |
+| Liquidez (LF) | Quantos meses a reserva paga as despesas | reserva ÷ despesas | 1 − LF ÷ 6 (mín. 0) | **20%** |
+| Nível de endividamento (NE) | Quantos meses de renda para quitar tudo | saldo devedor ÷ renda | NE ÷ 12 (máx. 1) | **10%** |
+
+`IRE = 0,40·R_CR + 0,30·R_CP + 0,20·R_LF + 0,10·R_NE`
+
+As faixas usam o IRE arredondado em 2 casas:
+
+| Faixa | IRE |
+|---|---|
+| Baixo | 0,00–0,20 |
+| Moderado | 0,21–0,40 |
+| Atenção | 0,41–0,60 |
+| Alto | 0,61–0,80 |
+| Crítico | 0,81–1,00 |
+
+Como o índice é uma soma ponderada, dá para dizer **exatamente** quanto cada indicador contribuiu para o resultado.
+
+### 3.3 A simulação
+O usuário informa o valor da compra, o número de parcelas e o valor da parcela. O SAFE copia a situação atual em memória e acrescenta a nova parcela. Depois:
+- recalcula o índice;
+- mostra a variação, indicador por indicador;
+- classifica o resultado: **sem agravamento**, **agravamento** ou **crítico** (quando não sobra dinheiro ou a renda restante fica abaixo de R$ 600, o mínimo existencial de referência);
+- explica em uma frase.
+
+Exemplo do artigo:
+
+> "Esta compra elevaria o comprometimento da sua renda com dívidas de 10,0% para 25,0% e reduziria sua folga mensal de R$ 1.600,00 para R$ 1.000,00. Esses fatores respondem por 91,9% do aumento do risco."
+
+Detalhes completos: [`PRD.md`](PRD.md) §5–§7, [`SPEC-05`](specs/SPEC-05-motor-ire.md), [`SPEC-06`](specs/SPEC-06-projecao.md) e [`SPEC-08`](specs/SPEC-08-simulacao.md).
+
+### 3.4 O que o SAFE não faz
+Não recomenda produtos nem investimentos, não compara bancos, não bloqueia decisões, não prevê probabilidade de calote, não calcula juros nem CET e não se conecta a bancos. O índice **não foi calibrado** com dados reais de inadimplência: ele é um apoio para entender a situação, não um diagnóstico.
+
+---
+
+## 4. Arquitetura e stack
+
+```
+┌──────────────────────────── Navegador ────────────────────────────┐
+│  SPA React (Vite) · nada financeiro salvo no navegador             │
+└───────────────┬───────────────────────────────────────────────────┘
+                │ HTTPS, mesma origem (/ e /api), cookie HttpOnly
+┌───────────────▼──────────── API REST /api/v1 (Express) ───────────┐
+│  middlewares: requestId · helmet/CSP · sessão · CSRF · termos ·    │
+│               rate limit · erros                                   │
+│  módulos: auth · terms · budget · analysis · simulations ·         │
+│           history · alerts · privacy                               │
+│  ┌──────────── engine/ (motor PURO, sem banco) ───────────────┐   │
+│  │ indicadores · normalização · IRE · faixas · fatores ·       │   │
+│  │ projeção · simulação · explicação                           │   │
+│  └─────────────────────────────────────────────────────────────┘   │
+└───────┬─────────────────────────────┬─────────────────────────────┘
+        │ Prisma                      │
+┌───────▼────────┐          ┌─────────▼─────────┐        ┌──────────────────┐
+│ PostgreSQL 16  │          │ Redis 7           │        │ Google (OpenID   │
+│ dados, histó-  │          │ sessões, cache,   │        │ Connect) só no   │
+│ rico, auditoria│          │ rate limit        │        │ login            │
+└────────────────┘          └───────────────────┘        └──────────────────┘
+```
+
+| Camada | Tecnologia |
+|---|---|
+| Backend | Node.js 22, TypeScript (strict), Express, zod, `decimal.js`, Prisma |
+| Dados | PostgreSQL 16, Redis 7 |
+| Login | Google OpenID Connect (`openid-client`, PKCE, escopo `openid email`) + sessão no servidor (sem JWT no navegador) |
+| Frontend | React, Vite, TypeScript, TanStack Query, Recharts, lucide-react |
+| Testes | Vitest, fast-check, Supertest, Playwright |
+| Infra | Docker Compose, GitHub Actions |
+
+A escolha da stack é a decisão D-02 (PRD §12). Por que o motor é "puro": API, testes e scripts de avaliação do artigo rodam **o mesmo código**, sem banco ([SPEC-05](specs/SPEC-05-motor-ire.md)).
+
+---
+
+## 5. Estrutura de pastas
+
+> Legenda: ✅ já existe · 🔜 criado na Fase 1 ([SPEC-01](specs/SPEC-01-fundacao.md)) ou depois
+
+```
+SAFE/
+├── README.md  PRD.md  SEGURANCA_LGPD.md  SPECS.md  TASKS.md       ✅ documentação
+├── CLAUDE.md  AGENTS.md  CONTRIBUTING.md                          ✅ como trabalhar (pessoas e IAs)
+├── specs/SPEC-01 … SPEC-15                                         ✅ especificações
+├── scripts/tasks-status.mjs                                        ✅ painel das tarefas
+├── package.json            workspaces + scripts npm                🔜
+├── docker-compose.yml      postgres + redis                        🔜
+├── .env.example            variáveis (valores fictícios)           🔜
+├── .github/
+│   ├── workflows/ci.yml    lint, typecheck, testes, cobertura, audit  🔜
+│   └── pull_request_template.md                                    🔜
+├── backend/
+│   ├── prisma/             schema.prisma + migrations              🔜
+│   ├── data/context/       (opcional) séries Peic/BCB              🔜
+│   ├── test/               api/ e security/                        🔜
+│   └── src/
+│       ├── config/         env.ts (variáveis validadas)            🔜
+│       ├── engine/         MOTOR PURO do IRE                       🔜
+│       ├── lib/            decimal, crypto, logger, errors, audit, cache  🔜
+│       ├── repositories/   acesso a dados (sempre por userId)      🔜
+│       ├── modules/        auth, terms, budget, analysis, simulations, history, alerts, privacy  🔜
+│       └── http/           app.ts, routes.ts, middlewares          🔜
+├── frontend/
+│   ├── public/legal/       Termos e Política versionados           🔜
+│   ├── e2e/                testes Playwright                       🔜
+│   └── src/                api/, components/, content/glossary.ts, lib/, pages/, fixtures/  🔜
+└── evaluation/             personas, scripts de avaliação, results/   🔜
+```
+
+---
+
+## 6. Rodando o projeto
+
+> ⚠️ Os comandos abaixo passam a funcionar quando a **Fase 1** (marco M1) estiver na `main`. Quem fizer a T-01.10 atualiza esta seção com o que realmente existir.
+
+**Pré-requisitos:** Node.js 22, Docker e Docker Compose, Git, GitHub CLI (`gh`, opcional) e uma conta Google para testar o login.
+
+```bash
+git clone <url-do-repositorio> && cd SAFE
+cp .env.example .env              # preencher GOOGLE_CLIENT_ID/SECRET (tarefa T-00.2) e gerar os segredos
+docker compose up -d              # sobe Postgres e Redis
+npm install
+npm run db:migrate                # cria as tabelas
+npm run dev                       # API em :3000 e site em http://localhost:5173
+```
+
+Gerar segredos:
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
+```
+
+| Comando | O que faz |
+|---|---|
+| `npm run dev` | API + frontend com recarga automática |
+| `npm run lint` / `npm run typecheck` | Padrões de código / tipos |
+| `npm test` | Testes de unidade e integração |
+| `npm run test:coverage` | Cobertura (meta: `engine/` ≥ 80%) |
+| `npm run test:e2e` | Fluxos completos no navegador (Playwright) |
+| `npm run eval:<script>` | Avaliação do modelo: `personas`, `agreement`, `sensitivity`, `baseline`, `simulation-check`, `latency` |
+| `npm run tasks` | Painel do `TASKS.md` (o mesmo que `node scripts/tasks-status.mjs`, que já funciona hoje) |
+
+---
+
+## 7. Arquivos de configuração
+
+| Arquivo | Para que serve | Observações |
+|---|---|---|
+| `.env` | Segredos e configuração local | **Nunca** vai para o Git. Copiado do `.env.example` |
+| `.env.example` | Lista de variáveis com valores fictícios | Atualizar sempre que surgir variável nova |
+| `docker-compose.yml` | Postgres e Redis locais | Redis sem persistência (sessões somem ao reiniciar) |
+| `backend/prisma/schema.prisma` | Modelo do banco | Só a trilha A altera; uma migration por PR |
+| `.github/workflows/ci.yml` | CI de todo PR | Bloqueia merge se falhar |
+| `.github/pull_request_template.md` | Checklist de PR | Conteúdo do `CONTRIBUTING.md` §5 |
+| `eslint.config.*` | Regras de código | Inclui: `engine/` não importa infraestrutura; `localStorage` só via `lib/storage.ts` |
+| `vite.config.ts` | Frontend | Proxy de `/api` para a API (mesma origem, sem CORS) |
+| `CLAUDE.md` / `AGENTS.md` | Instruções para IAs | Ver seção 9 |
+
+### Variáveis de ambiente
+| Variável | Exemplo | Uso |
+|---|---|---|
+| `NODE_ENV` | `development` | `development`, `test` ou `production` |
+| `APP_ORIGIN` | `http://localhost:5173` | Origem do site (CSRF, redirects, cookies) |
+| `API_PORT` | `3000` | Porta da API |
+| `DATABASE_URL` | `postgresql://safe:safe@localhost:5432/safe` | Postgres |
+| `REDIS_URL` | `redis://localhost:6379` | Redis |
+| `SESSION_SECRET` | 32 bytes aleatórios | Assina cookies temporários do login |
+| `DATA_ENC_KEY` | 32 bytes em base64 | Criptografa as descrições (AES-256-GCM) |
+| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | do Google Cloud | Login (T-00.2) |
+| `GOOGLE_REDIRECT_URI` | `http://localhost:5173/api/v1/auth/google/callback` | Callback do login |
+| `TERMS_VERSION` / `PRIVACY_VERSION` | `1.0` | Mudou → todos aceitam de novo |
+
+---
+
+## 8. Modo de trabalho
+
+### 8.1 Do requisito ao código
+```
+PRD.md (o quê/por quê) ──► specs/SPEC-NN (como) ──► TASKS.md T-NN.M (execução) ──► branch + PR ──► main
+                     SEGURANCA_LGPD.md vale em tudo que toca dados de usuário
+```
+
+### 8.2 Trilhas e branches
+Dois programadores, cada um com sua IA, trabalham em paralelo. **A divisão de pessoas entre as trilhas ainda não foi definida** (preencher no `TASKS.md`, seção "Legenda").
+
+| Trilha | Foco |
+|---|---|
+| **A** | Fundação, motor do IRE, projeção, orçamento, análise, simulação (backend), avaliação do modelo |
+| **B** | Login, sessão, termos, privacidade (backend), todo o frontend, glossário e linguagem, testes de segurança e E2E |
+| **A+B** | Decisões, textos legais, homologação |
+
+- `main` protegida: só recebe código por PR com CI verde e *squash merge*.
+- Branches curtas, uma por spec: `a/spec-05-motor-ire`, `b/spec-11-frontend-base`, `docs/ajuste-spec-08`.
+- Atualizar a branch com a `main` pelo menos uma vez por dia.
+- Detalhes, comandos e como resolver conflitos: [`CONTRIBUTING.md`](CONTRIBUTING.md).
+
+### 8.3 Ciclo de uma tarefa
+1. Pegar a próxima tarefa `[ ]` **da sua trilha** no `TASKS.md`.
+2. Marcar `[~]` com data e nome → commit `T-NN.M: inicia` → push (e PR em rascunho aberto).
+3. Ler a spec → implementar com testes.
+4. `lint` + `typecheck` + `test` passando → marcar `[x]` no mesmo commit → push.
+5. Spec concluída → PR pronto para revisão → o outro revisa → merge por uma pessoa.
+
+| Marca | Status |
+|---|---|
+| `[ ]` | A fazer |
+| `[~]` | Fazendo (máximo 1 por pessoa) |
+| `[x]` | Feito |
+
+### 8.4 Marcos de merge
+| Marco | Conteúdo | Libera |
+|---|---|---|
+| M1 | Base do projeto (SPEC-01) | Todos começam suas branches |
+| M2 | Login, sessão e termos (SPEC-02/03 backend) | Rotas do orçamento |
+| M3 | Motor do IRE (SPEC-05) + projeção | Caminho crítico do artigo |
+| M4 | API de orçamento, análise e simulação | Telas passam a usar a API real |
+| M5 | Tudo testado e homologado | Entrega (tag `v1.0.0`) |
+
+### 8.5 Commits e PRs
+- Commits: `T-05.3: normalize com clamp de R_CP` · `docs: …` · `fix: …`.
+- PR: `SPEC-05: motor do IRE (T-05.1–T-05.9)`, com o checklist do `CONTRIBUTING.md` §5.
+
+---
+
+## 9. Trabalhando com IA
+
+O projeto foi preparado para ser desenvolvido com assistentes de IA, com regras para que duas IAs (uma de cada programador) não atropelem uma à outra.
+
+| Arquivo | Papel para a IA |
+|---|---|
+| [`CLAUDE.md`](CLAUDE.md) | Manual principal (vale para qualquer IA): ordem de leitura, fluxo obrigatório, stack, regras do motor, linguagem, segurança |
+| [`AGENTS.md`](AGENTS.md) | Lido automaticamente por várias ferramentas; aponta para o `CLAUDE.md` |
+| [`TASKS.md`](TASKS.md) | Onde a IA escolhe a tarefa e registra o status em tempo real |
+| [`specs/`](specs/) | O que a IA implementa, com critérios de aceite verificáveis |
+
+**Como pedir trabalho à IA:**
+> "Estamos na branch `a/spec-05-motor-ire`. Pegue a próxima tarefa da trilha A no TASKS.md e siga o CLAUDE.md."
+
+**O que a IA sempre faz:**
+- confirma a trilha;
+- marca `[~]` e dá push antes de codar;
+- escreve testes;
+- marca `[x]` só com tudo passando;
+- abre PR em rascunho.
+
+**O que a IA nunca faz:**
+- push ou merge na `main`;
+- force-push;
+- pegar tarefa da outra trilha;
+- alterar migration já mergeada;
+- commitar `.env`;
+- guardar dado financeiro no navegador;
+- usar `number` para dinheiro;
+- deixar sigla ou termo técnico sem explicação na tela.
+
+**A pessoa continua responsável:** revisa o PR, faz o merge e decide quando a spec está ambígua. Tudo o que a IA gerar é revisado antes de entrar na `main`. O artigo declara esse uso na seção de declarações.
+
+---
+
+## 10. Regras que valem para todo o código
+
+**Cálculo**
+- Dinheiro, razões e índices **sempre** em decimal (`decimal.js`), nunca `number`. No JSON, trafegam como **string** (`"1600.00"`).
+- Arredondar só para exibir, persistir e classificar a faixa.
+- O motor (`engine/`) não acessa banco, rede nem relógio.
+
+**Privacidade e segurança** ([`SEGURANCA_LGPD.md`](SEGURANCA_LGPD.md))
+- Login só com Google; o SAFE recebe apenas o e-mail. Sessão no servidor, 30 min sem uso ou 8 h no total.
+- Só 4 cookies, todos essenciais; sem analytics nem scripts de terceiros.
+- Nada financeiro no `localStorage` ou similares; o logout limpa tudo.
+- Nada de nome, CPF, telefone, endereço, banco ou conta. Descrições curtas e criptografadas.
+- Todo acesso a dados filtrado pelo usuário da sessão (outro usuário → 404).
+- Logs sem valores, e-mails, cookies ou tokens.
+- O usuário pode exportar e excluir tudo a qualquer momento.
+
+**Linguagem simples** ([SPEC-15](specs/SPEC-15-linguagem-glossario.md))
+- Ninguém precisa saber finanças para usar o SAFE.
+- Sigla nunca sozinha; termo técnico sempre com tradução e tooltip (que abre com toque e teclado).
+- Todo campo diz o que é e **para que** pedimos; todo resultado diz o que significa e o que fazer.
+- Todas as definições vêm do glossário central (`frontend/src/content/glossary.ts`).
+- Faixa de risco sempre com cor **e** ícone **e** texto.
+
+---
+
+## 11. Testes e avaliação do modelo
+
+| Tipo | Ferramenta | Destaques |
+|---|---|---|
+| Unidade | Vitest + fast-check | O primeiro teste é o **exemplo do artigo** (IRE 0,19 → 0,38); propriedades matemáticas da simulação |
+| API | Supertest | Cada endpoint: sucesso, validação, permissões, efeitos |
+| Segurança | Supertest | Acesso a dados de outro usuário, CSRF, sessão, cookies, logs, criptografia, exclusão |
+| E2E | Playwright | 10 fluxos, do primeiro acesso à exclusão de conta, incluindo celular |
+| Avaliação (artigo) | `evaluation/` | 30 personas, concordância com especialistas, sensibilidade dos pesos, comparação com regra simples, latência |
+
+Detalhes: [SPEC-12](specs/SPEC-12-avaliacao.md) e [SPEC-13](specs/SPEC-13-qualidade-testes.md).
+
+---
+
+## 12. Vocabulário do projeto
+
+| Termo | Significado |
+|---|---|
+| **IRE** | Índice de Risco de Endividamento (0 a 1) |
+| **CR, CP, LF, NE** | Os 4 indicadores: comprometimento da renda, capacidade de pagamento, liquidez, nível de endividamento |
+| **Faixa** | Classificação do IRE em 5 níveis (baixo → crítico) |
+| **ME** | Mínimo existencial: R$ 600, valor de referência configurável |
+| **Snapshot** | Foto da situação financeira do usuário que entra no motor |
+| **RF / RNF** | Requisito funcional / não funcional (PRD §8 e §10) |
+| **UC / HU** | Caso de uso / história de usuário (especificação original) |
+| **D-NN** | Decisão de produto tomada no PRD §12 |
+| **S-NN** | Decisão de segurança e privacidade (SEGURANCA_LGPD §1) |
+| **SPEC-NN** | Especificação detalhada de uma parte do sistema |
+| **T-NN.M** | Tarefa M da SPEC-NN |
+| **Trilha A / B** | Divisão do trabalho entre os dois programadores |
+| **M1–M5** | Marcos de merge na `main` |
+| **PA1–PA5** | Perguntas de avaliação do artigo (Seção 7) |
+| **DSR** | Design Science Research, o método de pesquisa do TCC |
+
+---
+
+## 13. Perguntas frequentes
+
+**Por que não usar JWT?**
+Porque JWT no navegador fica exposto a XSS e não pode ser revogado no logout. A sessão no servidor resolve as duas coisas (S-01).
+
+**Por que categorias em vez de descrição livre?**
+Texto livre atrai dado sensível ("remédio para…") e dado de terceiros. A categoria basta para o cálculo (S-05).
+
+**Por que o risco projetado usa o mês de maior exposição?**
+É a leitura conservadora do artigo: num sistema preventivo, um alerta a mais custa menos que um alerta que não aparece.
+
+**O IRE prevê se eu vou ficar inadimplente?**
+Não. Ele ordena situações por critérios explícitos e não foi calibrado com dados reais de inadimplência.
+
+**Posso usar dados reais de pessoas para testar?**
+Não. Use dados fictícios. O estudo com usuários também usa perfis fictícios (S-08).
+
+**Achei um erro numa spec. E agora?**
+Corrija num PR `docs/…` pequeno, mergeie rápido e avise o outro programador. Não corrija "por fora" no código.
+
+**Onde estão as correções do artigo?**
+No `Relatorio_Inconsistencias_TCC.docx`, na pasta acima.
+
+---
+
+## 14. Equipe
+
+Universidade São Judas Tadeu — Engenharia de Software, 2026. Orientador: Prof. Nelson Augusto Oliveira de Aguiar.
+
+Gabriel Dias de Moraes Ferreira · Guilherme Pontes Santos · Gustavo de Cássio Gomes Perez · Gustavo Xavier Figueredo dos Santos · Higor da Silva Santos · Igor Pereira dos Santos · Matheus Cunha da Silva · Michael Douglas Braga
+
+Licença: *a definir pela equipe.*

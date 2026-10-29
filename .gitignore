@@ -1,0 +1,33 @@
+# Dependências e builds
+node_modules/
+dist/
+build/
+.vite/
+*.tsbuildinfo
+
+# Segredos (nunca commitar; use .env.example)
+.env
+.env.*
+!.env.example
+
+# Testes e cobertura
+coverage/
+playwright-report/
+test-results/
+
+# Logs e temporários
+*.log
+npm-debug.log*
+tmp/
+
+# Dumps de banco e backups (podem conter dados pessoais)
+*.dump
+*.sql.gz
+backups/
+
+# Sistema e editores
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json

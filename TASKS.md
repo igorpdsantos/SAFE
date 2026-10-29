@@ -92,7 +92,7 @@
 - [x] **T-03.7** `B` Testes dos critérios da SPEC-03 §6 · início 2026-10-29 18:19 · Igor + IA · feito 2026-10-29 18:19
 
 ## Fase 4 · Orçamento — [SPEC-04](specs/SPEC-04-orcamento.md)
-- [ ] **T-04.1** `A` `lib/crypto.ts` AES-256-GCM (`encrypt`/`decrypt`) + testes (§2.2)
+- [~] **T-04.1** `A` `lib/crypto.ts` AES-256-GCM (`encrypt`/`decrypt`) + testes (§2.2) · início 2026-10-29 18:20 · Igor + IA
 - [ ] **T-04.2** `A` Repositórios Prisma e em memória com `userId` obrigatório em todo método; descrição cifrada e decifrada no repositório (§2.2, §5)
 - [ ] **T-04.3** `A` Schemas zod das 4 entidades + enums de categoria + limites de quantidade (§2, §2.1)
 - [ ] **T-04.4** `A` Rotas CRUD de `incomes`, `expenses`, `debts`, `reserves` + `GET /budget/summary` (§3)

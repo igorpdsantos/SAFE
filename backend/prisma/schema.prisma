@@ -1,0 +1,213 @@
+// Modelo de dados do SAFE: PRD §11.2 + SEGURANCA_LGPD §11.
+// Os CHECKs ficam no SQL da migration (o Prisma não os gera).
+
+generator client {
+  provider            = "prisma-client"
+  output              = "../src/generated/prisma"
+  moduleFormat        = "esm"
+  importFileExtension = "js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           Int       @id @default(autoincrement()) @map("user_id")
+  email        String    @unique @map("user_email") @db.VarChar(254)
+  oauthSubject String    @unique @map("oauth_subject") @db.VarChar(255)
+  createdAt    DateTime  @default(now()) @map("dt_criacao") @db.Timestamptz(3)
+  state        String    @default("ATIVO") @db.VarChar(8)
+  lastLoginAt  DateTime? @map("last_login_at") @db.Timestamptz(3)
+
+  termsAcceptances TermsAcceptance[]
+  incomes          Income[]
+  expenses         Expense[]
+  debts            Debt[]
+  reserves         Reserve[]
+  indicator        Indicator?
+  simulations      Simulation[]
+  history          HistoryEntry[]
+  alerts           Alert[]
+  auditLogs        AuditLog[]
+  researchConsents ResearchConsent[]
+
+  @@map("usuario")
+}
+
+model TermsAcceptance {
+  id             Int      @id @default(autoincrement()) @map("record_id")
+  userId         Int?     @map("user_id")
+  termsVersion   String   @map("terms_version") @db.VarChar(10)
+  privacyVersion String   @map("privacy_version") @db.VarChar(10)
+  ageConfirmed   Boolean  @map("age_confirmed")
+  acceptedAt     DateTime @default(now()) @map("dt_accept_terms") @db.Timestamptz(3)
+  tokenId        String   @unique @map("token_id") @db.Uuid
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@map("aceitacao_termos")
+}
+
+model Income {
+  id          Int      @id @default(autoincrement()) @map("rent_id")
+  userId      Int      @map("user_id")
+  description Bytes?
+  monthValue  Decimal  @map("month_value") @db.Decimal(15, 2)
+  createdAt   DateTime @default(now()) @map("dt_user_creation") @db.Timestamptz(3)
+  updatedAt   DateTime @default(now()) @updatedAt @map("last_modified_date") @db.Timestamptz(3)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("renda")
+}
+
+model Expense {
+  id          Int      @id @default(autoincrement()) @map("expense_id")
+  userId      Int      @map("user_id")
+  description Bytes?
+  category    String   @db.VarChar(30)
+  value       Decimal  @db.Decimal(15, 2)
+  type        String   @map("expense_type") @db.VarChar(8)
+  createdAt   DateTime @default(now()) @map("dt_user_creation") @db.Timestamptz(3)
+  updatedAt   DateTime @default(now()) @updatedAt @map("last_modified_date") @db.Timestamptz(3)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("despesa")
+}
+
+model Debt {
+  id                    Int      @id @default(autoincrement()) @map("debt_id")
+  userId                Int      @map("user_id")
+  description           Bytes?
+  category              String   @db.VarChar(30)
+  balanceDue            Decimal? @map("balance_due") @db.Decimal(15, 2)
+  installmentValue      Decimal  @map("value_installment") @db.Decimal(15, 2)
+  totalInstallments     Int?     @map("total_installment")
+  remainingInstallments Int      @map("qtd_installment_remains")
+  referenceDate         DateTime @map("reference_date") @db.Date
+  createdAt             DateTime @default(now()) @map("dt_user_creation") @db.Timestamptz(3)
+  updatedAt             DateTime @default(now()) @updatedAt @map("last_modified_date") @db.Timestamptz(3)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("divida")
+}
+
+model Reserve {
+  id          Int      @id @default(autoincrement()) @map("reserve_id")
+  userId      Int      @map("user_id")
+  description Bytes?
+  value       Decimal  @map("reserve_value") @db.Decimal(15, 2)
+  createdAt   DateTime @default(now()) @map("dt_user_creation") @db.Timestamptz(3)
+  updatedAt   DateTime @default(now()) @updatedAt @map("last_modified_date") @db.Timestamptz(3)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("reserva_financeira")
+}
+
+model Indicator {
+  id                 Int      @id @default(autoincrement()) @map("kpi_id")
+  userId             Int      @unique @map("user_id")
+  rentPerc           Decimal  @map("rent_perc") @db.Decimal(9, 4)
+  debtLevel          Decimal  @map("debt_level") @db.Decimal(12, 4)
+  financialLiquidity Decimal? @map("financial_liquidity") @db.Decimal(12, 4)
+  paymentsCapacity   Decimal  @map("payments_capacity") @db.Decimal(15, 2)
+  riskIndex          Decimal  @map("risk_index") @db.Decimal(6, 4)
+  riskLevel          Int      @map("risk_level") @db.SmallInt
+  calculatedAt       DateTime @map("dt_calculated") @db.Timestamptz(3)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("indicador_financeiro")
+}
+
+model Simulation {
+  id               Int      @id @default(autoincrement()) @map("simulation_id")
+  userId           Int      @map("user_id")
+  simulatedValue   Decimal  @map("simulated_value") @db.Decimal(15, 2)
+  installments     Int      @map("qtd_installments")
+  installmentValue Decimal  @map("value_installment") @db.Decimal(15, 2)
+  currentRisk      Decimal  @map("current_risk") @db.Decimal(6, 4)
+  estimatedRisk    Decimal  @map("estimated_risk") @db.Decimal(6, 4)
+  outcome          String   @db.VarChar(20)
+  createdAt        DateTime @default(now()) @map("dt_simulation") @db.Timestamptz(3)
+  state            String   @default("ATIVA") @db.VarChar(15)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@map("simulacao_financeira")
+}
+
+model HistoryEntry {
+  id         Int      @id @default(autoincrement()) @map("history_id")
+  userId     Int      @map("user_id")
+  riskLevel  Int      @map("risk_level") @db.SmallInt
+  risk       Decimal  @db.Decimal(6, 4)
+  recordDate DateTime @map("record_date") @db.Date
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, recordDate])
+  @@map("historico_indicadores")
+}
+
+model Alert {
+  id          Int      @id @default(autoincrement()) @map("alert_id")
+  userId      Int      @map("user_id")
+  type        String   @map("type_alert") @db.VarChar(50)
+  description String   @db.VarChar(500)
+  severity    Int      @db.SmallInt
+  createdAt   DateTime @default(now()) @map("dt_alert") @db.Timestamptz(3)
+  status      String   @default("NAO_LIDO") @db.VarChar(11)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status])
+  @@map("alerta")
+}
+
+model AuditLog {
+  id         Int      @id @default(autoincrement()) @map("log_id")
+  userId     Int?     @map("user_id")
+  operation  String   @map("operacao") @db.VarChar(30)
+  entity     String   @map("entidade") @db.VarChar(40)
+  entityId   Int?     @map("entidade_id")
+  occurredAt DateTime @default(now()) @map("dt_evento") @db.Timestamptz(3)
+  details    Json?    @map("detalhes")
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([occurredAt])
+  @@map("log_auditoria")
+}
+
+model ResearchConsent {
+  id          Int       @id @default(autoincrement()) @map("consent_id")
+  userId      Int       @map("user_id")
+  grantedAt   DateTime  @default(now()) @map("granted_at") @db.Timestamptz(3)
+  revokedAt   DateTime? @map("revoked_at") @db.Timestamptz(3)
+  textVersion String    @map("text_version") @db.VarChar(10)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("consentimento_pesquisa")
+}
+
+// Sem FK nem e-mail: sobrevive à exclusão para reaplicá-la após restaurar backup (SPEC-10 §4).
+model PendingBackupDeletion {
+  userId    Int      @id @map("user_id")
+  deletedAt DateTime @map("deleted_at") @db.Timestamptz(3)
+
+  @@map("exclusoes_pendentes_backup")
+}

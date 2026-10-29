@@ -1,0 +1,9 @@
+node_modules
+dist
+coverage
+package-lock.json
+backend/prisma/migrations
+docs/referencias
+*.md
+scripts/tasks-status.mjs
+backend/src/generated

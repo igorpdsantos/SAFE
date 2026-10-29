@@ -115,7 +115,7 @@
 - [x] **T-08.7** `A` Medir p95 de `/analysis` e `/simulations` localmente (preliminar do RNF01) · início 2026-10-29 18:29 · Igor + IA · feito 2026-10-29 18:29 · p95 local: /analysis 4,1 ms (sem cache) e 1,7 ms (com cache), /simulations 2,8 ms (`PERF=1 npx vitest run test/perf`)
 
 ## Fase 6 · Frontend e linguagem — [SPEC-11](specs/SPEC-11-frontend-base.md), [SPEC-15](specs/SPEC-15-linguagem-glossario.md) e telas
-- [ ] **T-11.1** `B` Rotas, guardas (`/auth/me`, termos), layout responsivo com menu lateral/inferior (§2, §5)
+- [~] **T-11.1** `B` Rotas, guardas (`/auth/me`, termos), layout responsivo com menu lateral/inferior (§2, §5) · início 2026-10-29 18:33 · Igor + IA
 - [ ] **T-11.2** `B` Cliente HTTP com CSRF e tratamento padronizado de erros; TanStack Query **sem persistência** (§3)
 - [ ] **T-11.3** `B` `lib/storage.ts` (lista fechada) + lint contra `localStorage` direto + `handleSessionEnd` + `BroadcastChannel` (§4)
 - [ ] **T-11.4** `B` Tokens de cor e tema, `RiskBadge`, `IreGauge`, `IndicatorCard`, `FactorList`, `MoneyInput`, `ConfirmDialog`, `AlertBanner`, `Disclaimer` (§5)

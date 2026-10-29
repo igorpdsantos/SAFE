@@ -91,7 +91,11 @@ npm install && npm test
 - Se duas IAs discordarem de uma regra, a pessoa decide e a spec é atualizada.
 
 ## 9. Configuração única do repositório (T-00.4)
-- Proteção da `main`: exigir PR, exigir CI verde (`ci`), bloquear force-push e exclusão.
+Repositório: `github.com/igorpdsantos/SAFE` (privado). Já configurado: só *squash merge*, apagar a branch depois do merge, wiki desligada e labels `trilha-a`, `trilha-b`, `docs`, `bloqueado`.
+
+> ⚠️ **A proteção da `main` não está ativa.** No plano grátis, o GitHub não permite proteção de branch em repositório privado. Até isso mudar, a regra "nada direto na `main`, só por PR" vale **por combinação** entre os dois programadores e pelas instruções das IAs (`CLAUDE.md`). Para ativar de verdade: o dono do repositório solicita o **GitHub Student Developer Pack** (education.github.com/pack), que inclui o GitHub Pro de graça para estudantes, e então aplica as regras abaixo.
+
+- Proteção da `main` (quando disponível): exigir PR, exigir CI verde (`ci`), bloquear force-push e exclusão.
 - Merge permitido: só *squash*. "Automatically delete head branches" ligado.
 - Secrets do Actions: só os necessários para o CI (nenhum de produção no CI).
 - Labels: `trilha-a`, `trilha-b`, `docs`, `bloqueado`.

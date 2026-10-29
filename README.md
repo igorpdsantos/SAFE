@@ -68,10 +68,10 @@ Leia as seções 3 e 4 deste README, depois o [`PRD.md`](PRD.md) §1–§7.
 
 **Hierarquia em caso de conflito:** `SEGURANCA_LGPD.md` (em privacidade e segurança) › `PRD.md` › `specs/` › artigo e especificação originais. Se uma spec contradiz o PRD, a spec é corrigida antes de codar.
 
-**Fontes originais** (na pasta acima de `SAFE/`, só para consulta):
-- `artigo_completo.tex`: o artigo, com o modelo do IRE nas Seções 5 e 6;
-- `Plataforma de Apoio a Decisao Financeira Pessoal.pdf`: a especificação de requisitos inicial;
-- `Relatorio_Inconsistencias_TCC.docx`: correções pendentes no artigo e na especificação.
+**Fontes originais** em [`docs/referencias/`](docs/referencias/), só para consulta (cópias de 29/10/2026; veja o [README da pasta](docs/referencias/README.md)):
+- [`artigo_completo.tex`](docs/referencias/artigo_completo.tex): o artigo, com o modelo do IRE nas Seções 5 e 6;
+- [`especificacao_software_original.pdf`](docs/referencias/especificacao_software_original.pdf): a especificação de requisitos inicial (casos de uso, RF, RNF, HU, modelo de dados);
+- [`Relatorio_Inconsistencias_TCC.docx`](docs/referencias/Relatorio_Inconsistencias_TCC.docx): correções pendentes no artigo e na especificação.
 
 ---
 
@@ -175,6 +175,7 @@ SAFE/
 ├── README.md  PRD.md  SEGURANCA_LGPD.md  SPECS.md  TASKS.md       ✅ documentação
 ├── CLAUDE.md  AGENTS.md  CONTRIBUTING.md                          ✅ como trabalhar (pessoas e IAs)
 ├── specs/SPEC-01 … SPEC-15                                         ✅ especificações
+├── docs/referencias/       artigo, especificação original e relatório  ✅ só consulta
 ├── scripts/tasks-status.mjs                                        ✅ painel das tarefas
 ├── package.json            workspaces + scripts npm                🔜
 ├── docker-compose.yml      postgres + redis                        🔜
@@ -431,7 +432,7 @@ Não. Use dados fictícios. O estudo com usuários também usa perfis fictícios
 Corrija num PR `docs/…` pequeno, mergeie rápido e avise o outro programador. Não corrija "por fora" no código.
 
 **Onde estão as correções do artigo?**
-No `Relatorio_Inconsistencias_TCC.docx`, na pasta acima.
+No [`docs/referencias/Relatorio_Inconsistencias_TCC.docx`](docs/referencias/Relatorio_Inconsistencias_TCC.docx).
 
 ---
 

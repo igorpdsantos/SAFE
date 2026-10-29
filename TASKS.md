@@ -176,4 +176,4 @@
 | — | — | — | — |
 
 ## Fora do código (lembrete)
-As correções do artigo e da especificação estão no `../Relatorio_Inconsistencias_TCC.docx`. Os números finais da Seção 7 do artigo vêm das tarefas T-05.9, T-08.7, T-12.x e T-13.4.
+As correções do artigo e da especificação estão no `docs/referencias/Relatorio_Inconsistencias_TCC.docx`. Os números finais da Seção 7 do artigo vêm das tarefas T-05.9, T-08.7, T-12.x e T-13.4.

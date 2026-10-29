@@ -1,0 +1,1293 @@
+\documentclass[portuguese]{sbc2025}%
+
+\usepackage[misc,geometry]{ifsym}
+
+\usepackage{aas_macros}
+\usepackage[bottom]{footmisc}
+\usepackage{tabularray}% sugestão: usar o pacote tabularray
+\usepackage{afterpage}
+\usepackage{url}
+\usepackage{pifont}
+\usepackage{array}
+\newcommand{\todo}[1]{\textcolor{red}{[#1]}}
+\providecommand{\engtitle}[1]{}% caso a classe não defina o título em inglês, o comando é ignorado
+
+\setcitestyle{square}
+
+\definecolor{engtitle}{rgb}{0.5,0.5,0.5}
+\definecolor{orcidlogo}{rgb}{0.37,0.48,0.13}
+\definecolor{unilogo}{rgb}{0.16, 0.26, 0.58}
+\definecolor{maillogo}{rgb}{0.58, 0.16, 0.26}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.0}
+\hypersetup{colorlinks,breaklinks,
+            linkcolor=darkblue,urlcolor=darkblue,
+            anchorcolor=darkblue,citecolor=darkblue}
+%\hypersetup{colorlinks,citecolor=blue,linkcolor=blue,urlcolor=blue}
+
+%%%%%%% IMPORTANT: We disable hyperlinks by default with this line, to avoid the error "\pdfendlink ended up in different nesting level" while writing.
+%\hypersetup{draft}
+
+\jid{iSys}
+\jtitle{iSys - Journal of Information Systems, 2026, 10:13}
+\issn{1984-2902}
+\doi{10.5753/isys.2026.XXXXXX}
+\copyrightstatement{This work is licensed under a Creative Commons Attribution 4.0 International License}
+\jyear{2026}
+
+\category{Research Paper}
+
+\title[Prevenção do superendividamento por meio da tecnologia]{Prevenção do superendividamento por meio da tecnologia: a abordagem de simulação financeira do SAFE}
+
+\engtitle{\textcolor{engtitle}{Preventing Over-Indebtedness Through Technology: The SAFE Financial Simulation Approach}}
+
+%THE ORCID IS MANDATORY FOR EACH AUTHOR
+% PENDENTE: todos os autores estão com o ORCID de exemplo do template (0000-0002-0339-6624).
+% Cada autor deve criar o seu em https://orcid.org/register e substituir abaixo.
+\author[Ferreira et al. 2026]{
+\affil{\textbf{Gabriel Dias de Moraes Ferreira}~\orcidlink{0000-0002-0339-6624}~\textcolor{blue}{\faEnvelopeO}~~[{Universidade São Judas Tadeu}~|\href{mailto:825157250@ulife.com.br}{~{\textit{825157250@ulife.com.br}}}~]}
+
+\affil{\textbf{Guilherme Pontes Santos}~\orcidlink{0000-0002-0339-6624}~\textcolor{blue}{\faEnvelopeO}~~[{Universidade São Judas Tadeu}~|\href{mailto:823122036@ulife.com.br}{~{\textit{823122036@ulife.com.br}}}~]}
+
+\affil{\textbf{Gustavo de Cássio Gomes Perez}~\orcidlink{0000-0002-0339-6624}~\textcolor{blue}{\faEnvelopeO}~~[{Universidade São Judas Tadeu}~|\href{mailto:823116201@ulife.com.br}{~{\textit{823116201@ulife.com.br}}}~]}
+
+\affil{\textbf{Gustavo Xavier Figueredo dos Santos}~\orcidlink{0000-0002-0339-6624}~\textcolor{blue}{\faEnvelopeO}~~[{Universidade São Judas Tadeu}~|\href{mailto:823113981@ulife.com.br}{~{\textit{823113981@ulife.com.br}}}~]}
+
+\affil{\textbf{Higor da Silva Santos}~\orcidlink{0000-0002-0339-6624}~\textcolor{blue}{\faEnvelopeO}~~[{Universidade São Judas Tadeu}~|\href{mailto:823122154@ulife.com.br}{~{\textit{823122154@ulife.com.br}}}~]}
+
+\affil{\textbf{Igor Pereira dos Santos}~\orcidlink{0000-0002-0339-6624}~\textcolor{blue}{\faEnvelopeO}~~[{Universidade São Judas Tadeu}~|\href{mailto:823117978@ulife.com.br}{~{\textit{823117978@ulife.com.br}}}~]}
+
+\affil{\textbf{Matheus Cunha da Silva}~\orcidlink{0000-0002-0339-6624}~\textcolor{blue}{\faEnvelopeO}~~[{Universidade São Judas Tadeu}~|\href{mailto:823128178@ulife.com.br}{~{\textit{823128178@ulife.com.br}}}~]}
+
+\affil{\textbf{Michael Douglas Braga}~\orcidlink{0000-0002-0339-6624}~\textcolor{blue}{\faEnvelopeO}~~[{Universidade São Judas Tadeu}~|\href{mailto:823114204@ulife.com.br}{~{\textit{823114204@ulife.com.br}}}~]}
+
+
+}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\maketitle
+
+\begin{mail}
+Universidade São Judas Tadeu, Rua Taquari, 546 - Mooca, São Paulo - SP, 03166-000, Brasil.
+\end{mail}
+
+
+\begin{abstract-pt}
+[Contexto] A digitalização dos serviços financeiros ampliou o acesso ao crédito, mas também elevou a exposição dos consumidores ao superendividamento: em julho de 2026, 29,8\% das famílias brasileiras tinham contas em atraso. Faltam instrumentos que permitam ao consumidor antecipar as consequências de suas decisões de crédito. [Objetivo] Este artigo apresenta o SAFE, um sistema de apoio à decisão financeira pessoal que permite ao usuário simular o impacto de uma nova dívida ou despesa antes de assumi-la. [Método] A pesquisa seguiu a Design Science Research, com desenvolvimento em quatro \textit{sprints}. O sistema calcula o Índice de Risco de Endividamento (IRE), que agrega quatro indicadores normalizados (comprometimento da renda, capacidade de pagamento, liquidez e nível de endividamento), classifica o risco em cinco faixas e decompõe a variação do índice por indicador, explicando ao usuário quais fatores motivam o resultado. A avaliação combina cenários sintéticos classificados por especialistas, análise de sensibilidade, comparação com uma regra baseada apenas no comprometimento da renda e um estudo exploratório com usuários. [Resultados] [Inserir os principais resultados após a coleta, por exemplo: correlação com especialistas, proporção de mudanças de faixa, divergências em relação à regra simples e escore SUS.] [Conclusão/Contribuições] O SAFE torna visíveis, de forma explicável, as consequências financeiras de uma decisão antes que ela seja tomada, oferecendo ao consumidor um instrumento preventivo de apoio à decisão, sem substituir a orientação profissional.
+\end{abstract-pt}
+
+
+\begin{abstract-en}
+[Context] The digitalization of financial services has broadened access to credit but has also increased consumers’ exposure to over-indebtedness: in July 2026, 29.8\% of Brazilian households had overdue bills. Consumers lack instruments to anticipate the consequences of their credit decisions. [Objective] This article presents SAFE, a personal financial decision-support system that allows users to simulate the impact of a new debt or expense before taking it on. [Method] The research followed Design Science Research, with development in four sprints. The system computes the Indebtedness Risk Index (IRE), which aggregates four normalized indicators (income commitment, payment capacity, liquidity, and debt level), classifies risk into five bands, and decomposes the variation of the index by indicator, explaining to the user which factors drive the result. The evaluation combines synthetic scenarios rated by experts, sensitivity analysis, comparison with a rule based solely on income commitment, and an exploratory user study. [Results] [Insert the main results after data collection.] [Conclusion/Contributions] SAFE makes the financial consequences of a decision visible and explainable before it is made, offering consumers a preventive decision-support instrument without replacing professional advice.
+\end{abstract-en}
+
+\begin{pchaves}
+Superendividamento; Sistema de Apoio à Decisão; Finanças Pessoais; Design Science Research; Explicabilidade
+\end{pchaves}
+
+\begin{keywords}
+Over-indebtedness; Decision Support System; Personal Finance; Design Science Research; Explainability
+\end{keywords}
+
+\begin{dates}
+% This information will be provided by the editor befeore publishing the paper
+\noindent{\sffamily\textbf{Received:}} DD Month YYYY~~~$\bullet$~~~
+{\sffamily\textbf{Accepted:}} DD Month YYYY~~~$\bullet$~~~
+{\sffamily\textbf{Published:}} DD Month YYYY
+
+\end{dates}
+
+
+%\begin{license}
+%Published under the Creative Commons Attribution 4.0 International Public License (CC BY 4.0)
+%\end{license}
+
+\end{frontmatter}
+
+
+\section{Introdução}
+\label{sec:intro}
+
+A expansão dos serviços financeiros digitais e o aumento do acesso ao crédito transformaram profundamente a relação da população brasileira com suas finanças pessoais. Se, por um lado, essas inovações trouxeram maior conveniência e inclusão, por outro, elevaram significativamente a exposição dos indivíduos ao risco do superendividamento. Dados recentes da Pesquisa de Endividamento e Inadimplência do Consumidor (Peic), realizada em julho de 2026, revelam a gravidade desse cenário: 82,0\% das famílias brasileiras possuíam dívidas, sendo que 29,8\% apresentavam contas em atraso e 12,3\% declaravam não ter condições de quitá-las. Além disso, o comprometimento médio da renda com dívidas alcançou 29,5\%, e 19,0\% dos consumidores endividados comprometiam mais da metade de seus rendimentos mensais exclusivamente com o pagamento dessas obrigações.
+
+O superendividamento, formalmente reconhecido pela Lei nº 14.181/2021, caracteriza-se pela impossibilidade manifesta de o consumidor de boa-fé pagar a totalidade de suas dívidas sem comprometer seu mínimo existencial. No cerne da legislação brasileira de proteção financeira, o mínimo existencial representa a parcela da renda de um indivíduo que é considerada absolutamente inegociável. Em termos práticos, trata-se da quantia mínima de recursos que deve ser resguardada e protegida de qualquer cobrança de dívidas ou descontos em folha, visando garantir a sobrevivência básica e a dignidade humana do consumidor, o que engloba o custeio de necessidades primárias inadiáveis, como alimentação, moradia, água, luz e saúde. Esse conceito atua como um mecanismo protetor de última instância, desenhado para impedir que o pagamento de compromissos financeiros confisque a totalidade dos rendimentos de uma pessoa e a empurre para a exclusão social e a miséria.
+
+Nesse contexto, o simples fato de possuir compromissos financeiros não é o problema central, mas sim a ausência de planejamento e a dificuldade em prever como as decisões tomadas no presente afetarão o bem-estar e a capacidade de pagamento no futuro. Muitas vezes, a contratação de um novo crédito ou uma compra parcelada parece compatível com a renda imediata disponível, mas pode gerar um efeito em cadeia que compromete a resiliência financeira nos meses seguintes.
+
+No entanto, a quantificação desse direito impõe desafios complexos à sociedade. A partir da Lei do Superendividamento, o Poder Executivo estabeleceu, por meio do Decreto nº 11.567/2023, que o valor presumido do mínimo existencial para fins de repactuação de dívidas seria fixado na quantia de R\$ 600 mensais \citep{decreto11567}. Esse teto gerou amplos debates e foi levado ao Supremo Tribunal Federal (STF) em 2026. A Suprema Corte optou por manter esse parâmetro, justificando que uma elevação genérica e abrupta sem avaliação técnica poderia gerar retração no mercado e negar o acesso ao crédito formal a milhões de brasileiros de baixa renda \citep{stf2026}.
+
+É precisamente na lacuna entre essa métrica fixa do Estado e a realidade financeira dinâmica de cada indivíduo que o desenvolvimento de artefatos sociotécnicos de apoio à decisão ganha sua maior relevância. Um sistema computacional capaz de analisar detalhadamente as despesas ativas, a reserva financeira e a capacidade de pagamento permite ao usuário ir além da proteção genérica de R\$ 600 tabelada pela legislação. A tecnologia possibilita que o indivíduo visualize, de forma personalizada, quanto de sua renda permanece livre após cada novo compromisso e o quanto de sua resiliência econômica está de fato ameaçada por ele, abrindo caminho para que, no futuro, o próprio mínimo existencial possa ser estimado a partir do orçamento de cada pessoa. Dessa forma, a plataforma atua não na mitigação de danos judiciais, mas no empoderamento preventivo, permitindo que a decisão de não se superendividar seja tomada de forma autônoma e antecipada.
+
+Diante da complexidade inerente ao comportamento financeiro humano, a tecnologia assume um papel fundamental não apenas como um artefato computacional isolado, mas como um instrumento ativo de transformação social. O valor de uma solução digital, nesse cenário, consolida-se na sua capacidade de interagir com os usuários e modificar positivamente suas práticas diárias de planejamento e consumo. No escopo das finanças pessoais, isso se traduz no desenvolvimento de modelos de apoio à decisão que ultrapassam a simples descrição do ambiente econômico, atuando de forma a auxiliar concretamente as pessoas na avaliação de alternativas e na compreensão prévia dos impactos que suas escolhas exercerão sobre sua estabilidade financeira.
+
+Alinhado a essa necessidade social e respaldado pela perspectiva sociotécnica, o presente trabalho tem como objetivo apresentar o desenvolvimento de uma plataforma digital de apoio à decisão financeira pessoal, desenhada com foco direto na prevenção do superendividamento. O artefato proposto transcende as soluções tradicionais baseadas no mero registro histórico de receitas e despesas, atuando como um instrumento ativo que permite ao usuário construir uma representação de sua situação econômica atual, a partir da qual são realizadas simulações e projeções temporais.
+Para fundamentar essa análise preditiva, o sistema baseia-se em um modelo matemático desenhado para calcular um Índice de Risco de Endividamento (IRE). Esse índice é obtido através da combinação e ponderação de indicadores fundamentais, como o comprometimento da renda, o nível de endividamento, a liquidez e a capacidade de pagamento do usuário. Com base nos resultados processados, a plataforma classifica o risco em diferentes níveis e aponta de forma transparente quais fatores mais contribuíram para aquele diagnóstico.
+
+Espera-se que essa integração entre modelagem financeira e tecnologia da informação proporcione ao usuário uma ferramenta capaz de elucidar as consequências reais de uma escolha econômica antes mesmo de um novo compromisso ser assumido, atuando assim como um vetor tecnológico para o crédito responsável e a proteção financeira.
+
+Diante desse contexto e para fundamentar a avaliação deste artefato, a pesquisa orienta-se pela seguinte questão norteadora: Como a integração de simulações financeiras preditivas e explicabilidade em um Sistema de Apoio à Decisão influencia a percepção de confiança e a intenção comportamental de consumidores vulneráveis antes da contratação de novos créditos?
+
+Visando sistematizar o processo de concepção, desenvolvimento e validação desta plataforma, o presente artigo organiza-se de modo a refletir o percurso metodológico adotado, desde a delimitação do problema até a avaliação do artefato. A Seção 2 estabelece o referencial teórico e analisa os trabalhos correlatos, consolidando o escopo da pesquisa na intersecção entre a gestão financeira e a tecnologia. A Seção 3 descreve a metodologia delineada sob as premissas da Design Science Research (DSR), um paradigma epistemológico fundamental para a síntese e a avaliação de artefatos sociotécnicos orientados à resolução de problemas complexos.
+
+Em concordância com esse rigor, a Seção 4 esboça o projeto estrutural do artefato, detalhando sua modelagem e arquitetura de software. A Seção 5 dedica-se à formulação lógico-matemática que embasa o cálculo do Índice de Risco de Endividamento (IRE). A Seção 6 articula esses conceitos computacionais aos mecanismos de simulação e explicabilidade, evidenciando como o sistema traduz a complexidade do risco computado em diagnósticos visuais e alertas que apoiam ativamente a tomada de decisão do usuário.
+
+A eficácia prática dessa solução é constatada na Seção 7, que reporta os resultados da avaliação do sistema por meio de cenários orçamentários simulados. A Seção 8 discute o posicionamento do artefato frente às soluções existentes, as escolhas de projeto que podem orientar artefatos semelhantes, as implicações para usuários e para a sociedade, os aspectos éticos de seu uso e as limitações do estudo. Por fim, a Seção 9 sintetiza as contribuições e os trabalhos futuros da pesquisa, seguida pelas declarações institucionais e pelo referencial bibliográfico que fundamenta o trabalho.
+
+\section{Fundamentação e trabalhos relacionados}
+A expansão do acesso ao crédito aliada à digitalização dos serviços financeiros evidenciou a necessidade de instrumentos tecnológicos que auxiliem o consumidor na manutenção de seu bem-estar financeiro. O superendividamento, definido pela Lei nº 14.181/2021 como a impossibilidade manifesta de o consumidor pagar suas dívidas sem comprometer o seu mínimo existencial, demanda soluções preventivas estruturadas. Para mitigar esse risco, Sistemas de Apoio à Decisão (SAD) baseados em informações orçamentárias surgem como ferramentas capazes de transformar o registro retrospectivo de gastos em conhecimento preditivo e acionável.
+
+\subsection{Sistemas de apoio à decisão e gestão financeira pessoal}
+A literatura recente aponta que a provisão de informações financeiras estruturadas exerce impacto positivo na qualidade das decisões orçamentárias. Dörnte \citeyearpar{dornte2021} conduziu experimentos empíricos demonstrando que indivíduos munidos de informações consolidadas (como fluxo de caixa e indicadores) apresentam melhor desempenho em suas decisões financeiras, evidenciando o potencial dos SADs na economia doméstica. Contudo, ao analisar o ecossistema de aplicativos de finanças pessoais disponíveis, Alenazi \citeyearpar{alenazi2026} conclui que a esmagadora maioria prioriza o rastreio retrospectivo de transações e a otimização numérica baseada no passado, oferecendo escasso suporte à antecipação de riscos ou à mitigação do superendividamento.
+
+Mesmo iniciativas institucionais brasileiras, como a plataforma Concilia Super App (desenvolvida pela UFRGS em conjunto com instituições de defesa do consumidor em 2023), atuam primordialmente na fase de tratamento e repactuação de dívidas de consumidores já superendividados, não possuindo motores algorítmicos voltados à prevenção ativa anterior à contração do crédito. Outros softwares comerciais, como o Quicken Simplifi, oferecem projeção de fluxo de caixa baseada em contas recorrentes; entretanto, carecem de modelagem quantitativa de risco, baseando seus alertas apenas em limiares manuais de saldo configurados pelo próprio usuário.
+
+
+\subsection{Índices de risco e explicabilidade}
+No âmbito da modelagem de risco associada ao comportamento do usuário, abordagens computacionais recentes têm demonstrado a eficácia de alertas preditivos. Kumar e Silver \citeyearpar{kumar2024} implementaram e testaram um modelo de aprendizado de máquina para prever o risco de saldo negativo (\textit{overdraft}) nos próximos sete dias, alcançando redução significativa nas taxas de inadimplência de curto prazo. Apesar de inovador por calcular um \textit{score} de risco específico para o usuário, o modelo não avalia a trajetória do endividamento estrutural a longo prazo e foca na mitigação de tarifas bancárias (\textit{overdraft fees}) em vez do estrangulamento da capacidade de pagamento mensal.
+
+Além da predição, a literatura destaca que a confiança do usuário no sistema depende da explicabilidade das recomendações (\textit{Explainable AI}, XAI). Alertas emitidos sem o devido detalhamento das causas orçamentárias tendem a ser ignorados ou oferecem pouca utilidade a usuários que já se encontram sem margem financeira. Um SAD eficiente deve não apenas classificar o risco, mas apontar quais dimensões (comprometimento de renda, nível de endividamento ou falta de liquidez) originaram a pontuação crítica, empoderando o indivíduo a tomar ações corretivas direcionadas.
+
+\subsection{Análise comparativa e lacuna de pesquisa}
+A análise do estado da arte evidencia uma escassez de artefatos de software que integrem, em um ambiente unificado para o consumidor, a projeção preditiva, um índice orçamentário quantitativo e a explicabilidade dos fatores de risco. A Tabela~\ref{tab_comparativa} sintetiza a comparação estrutural entre os trabalhos mapeados e a plataforma SAFE, proposta neste trabalho.
+
+\begin{table}[!ht]
+\caption{Comparativo entre soluções existentes e a plataforma SAFE.}
+\centering
+% O comando abaixo redimensiona a tabela para caber na largura exata da coluna/página
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{}lccc@{}}\toprule
+
+Trabalho / Sistema & Projeção Temporal & Índice Quantitativo & Explicabilidade / Alertas \\\midrule
+
+Dörnte (2021)& \ding{55} & \ding{55} & \ding{55} \\
+Alenazi (2026) & \ding{55} & \ding{55} & \ding{55} \\
+Concilia Super App (2023) & \ding{55} & \ding{55} & \ding{55} \\
+Kumar \& Silver (2024) & \ding{55} & \ding{51} & Parcial \\
+Quicken Simplifi & \ding{51} & \ding{55} & \ding{55} \\
+\textbf{Plataforma SAFE} & \textbf{\ding{51}} & \textbf{\ding{51}} & \textbf{\ding{51}} \\ \bottomrule
+
+\end{tabular}%
+}
+\label{tab_comparativa}
+\end{table}
+
+Enquanto grande parte dos trabalhos foca no \textit{score} de crédito institucional ou no acompanhamento retrospectivo do caixa familiar, a plataforma SAFE preenche essa lacuna ao atuar de forma holística. O sistema difere das abordagens vigentes por incorporar a dinâmica temporal dos passivos e normalizar o diagnóstico orçamentário no Índice de Risco de Endividamento (IRE), devolvendo ao usuário alertas preventivos e explicáveis antes da tomada de decisão.
+
+\section{Método (DSR)}
+
+Esta pesquisa adota a Design Science Research (DSR), paradigma voltado à construção e à avaliação de artefatos que resolvem problemas relevantes e, ao mesmo tempo, produzem conhecimento prescritivo para a área de Sistemas de Informação \citep{hevner2004}. O artefato proposto é o SAFE, um sistema de informação de apoio à decisão financeira pessoal que calcula indicadores de saúde financeira e um Índice de Risco de Endividamento (IRE) e permite simular o impacto de novas dívidas antes de contraí-las.
+
+O processo de pesquisa segue a Design Science Research Methodology (DSRM) \citep{peffers2007}, composta por seis atividades: (1) identificação do problema e motivação, (2) definição dos objetivos da solução, (3) projeto e desenvolvimento, (4) demonstração, (5) avaliação e (6) comunicação. O ponto de entrada da pesquisa foi centrado no problema. A atividade de projeto e desenvolvimento foi operacionalizada com o \textit{framework} ágil Scrum \citep{schwaber2020}, em quatro \textit{sprints}. Cada \textit{sprint} funcionou como uma iteração do ciclo de design descrito por Hevner \citeyearpar{hevner2007}: construir, avaliar parcialmente nas cerimônias de revisão e refinar o artefato.
+
+\subsection{Ciclo de DSR aplicado ao SAFE}
+
+A Tabela~\ref{tab:mapeamento_dsrm} mapeia as atividades da DSRM às atividades executadas e aos períodos correspondentes.
+
+
+\begin{table}[!ht]
+\caption{Mapeamento das atividades da DSRM ao desenvolvimento do SAFE}
+\centering
+\footnotesize % Reduz o tamanho da letra para caber na largura da coluna
+\begin{tabular}{@{} >{\raggedright\arraybackslash}p{0.22\linewidth} >{\raggedright\arraybackslash}p{0.50\linewidth} >{\raggedright\arraybackslash}p{0.18\linewidth} @{}}
+\hline\hline
+\textbf{Atividade DSRM} & \textbf{Execução no SAFE} & \textbf{Período} \\
+\hline
+1. Identificação do problema & Revisão da literatura sobre endividamento das famílias e gestão financeira pessoal; análise de soluções existentes & Antes da Sprint 1 \\
+2. Objetivos da solução & Definição de quatro objetivos da solução, desdobrados em requisitos funcionais e histórias de usuário com critérios de aceite & Antes da Sprint 1 \\
+3. Projeto e desenvolvimento & Implementação incremental em quatro \textit{sprints} (Tabela~\ref{tab:objetivos_solucao}) & 16/09 a 01/11/2026 \\
+4. Demonstração & Execução do artefato em cenários de uso representativos nas \textit{Sprint Reviews} & Fim de cada \textit{sprint} \\
+5. Avaliação & Verificação dos critérios de aceite, testes \textit{end-to-end} e avaliação com usuários (Seção~\ref{sec:avaliacao}) & Sprint 4 e pós-desenvolvimento \\
+6. Comunicação & Publicação deste artigo & Pós-avaliação \\
+\hline\hline
+\end{tabular}
+\label{tab:mapeamento_dsrm}
+\end{table}
+
+Os objetivos da solução apresentados na Tabela~\ref{tab:objetivos_solucao} foram operacionalizados em 24 requisitos funcionais. Para verificar se as funcionalidades implementadas correspondiam ao comportamento esperado, foram definidos critérios de aceite. Como exemplo, para o objetivo de diagnosticar a saúde financeira atual, o indicador de comprometimento da renda calcula a razão entre a soma das parcelas ativas e a renda líquida informada. Quando não há dívidas, o sistema deve exibir 0\%; quando a renda não foi informada, deve solicitar seu cadastro. O resultado é apresentado em faixas de comprometimento, abaixo de 30\%, de 30\% a 50\% e acima de 50\%, e valores superiores a 100\% devem ser sinalizados.
+
+\begin{table}[!ht]
+\caption{Objetivos da solução e sua implementação}
+\centering
+\footnotesize
+\begin{tabular}{@{} >{\raggedright\arraybackslash}p{0.35\linewidth} >{\raggedright\arraybackslash}p{0.50\linewidth} >{\raggedright\arraybackslash}p{0.10\linewidth} @{}}
+\hline\hline
+\textbf{Objetivo} & \textbf{Funcionalidades} & \textbf{Sprint} \\
+\hline
+OS1. Registrar a situação financeira do usuário com segurança e conformidade à LGPD & Autenticação OAuth, consentimento, cadastro de renda, despesas, dívidas e reserva, exclusão de dados & 1 \\
+OS2. Diagnosticar a saúde financeira atual & Indicadores de comprometimento, endividamento, liquidez e capacidade de pagamento; cálculo e detalhamento do IRE; projeção do fluxo financeiro & 2 \\
+OS3. Apoiar a decisão antes de contrair novas dívidas & Simulação, comparação entre risco atual e simulado, alertas e fatores de risco & 3 \\
+OS4. Acompanhar a evolução do risco ao longo do tempo & Histórico e visualização gráfica do IRE & 4 \\
+\hline\hline
+\end{tabular}
+\label{tab:objetivos_solucao}
+\end{table}
+
+
+\subsection{Critérios de avaliação}
+
+A estratégia de avaliação segue o Framework for Evaluation in Design Science (FEDS) \citep{venable2016}. Ela combina avaliações formativas artificiais, ao longo das \textit{sprints}, com uma avaliação somativa naturalística ao final do desenvolvimento. Os critérios foram selecionados a partir da taxonomia de Prat et al. \citeyearpar{prat2015} e associados aos objetivos da solução.
+
+\subsubsection{Corretude funcional (OS1 a OS4)}
+
+Proporção de critérios de aceite atendidos, verificada nas \textit{Sprint Reviews} e em testes \textit{end-to-end}.
+
+\subsubsection{Corretude dos cálculos (OS2, OS3)}
+
+Comparação entre os indicadores e o IRE calculados pelo SAFE e valores de referência obtidos manualmente para [resultados serao colocados apos teste] cenários financeiros de teste.
+
+\subsubsection{Usabilidade (OS1 a OS4)}
+
+Aplicação, após o uso do SAFE, de um questionário baseado no construto de utilidade percebida do Modelo de Aceitação de Tecnologia (TAM), proposto por Davis \citeyearpar{davis1989}. Os itens serão adaptados ao contexto do sistema e respondidos em escala Likert de cinco pontos, de “discordo totalmente” a “concordo totalmente”. O questionário avaliará se os participantes percebem que o SAFE os ajuda a compreender sua situação financeira, avaliar o impacto de novas dívidas e apoiar decisões financeiras.
+
+\subsubsection{Utilidade percebida (OS2 a OS4)}
+
+Questionário [definir instrumento] sobre a contribuição do SAFE para a compreensão da própria situação financeira e para a decisão de assumir novas dívidas.
+
+Conformidade com a LGPD (OS1): verificação do registro de consentimento e da exclusão definitiva dos dados a pedido do usuário.
+
+\subsubsection{Ameaças à validade}
+
+As ameaças foram analisadas segundo a classificação de Wohlin et al. \citeyearpar{wohlin2012}.
+
+\paragraph{Validade de construto}
+
+Os limiares usados pelo SAFE são parâmetros heurísticos para classificar o comprometimento da renda, e não um instrumento validado para prever insolvência. O patamar de 30\% foi informado por estudos que usam essa proporção como referência de vulnerabilidade financeira, embora não exista consenso universal sobre um único limite \citep{faruqui2008}. O patamar de 50\% foi adotado pelo projeto como sinalização de comprometimento elevado; ele não corresponde diretamente a um limite legal geral, pois a margem consignável prevista na Lei nº 14.431/2022 \citep{lei14431} se aplica a descontos em folha e a grupos específicos. Além disso, o indicador agregado do Banco Central do Brasil \citep{bcb29034} descreve o comprometimento médio das famílias, mas não estabelece faixas para classificar indivíduos. Portanto, os resultados devem ser interpretados como apoio à compreensão da situação financeira, e não como diagnóstico de insolvência.
+
+\paragraph{Validade interna}
+
+Os pesquisadores participaram do desenvolvimento e também da avaliação, o que pode enviesar os resultados. Como mitigação, os critérios de aceite foram definidos antes da implementação e a usabilidade foi avaliada com um instrumento padronizado, aplicado a participantes externos ao projeto.
+
+\paragraph{Validade externa}
+
+A amostra de avaliação é reduzida e por conveniência, e os cenários financeiros de teste podem não representar a diversidade de perfis da população. Por isso, os resultados não são generalizáveis sem replicação com amostras maiores e mais heterogêneas.
+
+\paragraph{Validade de conclusão}
+
+O tamanho da amostra limita o uso de testes estatísticos inferenciais. Os resultados são apresentados de forma descritiva e devem ser interpretados como evidência preliminar da utilidade do artefato.
+
+
+\section{Projeto do artefato}
+
+Na Design Science Research, a atividade de projeto e desenvolvimento converte os objetivos da solução em um artefato concreto, cuja utilidade é posteriormente demonstrada e avaliada \citep{hevner2004, peffers2007}. O artefato deste trabalho é uma instanciação: o SAFE, um sistema web que operacionaliza o Índice de Risco de Endividamento (Seção 5) e os mecanismos de simulação e explicabilidade (Seção 6). Esta seção apresenta os requisitos que orientaram o projeto, a arquitetura resultante e as decisões de projeto das quais dependem as propriedades avaliadas na Seção 7.
+
+\subsection{Requisitos de projeto}
+
+Os objetivos da solução foram sintetizados em cinco requisitos de projeto (RP), formulados de modo independente da tecnologia e detalhados em 24 requisitos funcionais (RF), organizados em 10 casos de uso. A Tabela~\ref{tab:requisitos_projeto} apresenta os requisitos de projeto e os requisitos funcionais que os implementam.
+
+\begin{table}[!ht]
+\caption{Requisitos de projeto e os requisitos funcionais associados.}
+\centering
+\begin{tabular}{@{}p{0.25\linewidth} p{0.50\linewidth} p{0.15\linewidth}@{}}
+\hline\hline
+\textbf{Requisito} & \textbf{Descrição} & \textbf{RF} \\
+\hline
+RP1 -- Representar a situação financeira & Registrar e manter renda, despesas fixas e variáveis, dívidas e reserva financeira. & RF04--RF07, RF21 \\
+RP2 -- Quantificar o risco & Calcular os indicadores e o IRE e classificar o resultado em faixas de risco. & RF08--RF13 \\
+RP3 -- Antecipar o efeito das decisões & Projetar o fluxo financeiro e simular uma nova obrigação sem alterar os dados reais. & RF17, RF18, RF22, RF23 \\
+RP4 -- Explicar o resultado & Expor os indicadores, os fatores de maior contribuição, os alertas e a evolução do risco. & RF14--RF16, RF19, RF20 \\
+RP5 -- Proteger os dados pessoais & Utilizar autenticação delegada, registrar o consentimento e permitir a exclusão dos dados, conforme a LGPD \citep{lgpd}. & RF01--RF03, RF24 \\
+\hline\hline
+\end{tabular}
+\label{tab:requisitos_projeto}
+\end{table}
+
+Os requisitos não funcionais foram organizados segundo a norma ISO/IEC 25010 \citep{iso25010}. Dois deles são verificados na Seção 7: o tempo de resposta de até 1 s para 95\% das consultas, cálculos e simulações, e a cobertura mínima de 80\% de testes unitários automatizados nos módulos de cálculo do IRE e de projeção.
+
+\subsection{Arquitetura}
+
+O SAFE adota uma arquitetura em camadas, organizada em torno de uma API REST. Na camada de apresentação, uma aplicação web do tipo \textit{single-page application} permite cadastrar os dados, consultar o painel de risco e executar simulações. Na camada de aplicação e negócio, a API autentica as requisições e as encaminha a quatro serviços: usuários e conformidade com a LGPD (RP5), gestão orçamentária (RP1), motor de cálculo do IRE e de projeção (RP2 e RP3) e simulação e diagnóstico (RP3 e RP4). A camada de persistência utiliza o PostgreSQL para os dados transacionais e o Redis como cache dos resultados consolidados do painel. A autenticação é delegada a um provedor externo OAuth 2.0.
+
+\subsection{Decisões de projeto}
+
+Quatro decisões de projeto condicionam diretamente as propriedades avaliadas na Seção 7.
+
+\subsubsection{Motor de cálculo isolado}
+
+O cálculo dos indicadores, do IRE, da classificação e da decomposição por fator está concentrado em um serviço sem estado, que recebe os dados do usuário e devolve os resultados sem acessar diretamente o banco de dados. O acesso aos dados é abstraído pelo padrão Repository \citep{fowler2002}, o que permite executar o motor com dados em memória. Essa separação torna possível testar o modelo de forma automatizada e variar pesos e limiares das faixas sem alterar o restante do sistema, condição necessária para a análise de sensibilidade e para a verificação técnica.
+
+\subsubsection{Isolamento do cenário simulado}
+
+A simulação de uma nova decisão é executada em memória, sobre uma cópia da situação financeira atual. Somente os parâmetros da decisão e o risco estimado são registrados; os dados orçamentários reais permanecem inalterados. Como os cenários atual e projetado são calculados pelo mesmo motor e pela mesma regra de agregação, a variação do índice entre eles pode ser decomposta por indicador, o que fundamenta a explicação apresentada ao usuário e o teste de consistência da decomposição.
+
+\subsubsection{Precisão numérica}
+
+Todos os cálculos do motor utilizam tipos decimais de ponto fixo, com arredondamento em duas casas. A decisão evita erros de representação do ponto flutuante binário, que poderiam alterar a classificação de situações próximas às fronteiras entre faixas, e garante que as mesmas entradas produzam sempre o mesmo resultado, requisito para a reprodutibilidade dos experimentos com cenários sintéticos.
+
+\subsubsection{Proteção dos dados pessoais}
+
+O SAFE não armazena credenciais: a identidade do usuário é confirmada pelo provedor OAuth 2.0, e a comunicação ocorre exclusivamente por HTTPS. O aceite dos termos de uso e as operações sensíveis, como alteração e exclusão de dados financeiros, são registrados para auditoria, e o usuário pode solicitar a exclusão definitiva da conta e de seus dados, em atendimento à LGPD.
+
+
+\section{Modelo do IRE}
+
+A prevenção do superendividamento requer que o usuário compreenda de forma objetiva e antecipada os impactos de suas obrigações financeiras. Para traduzir dados orçamentários brutos em conhecimento acionável, este trabalho propõe o Índice de Risco de Endividamento (IRE). O IRE atua como um mecanismo de apoio à decisão inserido em uma perspectiva sociotécnica, transformando o registro de finanças pessoais em diagnósticos visuais e alertas preventivos.
+
+O desenvolvimento do modelo do IRE segue uma abordagem multicritério, dividida em seis etapas fundamentais: definição dos indicadores, normalização das escalas, definição de pesos, cálculo do índice consolidado, classificação do risco e decomposição dos fatores críticos.
+
+\subsection{Definição dos indicadores financeiros}
+A formulação matemática do Índice de Risco de Endividamento (IRE) não se baseia apenas de abordagens puramente empíricas e fundamenta-se nas metodologias consolidadas de instituições financeiras e econômicas nacionais. A arquitetura analítica do sistema baseia-se em constructos adotados no Índice de Saúde Financeira do Brasileiro (I-SFB), desenvolvido pelo Banco Central do Brasil em parceria com a FEBRABAN \citep{febraban2021}, e na Pesquisa de Endividamento e Inadimplência do Consumidor (Peic), elaborada pela Confederação Nacional do Comércio \citep{peic2026}.
+
+Para construir um diagnóstico sociotécnico abrangente, a modelagem do sistema SAFE avalia a saúde financeira do indivíduo a partir de quatro indicadores primários que capturam diferentes dimensões do orçamento e do fluxo de caixa:
+
+\subsubsection{Comprometimento da renda (CR)}
+
+Calcula a proporção da renda líquida mensal que encontra-se comprometida com o pagamento de créditos, empréstimos e parcelamentos. O valor é obtido pela divisão do total das parcelas mensais ativas pela renda mensal informada. É calculado pela divisão da somatória das parcelas mensais ativas pela renda mensal informada.
+
+\begin{equation}\label{equ1}
+    CR = \frac{\sum \text{Parcelas Mensais Ativas}}{\text{Renda Mensal}}
+\end{equation}
+
+O comprometimento da renda é um dos principais indicadores monitorados historicamente pela metodologia da Peic (CNC). Sua relevância decorre da capacidade de revelar o grau de estrangulamento imediato da renda familiar. Se uma parcela excessiva do salário do usuário é alocada, já no início do mês, ao pagamento de dívidas antigas, reduz-se drasticamente a margem de manobra financeira. Valores elevados desse indicador apontam para uma vulnerabilidade severa em que qualquer pequena variação no custo de vida, por exemplo o aumento da inflação ou das tarifas, tende a provocar inadimplência, na medida em que não existe folga para absorver o gasto.
+
+\subsubsection{Nível de endividamento (NE)}
+
+Avalia a exposição total de passivos do usuário em relação à sua capacidade geral de geração de renda mensal. Relaciona o saldo devedor global, sendo ele o montante de toda a dívida contraída a longo prazo, com a renda mensal.
+
+\begin{equation}\label{equ2}
+    NE = \frac{\sum \text{Saldo Devedor Total}}{\text{Renda Mensal}}
+\end{equation}
+
+Enquanto o indicador CR foca na liquidação da parcela do mês, o NE avalia o peso estrutural a longo prazo. A necessidade de monitorar o Nível de Endividamento é validada por pesquisadores da área de finanças comportamentais e pela própria Peic. Este indicador permite ao sistema discernir entre uma dívida pontual pesada e uma dívida estrutural insustentável. Ter clareza sobre o tamanho total da dívida é fundamental para que o indivíduo saiba o tempo estimado para a sua quitação e o esforço de trabalho que já está empenhado ao mercado de crédito.
+
+\subsubsection{Liquidez financeira (LF)}
+
+Representa a resiliência e o grau de amortecimento financeiro de curto prazo. É calculada pela razão entre o valor da reserva financeira disponível e a somatória do custo de vida mensal.
+
+\begin{equation}\label{equ3}
+    LF = \frac{\text{Reserva Financeira}}{\sum \text{Despesas Mensais}}
+\end{equation}
+
+O I-SFB (Banco Central; Febraban) elenca que um dos pilares centrais do bem-estar financeiro não é apenas não ter dívidas, mas sim ter segurança para lidar com imprevistos sem necessitar recorrer a linhas de crédito emergenciais como o cheque especial e o rotativo do cartão. A importância de compor a Liquidez Financeira no cálculo do IRE reside na premissa de que a falta de reserva de emergência é o principal gatilho do superendividamento. Indivíduos com alta liquidez possuem um risco de inadimplência severamente mitigado, pois têm meses de sobrevida financeira garantidos mesmo em cenários de perda de renda, podendo manter-se em dia financeiramente mesmo sem novas entradas de caixa.
+
+\subsubsection{Capacidade de pagamento (CP)}
+
+Indica a margem orçamentária remanescente, é o fluxo de caixa livre mensal após o pagamento das despesas de custo de vida, e do abatimento das parcelas das dívidas.
+
+\begin{equation}\label{equ4}
+    CP = R_m - \left( \sum_{i=1}^{n} D_i + \sum_{j=1}^{k} P_j \right)
+\end{equation}
+
+Onde $R_m$ representa a renda mensal líquida, $D_i$ representa cada uma das $n$ despesas mensais e $P_j$ representa cada uma das $k$ parcelas de dívidas ativas do usuário.
+
+A mensuração e a percepção da capacidade de pagamento compõem o escopo de diagnóstico tanto das concessões bancárias quanto de análises demográficas como a Peic. O propósito deste indicador é fundamentalmente preventivo. Ele não relata riscos já consolidados, mas afere a margem de segurança disponível para o futuro. Em um sistema de apoio à decisão pessoal, o cálculo do CP é vital para viabilizar as simulações do usuário, permitindo que o SAFE valide visualmente se a adoção de uma nova parcela irá ou não comprometer o mínimo para sua subsistência, alinhando a ferramenta aos princípios da Lei nº 14.181/2021.
+
+\subsection{Normalização dos indicadores em escala de risco}
+
+Como os indicadores primários operam em diferentes grandezas e unidades de medida como porcentagens, valores monetários absolutos e razão em meses, sua combinação direta em uma única equação seria algebricamente inconsistente. Portanto, faz-se necessária a normalização matemática desses valores para uma escala padronizada de risco contínua, variando de $0$ (Risco Nulo) a $1$ (Risco Crítico).
+
+Esse é o mecanismo pelo qual o sistema traduz dados quantitativos isolados na percepção sistêmica de vulnerabilidade humana. Essa transformação da grandeza é o que viabiliza a emissão de alertas preventivos e a codificação visual de cores na interface da aplicação, elementos cruciais para a usabilidade e para o letramento financeiro do usuário.
+
+Com o objetivo de converter as métricas brutas em parâmetros padronizados de avaliação e garantir a comparabilidade entre as variáveis, o modelo matemático estabelece as seguintes funções de normalização para cada dimensão analisada:
+
+\subsubsection{Risco de comprometimento da renda ($R_{CR}$)}
+
+O risco associado ao comprometimento da renda adota um limite de saturação. As diretrizes de crédito responsável e os critérios de aceite do próprio sistema SAFE consideram um comprometimento superior a 50\% da renda como o patamar de alerta máximo, representado pela cor vermelho. Assim, o risco cresce linearmente até atingir esse teto.
+
+\begin{equation}
+R_{CR} = \min\left( \frac{CR}{0{,}50}, 1{,}0 \right)
+\end{equation}
+
+Onde a função $\min$ garante que o risco não ultrapasse o valor de $1{,}0$, independentemente de quão acima dos 50\% o índice de Comprometimento de Renda ($CR$) do usuário se encontre.
+
+\subsubsection{Risco de nível de endividamento ($R_{NE}$)}
+
+Para o volume total da dívida, estipula-se um patamar de 12 meses como teto crítico. O raciocínio fundamenta-se na premissa de que possuir um passivo total equivalente a um ano inteiro de renda bruta asfixia a flexibilidade de manobra do indivíduo a longo prazo.
+
+\begin{equation}
+R_{NE} = \min\left( \frac{NE}{12}, 1{,}0 \right)
+\end{equation}
+
+Onde o Nível de Endividamento ($NE$) é dividido por 12. Valores superiores a doze resultam na saturação máxima do risco.
+
+\subsubsection{Risco de liquidez financeira ($R_{LF}$)}
+
+Diferente dos anteriores, a liquidez apresenta uma correlação inversa com o risco, ou seja, quanto maior a reserva acumulada, menor a vulnerabilidade. A literatura de planejamento financeiro pessoal, de forma geral, preconiza uma reserva de emergência capaz de cobrir pelo menos 6 meses do padrão de vida atual.
+
+\begin{equation}
+R_{LF} = \max\left( 1 - \frac{LF}{6}, 0{,}0 \right)
+\end{equation}
+
+Desta forma, se o usuário possui 6 meses ou mais de despesas já guardadas na Liquidez Financeira ($LF \ge 6$), a subtração resulta em um número negativo ou zero, e a função $\max$ trava o fator de risco no limite inferior, zerando-o.
+
+\subsubsection{Risco da capacidade de pagamento ($R_{CP}$)}
+
+A capacidade de pagamento também possui comportamento inversamente proporcional ao risco e é normalizada considerando a margem de segurança desejável no fluxo de caixa livre. Estabelece-se que uma folga orçamentária equivalente a 30\% da Renda Mensal ($R_m$) é suficiente para zerar essa dimensão de risco. Em contrapartida, se o caixa livre ($CP$) for menor ou igual a zero, o risco é crítico.
+
+\begin{equation}
+R_{CP} = \max\left( 1 - \frac{CP}{0{,}30 \times R_m}, 0{,}0 \right)
+\end{equation}
+
+Onde um $CP$ negativo ou nulo mantém o risco no limite máximo, e valores superiores a 30\% da renda anulam essa parcela de vulnerabilidade.
+
+\subsection{Ponderação e justificativa}
+
+No contexto da avaliação de risco de crédito e prevenção ao superendividamento, as variáveis orçamentárias não exercem impactos simétricos sobre a vulnerabilidade financeira do indivíduo. É fundamental compreender que nem toda dívida gera o mesmo estresse financeiro ou exige a mesma urgência de mitigação. Uma prestação mensal que asfixia o salário corrente apresenta um perigo de inadimplência em cadeia muito mais urgente do que o saldo devedor total de um financiamento de trinta anos, desde que a parcela deste último seja historicamente compatível com a renda. Por essa razão, modelos de apoio à decisão multicritério exigem a atribuição de pesos que reflitam a severidade e a urgência temporal de cada fator no fluxo de caixa.
+
+Para a construção do Índice de Risco de Endividamento (IRE), a ponderação foi estruturada sob a ótica da liquidez imediata e do estrangulamento de curto prazo, garantindo que o sistema alerte o usuário sobre riscos iminentes antes que se tornem estruturais. Os pesos ($W$) definidos para o modelo somam $1{,}0$ e são distribuídos da seguinte maneira:
+
+\subsubsection{Comprometimento da renda ($W_{CR}$)}
+
+Atribui-se a esta variável a maior carga ponderal do modelo, com peso estabelecido em $0{,}40$.
+
+A justificativa para essa primazia reside no fato de que o comprometimento excessivo do salário mensal com dívidas é o vetor mais crítico e imediato para o colapso orçamentário familiar. Quando uma parcela elevada da renda já nasce vinculada ao pagamento de obrigações de crédito, afeta-se diretamente a capacidade de subsistência e o mínimo existencial do indivíduo, princípio fundamental de proteção reconhecido e resguardado pela Lei nº 14.181/2021.
+
+Sob a perspectiva da dinâmica de fluxo de caixa, a ausência de margem na renda do mês corrente retira a autonomia do usuário. Essa asfixia financeira imediata atua como um gatilho que frequentemente obriga o indivíduo a recorrer a linhas de crédito emergenciais, como cheque especial e crédito rotativo, para custear despesas básicas, gerando um efeito cascata de inadimplência muito antes que o saldo devedor total se torne uma preocupação.
+
+\subsubsection{Capacidade de pagamento ($W_{CP}$)}
+
+Representa o segundo fator mais relevante na composição do Índice de Risco de Endividamento, com peso atribuído de $0{,}30$.
+
+A justificativa para este patamar fundamenta-se na necessidade de mensurar a flexibilidade orçamentária do indivíduo para a absorção de choques financeiros esporádicos. Diferentemente do comprometimento da renda, que avalia o impacto das obrigações de crédito já consolidadas, a capacidade de pagamento afere a margem de segurança remanescente no fluxo de caixa após a dedução do custo de vida cotidiano.
+
+Sob a ótica de uma plataforma sociotécnica preventiva e de apoio à decisão, a identificação dessa margem livre é imprescindível para a simulação e projeção de novos cenários. O peso elevado deste indicador garante que o motor de cálculo alerte e penalize situações em que o usuário, ainda que não possua dívidas prévias significativas, apresente um orçamento estruturalmente sufocado por despesas de subsistência, o que inviabiliza a aceitação de novos compromissos com segurança.
+
+\subsubsection{Liquidez financeira ($W_{LF}$)}
+
+Atribui-se a este indicador um fator de amortecimento temporal, com o peso estabelecido em $0{,}20$.
+
+A justificativa para esta ponderação moderada reflete o papel da reserva financeira como uma proteção essencial para absorver choques financeiros repentinos e despesas não planejadas. A escassez de liquidez expõe o indivíduo a choques externos. Contudo, caso o orçamento mensal se encontre equilibrado, evidenciado por um baixo comprometimento da renda e uma margem livre confortável, a ausência de reservas não desencadeia um processo de inadimplência imediato. Deste modo, a liquidez atua como uma camada secundária de segurança, atenuando ou agravando o risco primário ditado pelas obrigações correntes.
+
+\subsubsection{Nível de endividamento ($W_{NE}$)}
+
+Recebe a menor carga ponderal do modelo matemático, com o peso restante fixado em $0{,}10$.
+
+Esta decisão fundamenta-se na natureza de longo prazo do passivo total acumulado. Um indivíduo pode deter um saldo devedor global bastante elevado, como é o caso de um financiamento imobiliário de longa duração, sem que isso represente um risco severo de ruptura financeira imediata. Desde que as parcelas associadas a essa dívida sejam compatíveis com a renda mensal, fator já capturado pelos indicadores de comprometimento e capacidade de pagamento, o volume total da dívida não asfixia a liquidez imediata. Por conseguinte, o modelo prioriza o impacto no fluxo de caixa corrente em detrimento da dimensão absoluta do passivo, refletindo com precisão a probabilidade de quebra financeira no curto prazo.
+
+\subsection{Cálculo do Índice de Risco de Endividamento (IRE)}
+
+O IRE consolida o diagnóstico orçamentário do usuário por meio de uma combinação linear, ou soma ponderada, dos riscos previamente normalizados. O resultado desta operação produz um índice final padronizado no intervalo numérico entre $0$ e $1$, onde valores tendentes a zero refletem alta segurança orçamentária e valores próximos a $1$ indicam alerta máximo de inadimplência. A equação que rege o motor de cálculo do sistema é expressa por:
+
+\begin{equation}
+\begin{split}
+    IRE = \; & (R_{CR} \times 0{,}40) + (R_{CP} \times 0{,}30) \, + \\
+             & (R_{LF} \times 0{,}20) + (R_{NE} \times 0{,}10)
+\end{split}
+\end{equation}
+
+O valor numérico resultante desta equação transcende a simples métrica estática. Ele é consumido diretamente pela interface da plataforma para alimentar as análises visuais do \textit{dashboard} do usuário e viabilizar a comparação direta de cenários durante as simulações preventivas de novas decisões financeiras.
+
+\subsection{Faixas de risco e interpretação}
+
+A conversão do valor contínuo do IRE, gerado no intervalo numérico de $0$ a $1$, em categorias discretas de risco é uma etapa indispensável no desenho de um sistema de apoio à decisão financeira. Sob a perspectiva da interatividade e da usabilidade, apresentar unicamente um valor decimal bruto exigiria um esforço cognitivo adicional do usuário para compreender a gravidade do seu estado financeiro. Decorrente desse fator, o motor de cálculo do SAFE traduz a pontuação quantitativa em cinco faixas qualitativas de risco, associadas a códigos de cores e a recomendações comportamentais claras.
+
+As faixas de risco e as respectivas interpretações analíticas foram estruturadas da seguinte forma:
+
+\subsubsection{Baixo risco}
+
+A faixa de baixo risco financeira, que é representado por um IRE entre $0{,}00$ e $0{,}20$, é sinalizada pela cor verde na interface. Indica uma situação orçamentária altamente equilibrada, caracterizada por um baixo comprometimento da renda, uma margem livre folgada no fluxo de caixa e uma reserva de emergência consistente. Nesta faixa, o usuário possui plena capacidade de pagamento e resiliência a imprevistos, estando apto a assumir novos compromissos, parcelamentos ou investimentos sem comprometer a sua estabilidade financeira estrutural.
+
+\subsubsection{Risco moderado}
+
+A faixa de risco moderado, que é representada por um IRE entre $0{,}21$ e $0{,}40$, é sinalizada pela cor amarela na interface. Representa uma condição financeira globalmente saudável, mas que já exige um acompanhamento sistemático. Embora as contas estejam em dia e não haja estrangulamento imediato visível, a margem de manobra para a absorção de novas despesas recorrentes começa a diminuir. A plataforma atua recomendando prudência e um planejamento mais rigoroso antes da contratação de novos créditos de longo prazo.
+
+\subsubsection{Risco de atenção}
+
+A faixa de risco de atenção, que é representada por um IRE entre $0{,}41$ e $0{,}60$, é sinalizada pela cor laranja na interface. Indica que o orçamento está se aproximando do limite da sustentabilidade de curto prazo. O comprometimento crescente da renda ou a escassez de liquidez começam a afetar severamente a flexibilidade do usuário. A ocorrência de um choque financeiro não planejado, como uma despesa médica ou manutenção veicular, nesta faixa pode facilmente desencadear o recurso a linhas de crédito caras. O sistema emite avisos preventivos para conter a expansão do passivo.
+
+\subsubsection{Risco alto}
+
+A faixa de risco alto, que é representada por um IRE entre $0{,}61$ e $0{,}80$, é sinalizada pela cor vermelha-clara na interface. Reflete um comprometimento elevado da renda mensal e uma capacidade de pagamento fortemente limitada. A margem de segurança para despesas não essenciais é praticamente nula, aproximando perigosamente o usuário do princípio do estrangulamento financeiro total. Nesta etapa crítica, o sistema recomenda de forma incisiva a interrupção imediata de novas contratações de crédito e sugere a redefinição drástica de prioridades orçamentárias.
+
+\subsubsection{Risco crítico}
+
+A faixa de risco crítico, que é representada por um IRE entre $0{,}81$ e $1{,}00$, é sinalizada pela cor vermelha-intensa, frequentemente acompanhada de ícones de alerta de severidade alta na interface. Caracteriza uma situação de vulnerabilidade orçamentária extrema e iminente risco de superendividamento ou insolvência (alinhado aos preceitos de proteção da Lei nº 14.181/2021). As parcelas de dívidas somadas ao custo de vida sufocam integralmente a renda mensal. A plataforma aciona alertas prioritários e fornece diagnósticos estritamente focados na contenção de danos e na urgência de renegociação do passivo.
+
+\subsection{Decomposição e diagnóstico de fatores relevantes}
+
+A utilidade de um sistema financeiro de apoio à decisão não reside apenas na precisão da sua classificação final, mas sobretudo na sua capacidade explicativa. Fornecer unicamente uma pontuação de risco ao usuário caracteriza o sistema como uma ferramenta opaca, o que contraria os princípios de transparência e de educação financeira almejados pela plataforma. Conforme especificado nos requisitos do SAFE (RF16), é fundamental que o sistema identifique e informe de forma clara quais os indicadores específicos que mais contribuíram para o nível de risco alcançado pelo indivíduo.
+
+Para viabilizar a geração deste diagnóstico, o modelo matemático realiza a decomposição analítica do Índice de Risco de Endividamento (IRE). Este processo consiste em calcular a proporção exata que cada sub-risco exerce sobre a composição do índice total do orçamento. A contribuição percentual de um fator específico é determinada pela seguinte equação:
+
+\begin{equation}
+C_i = \frac{R_i \times W_i}{IRE}
+\end{equation}
+
+Onde $C_i$ representa a contribuição percentual do fator analisado, que pode ser o Comprometimento da Renda, a Capacidade de Pagamento, a Liquidez ou o Nível de Endividamento, $R_i$ é o valor do risco previamente normalizado desse mesmo fator, $W_i$ corresponde ao peso matemático fixo atribuído a essa dimensão e o $IRE$ é a pontuação consolidada final do usuário.
+
+A partir do cálculo de $C_i$ para as quatro dimensões orçamentárias, a aplicação ordena os fatores do maior para o menor impacto relativo. Este ordenamento atua como o motor lógico para o acionamento de diagnósticos e alertas visuais direcionados, mitigando o risco de forma estruturada.
+
+
+\section{Simulação e explicabilidade}
+\label{sec:simulacao}
+
+A simulação responde a uma pergunta que o diagnóstico da situação atual não responde: o que acontece com o risco do usuário se ele assumir determinado compromisso? Ela implementa os requisitos de projeto RP3 e RP4 (Tabela~\ref{tab:requisitos_projeto}), correspondentes ao caso de uso UC09 e aos requisitos RF17 e RF18, e reutiliza os mecanismos de alerta e de identificação de fatores (RF15 e RF16) e de projeção do fluxo financeiro (RF22 e RF23). Dois princípios orientam o desenho. O primeiro é que os cenários atual e projetado sejam calculados pelo mesmo motor, com os mesmos indicadores, normalizações, pesos e faixas da Seção 5, de modo que a diferença entre eles possa ser atribuída exclusivamente à decisão simulada. O segundo é que nenhum resultado seja apresentado como uma pontuação isolada: toda comparação é acompanhada dos fatores que a explicam.
+
+\subsection{Construção do cenário simulado}
+
+O usuário informa o valor total da decisão ($V$), a quantidade de parcelas ($n$) e o valor da parcela ($p$). Os dados são aceitos quando $V > 0$, $n$ é inteiro maior ou igual a 1, $p > 0$ e $n \cdot p \ge V$. A última condição impede combinações em que o total pago seria inferior ao valor financiado; esses casos são tratados como inconsistência (exceção E02 do UC09) e exigem correção antes do cálculo. Quando $n \cdot p > V$, a diferença é interpretada como custo financeiro implícito (juros e encargos) e exibida ao usuário junto ao resultado.
+
+Validada a entrada, o motor cria em memória uma cópia da situação financeira atual e nela incorpora a nova obrigação como uma dívida com parcela $p$, $n$ parcelas restantes e saldo devedor igual a $n \cdot p$. O saldo é definido pelo total a pagar, e não por $V$, porque o Nível de Endividamento mede a obrigação futura assumida, que inclui o custo financeiro. Sendo $P_\Sigma$ a soma das parcelas mensais ativas, $S_\Sigma$ o saldo devedor total e $R_m$ a renda mensal, os indicadores do cenário projetado são:
+
+\begin{align}
+CR^{\mathrm{proj}} &= \frac{P_\Sigma + p}{R_m} \label{eq:sim-cr}\\
+NE^{\mathrm{proj}} &= \frac{S_\Sigma + n\,p}{R_m} \label{eq:sim-ne}\\
+CP^{\mathrm{proj}} &= CP - p \label{eq:sim-cp}\\
+LF^{\mathrm{proj}} &= LF \label{eq:sim-lf}
+\end{align}
+
+A Equação~\ref{eq:sim-lf} expressa uma premissa explícita: a decisão não altera a reserva nem as despesas mensais, de modo que a liquidez permanece constante. Decisões pagas com recursos da reserva, como uma entrada, não são representadas nesta versão, e a interface informa essa premissa ao usuário. Os dados reais permanecem intactos; apenas os parâmetros da decisão e o risco estimado são registrados, conforme a decisão de isolamento do cenário simulado (Seção 4).
+
+Para a projeção temporal, o fluxo livre mensal no mês $t$ é calculado com e sem a decisão. Sendo $D$ o total das despesas mensais e $m_j$ a quantidade de parcelas restantes da dívida $j$,
+
+\begin{equation}
+FL_t = R_m - D - \sum_{j} P_j\,\mathbf{1}[t \le m_j] - p\,\mathbf{1}[t \le n],
+\label{eq:sim-fluxo}
+\end{equation}
+
+em que o último termo é omitido na série sem a decisão. O horizonte cobre ao menos os $n$ meses da nova obrigação. O índice do cenário projetado corresponde ao mês de maior exposição, no qual todas as parcelas estão simultaneamente ativas, o que constitui uma leitura conservadora do risco.
+
+\subsection{Comparação entre o IRE atual e o projetado}
+
+Como o IRE é uma soma ponderada dos riscos normalizados, a variação do índice entre os dois cenários decompõe-se exatamente em parcelas atribuíveis a cada indicador:
+
+\begin{equation}
+\begin{split}
+\Delta IRE &= IRE^{\mathrm{proj}} - IRE^{\mathrm{atual}} \\
+&= \sum_{i} W_i \left( R_i^{\mathrm{proj}} - R_i^{\mathrm{atual}} \right) = \sum_{i} \Delta C_i,
+\end{split}
+\label{eq:delta-ire}
+\end{equation}
+
+em que $i \in \{CR, CP, LF, NE\}$ e $R_i$ é o risco já normalizado e saturado. A decomposição vale nos riscos normalizados, não nos valores brutos dos indicadores; essa distinção é relevante para a apresentação dos fatores. A parcela relativa de cada indicador na variação é $\pi_i = \Delta C_i / \Delta IRE$, definida para $\Delta IRE > 0$.
+
+Duas propriedades decorrem do modelo e são verificadas na avaliação (Seção~\ref{sec:aval-simulacao}). A primeira é que a inclusão de uma obrigação nunca reduz o índice ($\Delta IRE \ge 0$), pois $CR$ e $NE$ não diminuem, $CP$ não aumenta e todos os pesos são positivos. A segunda é que a liquidez não contribui para a variação ($\Delta C_{LF} = 0$), em consequência da Equação~\ref{eq:sim-lf}. Para que a classificação em faixas seja consistente com o arredondamento exigido pelo requisito RNF12, o IRE é arredondado em duas casas decimais antes da comparação, o que torna as faixas contíguas.
+
+O resultado da comparação é classificado em três desfechos, que determinam o fluxo apresentado ao usuário (Tabela~\ref{tab:desfechos}). O limiar $\delta$ de variação relevante é um parâmetro operacional, inicialmente fixado em $0{,}05$ e passível de calibração. A severidade do alerta segue a escala de cinco faixas da Seção 5.
+
+\begin{table}[!ht]
+\caption{Desfechos da simulação e tratamento na interface.}
+\centering
+\footnotesize
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.22\linewidth}>{\raggedright\arraybackslash}p{0.34\linewidth}>{\raggedright\arraybackslash}p{0.08\linewidth}>{\raggedright\arraybackslash}p{0.26\linewidth}@{}}
+\hline\hline
+\textbf{Desfecho} & \textbf{Condição} & \textbf{Fluxo} & \textbf{Tratamento} \\
+\hline
+Sem agravamento relevante & $\Delta IRE < \delta$, mesma faixa e sem violação dos limites & FA02 & Comparação exibida, sem alerta \\
+Agravamento & $\Delta IRE \ge \delta$ ou mudança para faixa superior & FA03 & Alerta com a severidade da faixa projetada \\
+Agravamento crítico & $CP^{\mathrm{proj}} \le 0$ ou renda residual inferior ao mínimo existencial adotado & FA03 & Alerta de severidade máxima, independentemente da faixa \\
+\hline\hline
+\end{tabular}
+\label{tab:desfechos}
+\end{table}
+
+O terceiro desfecho existe porque o índice normalizado satura: quando $CP \le 0$, o risco $R_{CP}$ já está no máximo, e um déficit maior não altera o IRE. A regra dedicada impede que uma situação de insuficiência de renda seja subestimada por limitação da escala. O mínimo existencial é tratado como parâmetro operacional configurável, $ME$, inicialmente igual a R\$ 600, valor presumido referido na Introdução, e não como um valor legal universal. A renda residual é calculada como $R_m - (P_\Sigma + p)$, isto é, a renda remanescente após o pagamento das parcelas de crédito.
+
+\subsection{Apresentação dos fatores}
+
+A explicação opera em dois níveis complementares. A decomposição estática $C_i = R_i W_i / IRE$ (Seção 5) responde por que o risco do usuário é o que é; a decomposição dinâmica $\Delta C_i$ responde o que a decisão muda. A simulação apresenta o segundo nível, em quatro blocos de detalhe crescente, o que permite a leitura rápida sem ocultar o detalhamento.
+
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+    \item \textbf{Síntese.} O IRE atual e o projetado, cada um com sua faixa, cor, ícone e rótulo textual, e a variação $\Delta IRE$. A faixa nunca é transmitida apenas pela cor, em atendimento ao requisito RNF05.
+    \item \textbf{Fatores.} Uma tabela ordenada por $\Delta C_i$, em que cada linha mostra o valor bruto do indicador antes e depois, o risco normalizado, a contribuição em pontos do índice e a parcela $\pi_i$. Os principais fatores, destacados na interface, são o menor conjunto de indicadores, em ordem decrescente de contribuição, cuja soma de $\pi_i$ atinge 75\%. Indicadores sem contribuição permanecem listados ao final, com a indicação de que não foram alterados pela decisão, para que o usuário não os interprete como ignorados.
+    \item \textbf{Explicação textual.} Uma frase gerada a partir de modelos por indicador, que combina os valores brutos, o sentido da mudança e a parcela atribuída, em linguagem não técnica.
+    \item \textbf{Projeção.} O gráfico do fluxo livre mensal com e sem a decisão (Equação~\ref{eq:sim-fluxo}), com a indicação dos meses em que o fluxo se torna nulo ou negativo.
+\end{enumerate}
+
+A Tabela~\ref{tab:exemplo-sim} ilustra os blocos 1 e 2 para uma situação hipotética: renda mensal de R\$ 4.000, despesas de R\$ 2.000, parcelas ativas de R\$ 400, saldo devedor de R\$ 6.000 e reserva de R\$ 6.000, com a simulação de uma compra de R\$ 6.000 em 12 parcelas de R\$ 600 (custo financeiro implícito de R\$ 1.200). Os valores foram calculados com as equações do modelo e têm finalidade apenas ilustrativa; não constituem resultados da avaliação da Seção 7.
+
+\begin{table}[!ht]
+\caption{Exemplo ilustrativo da decomposição da variação do IRE.}
+\centering
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{@{} l r r r r r r @{}}
+\hline\hline
+\textbf{Indicador} & \textbf{Atual} & \textbf{Projetado} & $R_i^{\mathrm{atual}}$ & $R_i^{\mathrm{proj}}$ & $\Delta C_i$ & $\pi_i$ \\
+\hline
+CR (comprometimento) & 10,0\% & 25,0\% & 0,20 & 0,50 & 0,12 & 64,9\% \\
+CP (capacidade, R\$) & 1.600 & 1.000 & 0,00 & 0,17 & 0,05 & 27,0\% \\
+NE (meses de renda) & 1,5 & 3,3 & 0,13 & 0,28 & 0,02 & 8,1\% \\
+LF (meses de despesa) & 3,0 & 3,0 & 0,50 & 0,50 & 0,00 & 0,0\% \\
+\hline
+\textbf{IRE} & \textbf{0,19} & \textbf{0,38} & & & \textbf{0,19} & 100\% \\
+\hline\hline
+\end{tabular}%
+}
+\label{tab:exemplo-sim}
+\end{table}
+
+No exemplo, o IRE passa de $0{,}19$ (baixo risco) para $0{,}38$ (risco moderado), o que caracteriza agravamento por mudança de faixa. O comprometimento da renda e a capacidade de pagamento respondem juntos por 91,9\% da variação e são os principais fatores. A renda residual projetada, de R\$ 3.000, supera o parâmetro $ME$, e portanto não há alerta crítico. A interface apresentaria uma explicação como: \textit{``Esta compra elevaria o comprometimento da sua renda com dívidas de 10,0\% para 25,0\% e reduziria sua folga mensal de R\$ 1.600 para R\$ 1.000. Esses dois fatores respondem por 91,9\% do aumento do risco.''} A liquidez, que contribui com $0{,}10$ pontos em ambos os cenários, continua visível na análise da situação, mas não é atribuída à decisão.
+
+Três casos especiais recebem tratamento próprio. Quando um indicador já se encontra saturado nos dois cenários, a variação do risco normalizado é nula mesmo que o valor bruto piore; a interface exibe então a variação bruta e a marcação ``no limite da escala'', para que a ausência de contribuição não seja lida como ausência de piora. Quando $\Delta IRE = 0$, as parcelas $\pi_i$ não são definidas e o sistema informa que a decisão não altera o índice, sem ordenar fatores. Por fim, a decomposição estática não é calculada quando $IRE = 0$, caso em que a interface informa a inexistência de fatores de risco.
+
+O mecanismo possui limitações que devem ser consideradas na interpretação. A linearidade do índice torna a explicação exata, mas depende de pesos e limiares que são escolhas de modelagem, avaliadas na análise de sensibilidade (Seção~\ref{sec:aval-sensibilidade}). O IRE projetado é um retrato do mês de maior exposição, e não uma trajetória mensal do índice. Os parâmetros $\delta$, $ME$ e o critério de 75\% para os principais fatores são operacionais. Por fim, o sistema descreve o impacto de uma decisão e não a autoriza nem a proíbe: a escolha permanece com o usuário.
+
+\section{Avaliação}
+\label{sec:avaliacao}
+
+Esta seção descreve a avaliação do SAFE e do Índice de Risco de
+Endividamento (IRE). Como o sistema é uma ferramenta de apoio à decisão,
+e não um serviço de aconselhamento financeiro, a avaliação não pretende
+demonstrar que os usuários tomam decisões financeiras melhores. O
+objetivo é verificar se o índice diferencia situações de risco de forma
+coerente, se seus resultados são estáveis diante de alterações nos
+parâmetros e se os usuários compreendem as informações apresentadas.
+
+A avaliação segue a abordagem de Design Science Research (DSR)
+\citep{hevner2004,venable2016} e combina testes computacionais em
+ambiente controlado com uma avaliação exploratória de usabilidade.
+A seção está organizada em estratégia de avaliação
+(Seção~\ref{sec:aval-estrategia}), cenários sintéticos
+(Seção~\ref{sec:aval-personas}), análise de sensibilidade
+(Seção~\ref{sec:aval-sensibilidade}), comparação com regras de referência
+(Seção~\ref{sec:aval-baseline}), avaliação da simulação
+(Seção~\ref{sec:aval-simulacao}), avaliação com usuários
+(Seção~\ref{sec:aval-usuarios}), verificação técnica
+(Seção~\ref{sec:aval-tecnica}), resultados
+(Seção~\ref{sec:aval-resultados}) e ameaças à validade
+(Seção~\ref{sec:aval-ameacas}).
+
+% ---------------------------------------------------------------------
+\subsection{Estratégia e perguntas de avaliação}
+\label{sec:aval-estrategia}
+
+Adota-se o \textit{Framework for Evaluation in Design Science}
+(FEDS), proposto por \citet{venable2016}, como referência para combinar
+uma avaliação artificial, realizada em ambiente controlado, e uma
+avaliação naturalística, aproximada do contexto de uso. A avaliação
+artificial verifica o comportamento do índice por meio de cenários
+sintéticos e testes automatizados. A avaliação com usuários investiga
+a compreensão das informações, a usabilidade e a utilidade percebida.
+
+As perguntas de avaliação (PA) foram derivadas da pergunta de pesquisa
+\citep{ref5}:
+
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+    \item \textbf{PA1:} O IRE ordena situações de risco financeiro de
+    maneira coerente com a avaliação independente de especialistas?
+
+    \item \textbf{PA2:} A classificação de risco permanece estável diante
+    de variações nos pesos dos indicadores e nos limiares das faixas?
+
+    \item \textbf{PA3:} O IRE identifica situações relevantes que não são
+    identificadas por uma regra baseada exclusivamente no comprometimento
+    de renda?
+
+    \item \textbf{PA4:} A simulação e a decomposição por indicador
+    representam corretamente os efeitos de uma nova dívida ou despesa
+    e identificam situações de comprometimento do mínimo existencial?
+
+    \item \textbf{PA5:} Os usuários compreendem os resultados apresentados
+    e percebem utilidade e facilidade de uso no SAFE?
+\end{itemize}
+
+A Tabela~\ref{tab:quadro-aval} apresenta a relação entre as perguntas,
+os métodos, os dados e os critérios de avaliação. Os limiares indicados
+são critérios operacionais definidos para este estudo, não padrões
+universais estabelecidos pela literatura.
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.25}
+\caption{Quadro de avaliação do SAFE e do IRE.}
+\label{tab:quadro-aval}
+\begin{tabular}{@{}>{\centering\arraybackslash}p{0.15\linewidth}>{\centering\arraybackslash}p{0.21\linewidth}
+>{\centering\arraybackslash}p{0.30\linewidth}
+>{\centering\arraybackslash}p{0.32\linewidth}
+@{}}
+\toprule
+\textbf{Pergunta} &
+\textbf{Método} &
+\textbf{Dados e instrumento} &
+\textbf{Métrica e critério} \\
+\midrule
+PA1 &
+Comparação com especialistas &
+Personas sintéticas avaliadas independentemente &
+Correlação de Spearman e concordância entre classificações; referência exploratória de $\rho \geq 0{,}70$ \\
+\addlinespace
+PA2 &
+Análise de sensibilidade &
+Variações nos pesos e nos limiares das faixas &
+Proporção de personas que mudam de faixa; referência exploratória inferior a 15\% em perturbações de $\pm 10\%$ \\
+\addlinespace
+PA3 &
+Comparação com \textit{baseline} &
+Mesmas personas avaliadas pelo IRE e pela regra simples &
+Quantidade de divergências e análise dos casos identificados \\
+\addlinespace
+PA4 &
+Testes de simulação &
+Cenários de inclusão de dívida ou despesa &
+Consistência matemática da decomposição e detecção de violação do mínimo existencial \\
+\addlinespace
+PA5 &
+Estudo exploratório com usuários &
+Tarefas guiadas, questionário SUS e itens TAM &
+Taxa de acerto nas tarefas, escore SUS e médias dos itens TAM \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ---------------------------------------------------------------------
+\subsection{Cenários e personas sintéticas}
+\label{sec:aval-personas}
+
+Para construir cenários plausíveis, são consideradas estatísticas
+públicas do Banco Central do Brasil (BCB), disponibilizadas pelo
+Sistema Gerenciador de Séries Temporais (SGS). Entre elas estão a série
+29037, referente ao endividamento das famílias em relação à renda
+acumulada dos últimos doze meses, e a série 29265, referente ao
+comprometimento da renda com o serviço da dívida
+\citep{bcb29037,bcb29265}. A série 21084 também poderá ser utilizada
+para contextualizar a inadimplência, desde que sua definição e unidade
+sejam confirmadas nos metadados oficiais antes da análise.
+
+Os indicadores agregados do BCB não representam o risco individual de
+uma pessoa e, portanto, não são utilizados como rótulos individuais
+de validação. Sua finalidade é contextualizar a construção dos cenários
+e permitir a comparação descritiva com indicadores nacionais. A
+validação do IRE é conduzida separadamente, por meio das personas
+sintéticas e da avaliação independente.
+
+Foram definidos, para fins de planejamento da avaliação, 30 cenários
+sintéticos que combinam renda mensal, despesas essenciais, pagamentos
+de dívidas, reserva financeira e composição familiar. Os cenários
+abrangem situações de baixo, moderado e alto comprometimento, além de
+casos-limite, como renda irregular, liquidez nula, múltiplas dívidas
+de pequeno valor e uma única dívida com prestação elevada.
+
+Os valores de renda e despesa devem ser documentados em uma tabela
+anexa ou no repositório do projeto. A geração dos cenários deve utilizar
+regras explícitas, permitindo que cada perfil seja reproduzido e
+modificado sem alterar arbitrariamente os resultados.
+
+Para a comparação com especialistas, propõe-se que três avaliadores
+com experiência em finanças pessoais, educação financeira ou crédito
+classifiquem os cenários de forma independente, sem conhecer a
+classificação produzida pelo IRE. A concordância poderá ser analisada
+por correlação de Spearman e por uma medida de concordância apropriada
+à escala utilizada, como o Kappa ponderado para categorias ordinais
+\citep{cohen1968,landis1977}. O número e o perfil dos especialistas
+devem corresponder à coleta efetivamente realizada.
+
+
+\begin{figure}[htbp]
+\centering
+\small
+\caption{Exemplo esquemático de perfis sintéticos por nível de comprometimento}
+\label{fig:personas}
+\begin{tabular}{@{}p{0.15\linewidth}p{0.55\linewidth}>{\raggedright\arraybackslash}p{0.05\linewidth}@{}}
+\toprule
+\textbf{Perfil} & \textbf{Representação relativa} & \textbf{Exemplo} \\
+\midrule
+Baixo    & \rule{12mm}{5pt} & 10\% \\
+Moderado & \rule{24mm}{5pt} & 20\% \\
+Elevado  & \rule{36mm}{5pt} & 30\% \\
+Crítico  & \rule{48mm}{5pt} & 40\% \\
+\bottomrule
+\end{tabular}
+
+\vspace{10mm}
+\parbox{0.92\linewidth}{\footnotesize
+Nota: representação ilustrativa da distribuição de quatro perfis, com
+valores exemplificativos. Não corresponde a uma distribuição observada
+no BCB nem aos resultados finais da geração de personas.}
+\end{figure}
+
+% ---------------------------------------------------------------------
+\subsection{Análise de sensibilidade}
+\label{sec:aval-sensibilidade}
+
+A análise de sensibilidade verifica se pequenas alterações nos pesos
+dos indicadores provocam mudanças expressivas na classificação. Para
+cada peso $w_i$, são aplicadas perturbações de
+$\delta \in \{-20\%, -10\%, +10\%, +20\%\}$. Após a perturbação, os
+pesos são normalizados para manter a soma igual a um.
+
+A proporção de personas que mudam de faixa é calculada por:
+
+\begin{equation}
+M = \frac{1}{N}\sum_{k=1}^{N}
+\mathbb{1}\left[f(p_k) \neq f'(p_k)\right],
+\label{eq:mudanca-faixa}
+\end{equation}
+
+em que $N$ representa o número de personas, $p_k$ representa a
+persona $k$, $f(p_k)$ é a classificação original e $f'(p_k)$ é a
+classificação após a alteração dos parâmetros. A função indicadora
+$\mathbb{1}$ assume valor um quando as classificações diferem e zero
+caso contrário.
+
+Além dos pesos, os limiares que definem as faixas de risco devem ser
+alterados em cenários separados. Isso permite distinguir a sensibilidade
+aos pesos da sensibilidade aos limites de classificação.
+
+A Figura~\ref{fig:sens} apresenta um exemplo ilustrativo de mudanças
+de faixa sob perturbações dos pesos. Os valores devem ser substituídos
+pelos resultados obtidos na execução do experimento.
+
+
+\begin{figure}[htbp]
+\centering
+\small
+\caption{Exemplo ilustrativo de sensibilidade da classificação aos pesos do IRE.}
+\label{fig:sens}
+\begin{tabular}{@{}p{0.22\linewidth}p{0.58\linewidth}r@{}}
+\toprule
+\textbf{Perturbação} & \textbf{Personas que mudam de faixa} & \textbf{Exemplo} \\
+\midrule
+$-20\%$ & \rule{32mm}{5pt} & 20\% \\
+$-10\%$ & \rule{19mm}{5pt} & 12\% \\
+$+10\%$ & \rule{16mm}{5pt} & 10\% \\
+$+20\%$ & \rule{38mm}{5pt} & 24\% \\
+\bottomrule
+\end{tabular}
+
+\vspace{2mm}
+\parbox{0.92\linewidth}{\footnotesize
+Nota: percentuais fictícios usados apenas para demonstrar o formato
+do gráfico. Não representam resultados experimentais do IRE.}
+\end{figure}
+
+% ---------------------------------------------------------------------
+\subsection{Comparação com regras de referência}
+\label{sec:aval-baseline}
+
+O IRE é comparado com uma regra simples baseada exclusivamente no
+comprometimento de renda com o serviço da dívida. Nessa regra, o
+percentual de renda comprometida é comparado a um limiar previamente
+definido. O limiar utilizado e sua justificativa devem ser documentados
+antes da comparação.
+
+As duas abordagens são aplicadas às mesmas personas. Em seguida,
+são identificados os casos em que as classificações divergem. Atenção
+especial é dada a perfis nos quais o comprometimento de renda é
+moderado, mas a reserva financeira é inexistente ou a renda residual
+fica abaixo do valor adotado como referência para despesas essenciais.
+
+A comparação não pretende demonstrar superioridade universal do IRE.
+Seu objetivo é verificar se a combinação de indicadores acrescenta
+informações relevantes em relação a uma regra unidimensional. Caso
+seja utilizado outro índice publicado na literatura, sua definição,
+fórmula e fonte devem ser descritas antes da apresentação dos resultados.
+
+% ---------------------------------------------------------------------
+\subsection{Avaliação da simulação e da explicabilidade}
+\label{sec:aval-simulacao}
+
+A simulação é avaliada por meio de cenários que representam a inclusão
+de uma nova dívida ou despesa. São verificados dois aspectos: a
+consistência matemática da decomposição do índice e a identificação
+de situações em que a renda disponível deixa de cobrir o mínimo
+existencial adotado pelo sistema.
+
+Quando o IRE é calculado por agregação linear dos indicadores
+normalizados, sua variação entre os cenários atual e projetado deve
+satisfazer:
+
+\begin{equation}
+\Delta \mathrm{IRE} =
+\sum_{i=1}^{4}
+w_i\left(
+\hat{I}_i^{\mathrm{proj}} -
+\hat{I}_i^{\mathrm{atual}}
+\right),
+\label{eq:decomposicao}
+\end{equation}
+
+em que $\hat{I}_i$ representa o indicador normalizado e $w_i$
+representa seu peso. Essa igualdade depende da utilização da mesma
+regra de agregação nos dois cenários. Se o modelo utilizar regras de
+piso, limites, arredondamentos ou a seleção do pior caso, a
+decomposição deverá refletir essas operações.
+
+A detecção do mínimo existencial é testada com cenários em que a renda
+residual fica acima, próxima e abaixo do limite configurado. O limite
+utilizado deve ser justificado e não deve ser apresentado como um
+valor legal universal caso seja apenas um parâmetro operacional do SAFE.
+
+A Figura~\ref{fig:sim} apresenta um exemplo esquemático da comparação
+entre o índice atual e o projetado após a inclusão de uma nova
+obrigação financeira.
+
+\begin{figure}[htbp]
+\centering
+\small
+\caption{Exemplo ilustrativo de simulação do IRE após uma nova dívida.}
+\label{fig:sim}
+\begin{tabular}{@{}p{0.22\linewidth}p{0.58\linewidth}r@{}}
+\toprule
+\textbf{Cenário} & \textbf{Índice relativo} & \textbf{Exemplo} \\
+\midrule
+Atual     & \rule{28mm}{6pt} & 35 \\
+Projetado & \rule{44mm}{6pt} & 55 \\
+\bottomrule
+\end{tabular}
+
+\vspace{2mm}
+\parbox{0.92\linewidth}{\footnotesize
+Nota: valores ilustrativos em uma escala hipotética de 0 a 100.
+A figura não representa uma execução real do SAFE. O sentido da escala
+deve ser explicitado na definição do IRE: neste exemplo, valores maiores
+representam maior risco.}
+\end{figure}
+
+% ---------------------------------------------------------------------
+\subsection{Avaliação com usuários}
+\label{sec:aval-usuarios}
+
+\textbf{Desenho.}
+Propõe-se um estudo exploratório com 12 participantes, recrutados por
+conveniência, que executam tarefas guiadas no SAFE. As tarefas incluem
+o preenchimento de um perfil financeiro fictício, a simulação de uma
+compra parcelada e a interpretação do resultado apresentado pelo
+sistema. O tamanho final da amostra, o perfil dos participantes e os
+procedimentos devem ser atualizados conforme a coleta efetivamente
+realizada.
+
+Para reduzir a exposição de informações financeiras pessoais, o
+protocolo prioriza dados fictícios fornecidos pelos pesquisadores.
+Caso sejam coletados dados reais, deverão ser definidos previamente
+os procedimentos de consentimento, minimização, anonimização e
+proteção das informações.
+
+\textbf{O que é medido.}
+A avaliação considera três dimensões. A primeira é a compreensão do
+resultado, medida por tarefas com respostas verificáveis, como
+identificar o fator de maior contribuição para o IRE e determinar se
+uma nova dívida altera a faixa de risco. A segunda é a usabilidade,
+avaliada pela \textit{System Usability Scale} (SUS)
+\citep{brooke1996}. A terceira é a utilidade e a facilidade de uso
+percebidas, investigadas por itens inspirados no modelo de aceitação
+de tecnologia (TAM) \citep{davis1989}.
+
+A confiança no resultado é tratada como percepção do participante,
+e não como comprovação da validade financeira do índice. Também pode
+ser incluída uma pergunta exploratória sobre a influência percebida
+da simulação na decisão do participante. Essa resposta representa
+autorrelato e não comprova mudança efetiva de comportamento.
+
+As respostas abertas são analisadas tematicamente. O questionário
+completo, as instruções das tarefas e as regras de cálculo das métricas
+devem ser disponibilizados em apêndice ou repositório, quando possível.
+
+\textbf{Aspectos éticos.}
+O procedimento ético deve ser definido com o orientador e com a
+instituição antes da coleta de dados com participantes. A Resolução
+CNS nº 510/2016 estabelece normas para pesquisas em Ciências Humanas
+e Sociais que envolvem dados obtidos diretamente de participantes ou
+informações identificáveis \citep{cns510}. A aplicabilidade da
+resolução e a necessidade de submissão ao sistema CEP/CONEP devem ser
+confirmadas de acordo com o desenho real do estudo e as orientações
+institucionais.
+
+\textit{Inserir aqui o número verdadeiro do CAAE e a identificação
+do parecer, caso exista aprovação ética. Não preencher com número
+fictício. Se o estudo tiver dispensa ou enquadramento específico,
+descrever a justificativa confirmada pela instituição.}
+
+O tratamento de dados pessoais deve observar a Lei Geral de Proteção
+de Dados Pessoais (LGPD) \citep{lgpd}, conforme sua aplicabilidade
+ao protocolo. O consentimento, quando aplicável, deve explicar a
+finalidade da pesquisa, os dados coletados, a forma de utilização
+e os direitos dos participantes.
+
+% ---------------------------------------------------------------------
+\subsection{Verificação técnica}
+\label{sec:aval-tecnica}
+
+O motor de cálculo do IRE é avaliado por testes automatizados de
+unidade. Os testes verificam os limites dos indicadores, a aplicação
+dos pesos, a classificação nas fronteiras entre faixas e o
+comportamento da simulação diante de valores extremos ou ausentes.
+Também são realizados testes de consistência para garantir que os
+resultados calculados sejam reproduzíveis para as mesmas entradas.
+
+O tempo de resposta é medido em um ambiente de teste documentado,
+considerando a quantidade de execuções, a configuração de hardware
+e as condições de execução. Para evitar conclusões baseadas em
+uma única execução, recomenda-se apresentar a mediana e, quando
+pertinente, os percentis de latência.
+
+Como exemplo de preenchimento, pode-se utilizar uma cobertura de
+testes de 85\% e um tempo mediano de resposta de 180 ms. Esses
+números são meramente ilustrativos e devem ser substituídos pelos
+valores obtidos na execução real. A cobertura de testes e a latência
+descrevem aspectos técnicos da implementação, mas não demonstram,
+isoladamente, a validade conceitual do IRE.
+
+% ---------------------------------------------------------------------
+\subsection{Resultados}
+\label{sec:aval-resultados}
+
+Os resultados desta seção devem ser interpretados em conjunto com
+os critérios estabelecidos antes da avaliação. Os valores numéricos
+apresentados a seguir são exemplos de redação e preenchimento, não
+resultados observados.
+
+\textbf{PA1.}
+Em um exemplo hipotético, a comparação entre o IRE e as classificações
+de especialistas poderia resultar em uma correlação de Spearman de
+$\rho = 0{,}76$. Esse valor sugeriria associação positiva entre as
+ordenações, mas não seria suficiente, isoladamente, para comprovar
+validade. A concordância por categoria também deveria ser apresentada,
+com a medida apropriada à escala ordinal e seu intervalo de confiança,
+quando calculável. A análise qualitativa deve examinar os casos de
+discordância e verificar se decorrem de pesos, limites ou regras de
+classificação.
+
+\textbf{PA2.}
+Em um exemplo hipotético, 12\% das personas poderiam mudar de faixa
+sob uma perturbação de $\pm 10\%$ nos pesos. Esse resultado seria
+comparado ao limiar exploratório de 15\%. A análise final deve indicar
+quais indicadores provocaram mais mudanças e apresentar separadamente
+os efeitos da alteração dos limiares das faixas.
+
+\textbf{PA3.}
+A comparação com a regra baseada somente no comprometimento de renda
+deve informar quantas personas receberam classificações diferentes
+e apresentar exemplos representativos. Por exemplo, um perfil com
+comprometimento moderado e reserva financeira nula pode receber uma
+classificação mais elevada pelo IRE, caso a definição do índice
+atribua peso relevante à liquidez. Esse comportamento deve ser
+confirmado pelo cálculo efetivo, e não presumido a partir do exemplo.
+
+\textbf{PA4.}
+A verificação deve informar se a decomposição matemática coincide
+com a variação do índice calculado, respeitando as regras de agregação
+implementadas. Também deve ser apresentada a quantidade de cenários
+em que o sistema detectou corretamente a violação do mínimo
+existencial. A existência de divergências deve ser registrada e
+analisada, mesmo quando o resultado não atender ao critério esperado.
+
+\textbf{PA5.}
+A avaliação com usuários deve apresentar a taxa de acerto em cada
+tarefa, o escore SUS e as médias e dispersões dos itens TAM. Em uma
+amostra exploratória, os resultados devem ser descritos sem
+generalizações para a população. As respostas abertas devem
+complementar os indicadores quantitativos, evidenciando dificuldades
+de compreensão, elementos úteis e sugestões de melhoria.
+
+A Tabela~\ref{tab:usuarios} apresenta um modelo de organização dos
+resultados. Os valores numéricos são exemplos fictícios e precisam
+ser substituídos pelos resultados da coleta.
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.25}
+\caption{Modelo de apresentação dos resultados da avaliação com usuários.}
+\label{tab:usuarios}
+\begin{tabular}{@{}
+>{\raggedright\arraybackslash}p{0.48\linewidth}
+>{\centering\arraybackslash}p{0.22\linewidth}
+>{\raggedright\arraybackslash}p{0.22\linewidth}
+@{}}
+\toprule
+\textbf{Medida} & \textbf{Resultado ilustrativo} & \textbf{Referência} \\
+\midrule
+Identificação do fator crítico &
+83,3\% &
+Critério definido no protocolo \\
+\addlinespace
+Interpretação da simulação &
+75,0\% &
+Critério definido no protocolo \\
+\addlinespace
+Escore SUS (0--100) &
+72,5 (DP = 10,2) &
+Interpretar conforme a literatura SUS \\
+\addlinespace
+Utilidade percebida (TAM, 1--5) &
+4,1 (DP = 0,6) &
+Escala do questionário \\
+\addlinespace
+Facilidade percebida (TAM, 1--5) &
+3,8 (DP = 0,7) &
+Escala do questionário \\
+\bottomrule
+\end{tabular}
+
+\vspace{2mm}
+\parbox{0.92\linewidth}{\footnotesize
+Nota: todos os resultados desta tabela são fictícios e servem somente
+como modelo de apresentação. O desvio-padrão é indicado entre
+parênteses; a referência de interpretação deve ser fundamentada na
+fonte correspondente.}
+\end{table}
+
+% ---------------------------------------------------------------------
+\subsection{Ameaças à validade}
+\label{sec:aval-ameacas}
+
+\textbf{Validade de construto.}
+O IRE representa uma operacionalização de risco de endividamento
+construída a partir dos indicadores e das regras definidos no projeto.
+Não equivale a uma medida observada de inadimplência nem constitui
+diagnóstico financeiro individual. A ausência de séries oficiais
+diretamente correspondentes a determinados indicadores, como liquidez
+e margem do mínimo existencial, limita a comparação externa desses
+componentes.
+
+\textbf{Validade interna.}
+As personas sintéticas são construídas a partir de escolhas dos
+autores, o que pode influenciar os resultados. A avaliação independente
+por especialistas, a documentação das regras de geração e a execução
+de testes automatizados ajudam a tornar o procedimento auditável.
+Quando possível, os especialistas devem classificar as personas sem
+conhecer os resultados do IRE, reduzindo o risco de influência entre
+as avaliações.
+
+\textbf{Validade externa.}
+Uma eventual avaliação com usuários recrutados por conveniência e
+em amostra pequena não permite generalizar os resultados para toda
+a população. Além disso, a avaliação em tarefas guiadas não demonstra
+que o sistema produzirá mudanças de comportamento financeiro no
+longo prazo. Os indicadores agregados do BCB contextualizam o cenário
+nacional, mas não representam o risco de cada indivíduo.
+
+\textbf{Confiabilidade e reprodutibilidade.}
+A reprodução dos resultados depende da disponibilização das regras
+de construção das personas, dos parâmetros do IRE, dos cenários de
+teste, do código de cálculo e dos procedimentos utilizados na geração
+das figuras. Quando permitido, esses materiais devem ser mantidos em
+repositório versionado, com indicação das versões e das datas de
+extração dos dados públicos.
+
+Em conjunto, essas limitações delimitam o alcance das conclusões:
+a avaliação busca verificar a coerência, a estabilidade e a
+compreensibilidade do SAFE e do IRE, sem afirmar que o sistema
+substitui a orientação profissional ou garante decisões financeiras
+mais adequadas.
+
+\section{Discussão}
+\label{sec:discussao}
+
+O SAFE foi concebido para mudar o momento em que o consumidor recebe informação sobre o próprio risco: em vez de descobri-lo depois, ao conferir a fatura ou ao atrasar uma parcela, ele passa a conhecê-lo antes de assinar. Esta seção discute o que essa escolha significa. Primeiro, o artefato é posicionado em relação às soluções analisadas na Seção 2. Em seguida, são examinadas as escolhas de projeto que sustentam o modelo e o que elas oferecem como conhecimento reutilizável. Por fim, são tratadas as implicações para usuários e para a sociedade, os aspectos éticos do uso de um sistema desse tipo e as limitações do trabalho.
+
+\subsection{O SAFE diante das soluções existentes}
+
+A Tabela~\ref{tab_comparativa} mostra que o SAFE reúne funções que, nas soluções analisadas, aparecem separadas. Mais relevante do que a soma de funções, porém, é a mudança na pergunta que o sistema responde. Os aplicativos analisados por Alenazi \citeyearpar{alenazi2026} respondem para onde foi o dinheiro; o SAFE responde o que acontece com o orçamento se determinado compromisso for assumido. A primeira pergunta organiza o passado e depende de o usuário extrair dele, por conta própria, uma conclusão sobre o futuro. A segunda é formulada quando a decisão ainda pode ser revista.
+
+O Concilia Super App e o SAFE atuam em momentos diferentes do mesmo problema. O primeiro organiza a repactuação das dívidas de quem já está superendividado; o segundo procura evitar que o consumidor chegue a essa situação. As duas abordagens são complementares, e não concorrentes. Para quem já se encontra na faixa de risco crítico, o SAFE pouco pode fazer além de indicar a necessidade de renegociação, e é nesse ponto que instrumentos como o Concilia passam a ser mais adequados.
+
+O contraste com o trabalho de Kumar e Silver \citeyearpar{kumar2024} expõe a principal escolha do projeto. O modelo de aprendizado de máquina desses autores estima o risco de saldo negativo nos sete dias seguintes e foi treinado com dados observados, o que lhe dá uma capacidade preditiva que o IRE não tem. O IRE não estima probabilidade: ordena situações segundo critérios explícitos, com pesos e limiares que podem ser conferidos por qualquer pessoa. Em troca, a explicação que oferece é exata. A soma das contribuições $\Delta C_i$ reproduz a variação do índice (Equação~\ref{eq:delta-ire}), sem a aproximação introduzida pelas técnicas de explicação aplicadas a posteriori a modelos opacos. Para um sistema cujo objetivo é ajudar o usuário a entender a própria situação, e não aprovar ou negar crédito, essa troca é defensável. Ela deixaria de ser se o objetivo fosse prever inadimplência.
+
+O Quicken Simplifi projeta o fluxo de caixa, mas deixa ao usuário a tarefa de definir a partir de que saldo deseja ser avisado. O SAFE inverte essa divisão. Os limiares são definidos pelo modelo, o que dispensa o usuário de saber qual nível de comprometimento é preocupante, mas impõe a todos os critérios escolhidos pelo projeto. Para usuários com pouco letramento financeiro, que teriam mais dificuldade em configurar um alerta útil, a abordagem do SAFE parece mais adequada. Para usuários experientes, ela pode soar rígida.
+
+Os experimentos de Dörnte \citeyearpar{dornte2021} indicam que informações financeiras consolidadas melhoram a qualidade das decisões, o que sustenta a premissa do SAFE. O sistema vai um passo além da consolidação ao acrescentar a simulação. Se esse passo adicional melhora a decisão em relação à simples apresentação dos indicadores é uma questão que os estudos citados não respondem e que este trabalho também não se propõe a responder.
+
+\subsection{Escolhas de projeto como conhecimento reutilizável}
+\label{sec:disc-escolhas}
+
+Na DSR, o artefato é também um meio de produzir conhecimento capaz de orientar projetos semelhantes \citep{hevner2004}. Algumas escolhas feitas no SAFE têm consequências que ultrapassam este sistema.
+
+A primeira é tratar a explicabilidade como requisito do modelo, e não da interface. A decomposição exata da variação do IRE só é possível porque o índice é uma soma ponderada. Se a regra de agregação fosse não linear, como uma média geométrica ou a seleção do pior indicador, a explicação teria de ser aproximada, e a interface poderia atribuir a um fator uma parcela que ele não tem. Em sistemas de apoio à decisão nos quais a explicação faz parte do que é entregue ao usuário, a regra de agregação deve ser escolhida já considerando como o resultado será explicado.
+
+A segunda é reconhecer que um índice contínuo, sozinho, não cobre os casos extremos. A linearidade que torna a explicação exata também torna o índice compensatório, e a normalização com saturação faz com que, a partir de certo ponto, uma piora real deixe de aparecer no número. O SAFE trata esse problema com regras que operam fora do índice, como o alerta de severidade máxima quando a capacidade de pagamento se torna nula ou negativa (Tabela~\ref{tab:desfechos}). O desenho resultante é híbrido: o índice gradua as situações intermediárias, e as regras impedem que as situações graves fiquem escondidas atrás de uma média.
+
+A terceira diz respeito à postura conservadora da projeção. Ao calcular o índice projetado no mês de maior exposição, o sistema prefere o alarme excessivo à omissão. Para alguém cujas dívidas antigas terminam no mês seguinte, essa leitura pode exagerar o risco. Em um sistema preventivo, contudo, o custo de um alerta desnecessário é menor do que o de um alerta que não aparece.
+
+A quarta é o isolamento do cenário simulado. Como a simulação não altera os dados reais, o usuário pode testar várias alternativas, como prazos diferentes ou valores menores, sem consequência para o seu cadastro. É isso que diferencia a simulação de um simples cálculo de parcela: o usuário compara versões de uma mesma decisão antes de escolher uma delas.
+
+A quinta é a ponderação. Ao atribuir ao comprometimento da renda e à capacidade de pagamento 70\% do peso total, o modelo adota a perspectiva de quem precisa pagar as contas do mês, e não a de quem concede crédito. Uma pessoa com saldo devedor elevado em um financiamento imobiliário, mas com parcela compatível com a renda, tende a permanecer nas faixas inferiores de risco. Uma instituição financeira, interessada na exposição total, poderia classificá-la de outra forma. As duas leituras são legítimas, e o SAFE adota a primeira porque seu usuário é o consumidor.
+
+\subsection{Implicações para usuários e para a sociedade}
+
+Para o usuário, a principal implicação é que a decisão continua sendo dele. O SAFE descreve o impacto de um compromisso e não o autoriza nem o proíbe. A explicação textual traduz a variação do índice em valores do próprio orçamento, como o percentual da renda comprometido e a folga mensal em reais, o que aproxima o número calculado da experiência concreta de pagar as contas. Uma frase como ``sua folga mensal cairia de R\$ 1.600 para R\$ 1.000'' tende a ser mais compreensível do que a informação de que o IRE passou de 0,19 para 0,38.
+
+Há, no entanto, uma tensão imposta pelo próprio problema. Segundo a Peic, 19,0\% dos consumidores endividados comprometem mais da metade da renda com dívidas \citep{peic2026}. São as pessoas que mais se beneficiariam de uma simulação prévia e, ao mesmo tempo, as que dispõem de menos tempo, atenção e margem para planejar. Uma ferramenta que depende de o usuário cadastrar renda, despesas e dívidas, e de lembrar de simular antes de contratar, alcança com mais facilidade quem já tem algum hábito de planejamento. Reduzir esse esforço, como indicado nos trabalhos futuros, é condição para que o SAFE chegue a quem mais precisa dele.
+
+No plano social, o SAFE dialoga com o debate sobre o mínimo existencial. O STF manteve o valor de R\$ 600 por entender que uma elevação genérica, sem avaliação técnica, poderia restringir o acesso ao crédito \citep{stf2026}. O SAFE adota esse valor como parâmetro configurável, sem afirmar que ele seja adequado. A estrutura do sistema mostra, por outro lado, que o cálculo da renda residual de cada pessoa é simples quando os dados estão disponíveis. A adoção de um único valor nacional é uma escolha de política pública, e não uma imposição técnica. Ferramentas que calculam a situação individual podem, no futuro, oferecer subsídios para que essa discussão considere a diversidade dos orçamentos familiares.
+
+A Lei nº 14.181/2021 também reforçou o dever de informação dos fornecedores de crédito e o princípio do crédito responsável. Uma simulação como a do SAFE poderia ser oferecida pelas próprias instituições no momento da contratação. Nesse caso, quem apresentaria o risco seria também quem tem interesse em que o contrato seja assinado. A independência do SAFE em relação às instituições financeiras é o que dá sentido à sua proposta de apoio ao consumidor.
+
+\subsection{Aspectos éticos}
+
+O SAFE não é um serviço de aconselhamento financeiro. Ele não recomenda produtos, não compara ofertas de instituições e não indica investimentos. As recomendações associadas às faixas de risco são orientações genéricas de comportamento, como evitar novas contratações ou priorizar a renegociação, e o índice deve ser apresentado como apoio à compreensão da situação financeira, e não como diagnóstico.
+
+O primeiro risco ético está na leitura das faixas. Um usuário na faixa de baixo risco pode interpretar o verde como permissão para contratar, quando o índice indica apenas que, segundo os critérios do modelo, o orçamento atual comporta a decisão. Como os pesos e limiares não foram calibrados com dados de inadimplência, apresentar o resultado como garantia seria enganoso. A forma de comunicar o resultado tem, portanto, peso ético próprio, e não apenas técnico.
+
+O segundo risco decorre de os dados serem autodeclarados. Nada impede que o usuário omita uma dívida ou superestime a renda até obter o resultado que deseja. O SAFE protege quem quer ser protegido e não tem como corrigir quem prefere não ver o próprio risco. Essa limitação é inerente a ferramentas preventivas de uso voluntário e não deve ser confundida com uma falha do modelo.
+
+Há também uma tensão entre alertar e respeitar a autonomia. Um alerta forte demais pode soar paternalista e levar o usuário a ignorar o sistema; um alerta fraco demais pode não cumprir a função preventiva. O SAFE gradua a severidade conforme a faixa projetada e reserva o alerta máximo para as situações de déficit ou de renda residual abaixo do mínimo existencial, mas não bloqueia a decisão em nenhum caso. A escolha reconhece que o consumidor adulto tem o direito de assumir riscos, desde que o faça informado.
+
+A equidade é outro ponto a considerar. Os limiares do IRE são relativos à renda, de modo que um comprometimento de 30\% recebe o mesmo tratamento para quem ganha R\$ 1.500 e para quem ganha R\$ 15.000, embora o valor que sobra para viver seja muito diferente nos dois casos. A regra do mínimo existencial só atua quando a renda residual fica abaixo de R\$ 600 e, por isso, compensa essa distorção apenas nos casos mais extremos.
+
+Por fim, os dados financeiros exigem cuidado especial. Embora não estejam no rol de dados sensíveis do art. 5º, II, da LGPD \citep{lgpd}, seu vazamento expõe o titular a fraudes e a constrangimentos. O SAFE trata esse risco com autenticação delegada, sem armazenamento de credenciais, registro do consentimento, trilha de auditoria das operações sensíveis e exclusão definitiva dos dados a pedido do usuário (Seção 4). A ausência de integração com contas bancárias nesta versão também reduz a quantidade de dados coletados, ao custo de exigir cadastro manual. A integração com o \textit{Open Finance}, apontada como trabalho futuro, diminuiria esse esforço, mas ampliaria a responsabilidade do sistema sobre os dados que trata.
+
+\subsection{Limitações}
+\label{sec:limitacoes}
+
+As conclusões deste trabalho devem ser lidas considerando as limitações a seguir.
+
+\textbf{Do modelo.} Os limiares de normalização, os pesos e as faixas do IRE são escolhas de modelagem fundamentadas na literatura e em referências institucionais, mas não foram calibrados com dados observados de inadimplência. O índice, portanto, ordena situações segundo critérios definidos pelo projeto e não constitui diagnóstico individual nem predição de insolvência. A agregação linear é compensatória e a escala satura, efeitos discutidos na Seção~\ref{sec:disc-escolhas} e mitigados, mas não eliminados, pelas regras de alerta dedicadas.
+
+\textbf{Da simulação.} A simulação não modela taxas de juros nem o custo efetivo total: o custo financeiro é inferido da diferença entre o total das parcelas e o valor da decisão. Presume-se que a reserva e as despesas permanecem inalteradas, o que exclui decisões pagas com recursos da reserva, e o índice projetado representa o mês de maior exposição, e não a trajetória mensal do risco. A renda é tratada como valor mensal informado, sem variabilidade, e o orçamento é individual, sem representar a composição domiciliar.
+
+\textbf{Dos dados e do mínimo existencial.} Os dados são inseridos manualmente pelo usuário, e sua qualidade condiciona o resultado. As despesas não são classificadas como essenciais ou não essenciais, de modo que o mínimo existencial é um parâmetro operacional fixo, e não uma medida personalizada, embora a Introdução tenha apontado essa personalização como oportunidade da abordagem computacional.
+
+\textbf{Da avaliação.} A avaliação baseia-se em personas sintéticas construídas pelos autores e em uma amostra reduzida, por conveniência, em tarefas guiadas, o que impede generalizações e o uso de testes inferenciais. Além disso, a pergunta norteadora refere-se à confiança e à intenção comportamental, ao passo que os instrumentos adotados (SUS e itens do TAM) medem usabilidade, compreensão e utilidade percebida. A intenção comportamental e, sobretudo, a mudança efetiva de comportamento financeiro em longo prazo não foram observadas. Os resultados constituem, assim, evidência preliminar sobre a coerência, a estabilidade e a compreensibilidade do artefato, sem demonstrar que ele produz decisões financeiras mais adequadas ou que substitui a orientação profissional.
+
+
+\section{Considerações finais}
+\label{sec:consideracoes}
+
+Este trabalho apresentou o SAFE, um sistema de apoio à decisão financeira pessoal voltado à prevenção do superendividamento. Partindo da constatação de que a ampliação do acesso ao crédito não é acompanhada de instrumentos que permitam ao consumidor antecipar as consequências de suas escolhas, o artefato foi concebido segundo a Design Science Research para registrar a situação financeira do usuário, projetar seu fluxo, simular novos compromissos e quantificar o risco por meio do Índice de Risco de Endividamento (IRE), explicando o resultado em vez de apenas informá-lo. \todo{Colocaremos aqui os principais resultados da avaliação (Seção 7) após a coleta de dados.}
+
+\subsection{Contribuições}
+
+As contribuições do trabalho situam-se em três planos. No plano do artefato, o SAFE integra em um único ambiente o registro orçamentário, a projeção do fluxo financeiro, a simulação de novas obrigações e o cálculo do risco, especificados em 24 requisitos funcionais, 10 casos de uso e 23 histórias de usuário, e desenvolvidos em quatro \textit{sprints}. A integração dessas funções responde à lacuna identificada na Seção 2: os aplicativos de finanças pessoais priorizam o registro retrospectivo, e as iniciativas institucionais atuam sobre o tratamento de dívidas já consolidadas, e não sobre a prevenção anterior à contratação.
+
+No plano do modelo, propõe-se o IRE, construído por agregação ponderada de quatro indicadores (comprometimento da renda, capacidade de pagamento, liquidez e nível de endividamento) normalizados em uma escala comum de risco, com pesos que priorizam o estrangulamento de curto prazo e classificação em cinco faixas associadas a recomendações. A explicabilidade decorre da própria estrutura do modelo: por ser uma combinação linear dos riscos normalizados, a variação do índice entre o cenário atual e o simulado decompõe-se exatamente na contribuição de cada indicador, o que permite apontar os fatores responsáveis pela mudança e testar a consistência dessa explicação. Complementam o mecanismo regras específicas para situações em que a saturação da escala ocultaria o agravamento, como o déficit orçamentário e a insuficiência da renda residual diante do mínimo existencial.
+
+No plano do conhecimento de projeto, o trabalho registra decisões que condicionam as propriedades avaliadas e podem ser reutilizadas em artefatos semelhantes: o motor de cálculo isolado e sem estado, o isolamento do cenário simulado em memória, a aritmética decimal de ponto fixo e a incorporação da conformidade com a LGPD desde o projeto, cujas consequências são discutidas na Seção~\ref{sec:disc-escolhas}. Acrescenta-se o protocolo de avaliação, que combina personas sintéticas, análise de sensibilidade, comparação com uma regra de referência e avaliação com usuários, e que pode ser replicado com outros modelos de risco. Do ponto de vista social, a contribuição está em oferecer ao consumidor um instrumento de decisão autônoma e antecipada, alinhado aos princípios de crédito responsável e de prevenção do superendividamento previstos na Lei nº 14.181/2021.
+
+\subsection{Trabalhos futuros}
+
+Os desdobramentos mais imediatos referem-se ao modelo e à sua validação, cujas limitações foram apresentadas na Seção~\ref{sec:limitacoes}. Recomenda-se calibrar pesos e limiares com dados empíricos, por exemplo por meio de métodos multicritério de elicitação com especialistas ou da comparação com desfechos observados de inadimplência, e avaliar o IRE em relação a modelos probabilísticos, que poderiam complementar, e não substituir, o índice interpretável. Também são necessários estudos com amostras maiores e heterogêneas, com delineamento que meça diretamente confiança e intenção comportamental e, em perspectiva longitudinal, o efeito do uso do sistema sobre as decisões de crédito.
+
+Quanto à simulação, propõem-se a incorporação de taxas de juros e do custo efetivo total, a representação de pagamentos com recursos da reserva e de amortizações antecipadas, a avaliação de cenários de estresse, como perda ou redução de renda, e a apresentação lado a lado de alternativas, como pagamento à vista e parcelado. No campo da explicabilidade, a decomposição pode ser estendida com explicações contrafactuais, que indiquem, por exemplo, o maior valor de parcela compatível com a manutenção da faixa de risco, e com a trajetória mensal do índice ao longo da vigência dos compromissos.
+
+Por fim, a classificação das despesas em essenciais e não essenciais permitiria calcular um mínimo existencial personalizado, e a integração com fontes de dados financeiros, como o \textit{Open Finance}, reduziria o esforço de cadastro e a dependência de dados autodeclarados. A extensão do modelo para orçamentos domiciliares e a verificação da acessibilidade da interface a públicos com menor letramento financeiro e digital completam a agenda de pesquisa.
+
+Em síntese, o SAFE e o IRE oferecem uma base transparente e verificável para apoiar decisões de crédito antes que elas sejam tomadas. Seu valor decorre menos da precisão de uma pontuação do que da capacidade de tornar visíveis, de forma compreensível, as consequências financeiras de uma escolha, deixando a decisão com o usuário.
+
+\begin{declarations}
+
+\begin{acknowledgements}
+Os autores agradecem ao Prof. Nelson Aguiar pela orientação ao longo do desenvolvimento deste trabalho e à Universidade São Judas Tadeu pelo apoio institucional. Agradecem também aos especialistas que classificaram de forma independente os cenários sintéticos utilizados na avaliação do Índice de Risco de Endividamento (IRE) e aos participantes do estudo exploratório de usabilidade, cuja colaboração foi essencial para a avaliação do SAFE.
+
+
+\end{acknowledgements}
+
+\begin{contributions}
+Todos os autores contribuíram igualmente para este trabalho e participaram de todas as etapas da pesquisa: a concepção do estudo (Conceituação), a formulação do modelo do Índice de Risco de Endividamento (Metodologia), o desenvolvimento do SAFE (Software), a construção dos cenários e personas sintéticas (Curadoria de Dados), a análise de sensibilidade e a comparação com a regra de referência (Análise Formal), a avaliação com usuários (Investigação), os testes do sistema (Validação), a gestão das \textit{sprints} (Administração do Projeto) e a redação e revisão do manuscrito (Escrita – rascunho original; Escrita – revisão e edição). Todos os autores leram e aprovaram a versão final do manuscrito.
+\end{contributions}
+
+\begin{interests}
+Os autores declaram não ter conflitos de interesse.
+
+\end{interests}
+
+\begin{materials}
+Os cenários e personas sintéticas, as regras utilizadas em sua geração, os parâmetros do IRE, o código-fonte do motor de cálculo e de simulação e os instrumentos da avaliação com usuários (roteiro de tarefas, questionário SUS e itens TAM) estão disponíveis em \todo {iremos colocar futuramente o link do repositório}. As respostas individuais dos participantes não são disponibilizadas publicamente, a fim de preservar sua privacidade em conformidade com a Lei Geral de Proteção de Dados Pessoais (Lei nº 13.709/2018); dados agregados e anonimizados podem ser fornecidos mediante solicitação aos autores.\end{materials}
+
+\begin{funding}
+Esta pesquisa não recebeu financiamento específico de agências de fomento dos setores público, comercial ou sem fins lucrativos.
+
+\end{funding}
+
+
+\begin{furtherinformation}
+
+\textbf{Uso de inteligência artificial generativa }
+
+Durante a preparação deste trabalho, os autores utilizaram o Claude (Anthropic), um modelo de linguagem de inteligência artificial generativa, como ferramenta de apoio à revisão textual, ao aprimoramento da clareza e da coesão do manuscrito, à estruturação de seções, ao desenvolvimento do software SAFE e ao aprofundamento da pesquisa bibliográfica, incluindo a identificação de referências e o esclarecimento de conceitos relacionados ao tema. As referências e informações sugeridas pela ferramenta foram verificadas pelos autores nas fontes originais antes de sua incorporação ao texto. Todo o conteúdo e o código gerados foram revisados e editados pelos autores, que assumem total responsabilidade pelo conteúdo da publicação.
+
+
+\end{furtherinformation}
+
+\end{declarations}
+
+
+
+\bibliographystyle{apalike-sol}
+\bibliography{refs}
+
+\end{document}

@@ -145,7 +145,7 @@
 - [x] **T-10.6** `B` Testes da SPEC-10 §6 · início 2026-10-29 18:32 · Igor + IA · feito 2026-10-29 18:32
 
 ## Fase 8 · Avaliação — [SPEC-12](specs/SPEC-12-avaliacao.md)
-- [ ] **T-12.1** `A` `generate-personas.ts` (semente 2026, regras documentadas) → `personas.csv` com 30 linhas commitado (§2)
+- [~] **T-12.1** `A` `generate-personas.ts` (semente 2026, regras documentadas) → `personas.csv` com 30 linhas commitado (§2) · início 2026-10-29 18:50 · Igor + IA
 - [ ] **T-12.2** `A` `eval:personas` + `especialistas.csv` sem IRE (§3)
 - [ ] **T-12.3** `A` `stats.ts` (Spearman com empates, Kappa ponderado quadrático) + testes (§3)
 - [ ] **T-12.4** `A` `eval:agreement` (roda quando as respostas dos especialistas chegarem)

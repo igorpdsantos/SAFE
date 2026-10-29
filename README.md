@@ -6,7 +6,7 @@ O usuário cadastra renda, despesas, dívidas e reserva. O SAFE calcula o **índ
 
 Projeto de TCC do curso de Engenharia de Software da Universidade São Judas Tadeu (2026), orientado pelo Prof. Nelson Aguiar. O artigo correspondente é *"Prevenção do superendividamento por meio da tecnologia: a abordagem de simulação financeira do SAFE"*.
 
-> **Status (29/10/2026):** especificação completa; fundação do código (SPEC-01) em andamento. Entrega do software: **02/11/2026**. O progresso fica no [`TASKS.md`](TASKS.md); rode `node scripts/tasks-status.mjs` para ver o painel.
+> **Status (29/10/2026):** backend, frontend, avaliação e testes (unidade, integração, segurança e E2E) implementados nas branches com PR aberto (#4 a #11, mergear em ordem). Faltam: projeto OAuth no Google (T-00.2), revisão dos textos legais e de linguagem pela equipe, respostas dos especialistas (T-12.4) e homologação. Entrega do software: **02/11/2026**. O progresso fica no [`TASKS.md`](TASKS.md); rode `node scripts/tasks-status.mjs` para ver o painel.
 
 ---
 
@@ -234,6 +234,7 @@ Para aplicar as migrations no banco de testes: `DATABASE_URL=$TEST_DATABASE_URL 
 | Comando | O que faz |
 |---|---|
 | `npm run dev` | API + frontend com recarga automática |
+| `npm run dev:demo` | Igual, mas com a API em modo de teste: habilita o botão "Entrar como pessoa de teste" (útil enquanto não há OAuth do Google). Nunca em produção |
 | `npm run lint` / `npm run typecheck` | ESLint + Prettier / tipos dos dois workspaces |
 | `npm run format` | Formata tudo com o Prettier |
 | `npm test` | Testes de unidade e integração (backend e frontend) |

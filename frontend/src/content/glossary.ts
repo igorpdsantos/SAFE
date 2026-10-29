@@ -103,10 +103,12 @@ const entries = [
   {
     id: 'renda-liquida',
     term: 'Renda líquida',
-    short: 'O que cai na sua conta, já sem descontos como INSS e imposto de renda.',
+    short:
+      'O que você recebe por mês, já sem INSS e imposto de renda. Não tire o consignado: ele entra como dívida.',
     long:
-      'É o valor que você de fato recebe para usar no mês. Não é o salário bruto do contrato, porque ele ainda tem descontos. Se você tem mais de uma fonte, como salário e um trabalho extra, cadastre cada uma.',
-    example: 'Salário bruto de R$ 3.000 com R$ 300 de descontos: sua renda líquida é R$ 2.700.',
+      'É o que você recebe no mês depois dos descontos obrigatórios, como INSS e imposto de renda. Se você tem consignado, some a parcela de volta e cadastre o consignado em Dívidas, para ele não contar duas vezes. Se você tem mais de uma fonte, como salário e um trabalho extra, cadastre cada uma.',
+    example:
+      'Salário de R$ 3.000, R$ 300 de INSS e imposto e R$ 200 de consignado: caem R$ 2.500 na conta. Sua renda líquida é R$ 2.700, e o consignado de R$ 200 vai em Dívidas.',
     whyItMatters:
       'Todos os cálculos do SAFE partem da renda líquida. Sem ela, não dá para calcular seu índice de risco.',
     related: ['comprometimento-renda'],
@@ -261,7 +263,7 @@ const entries = [
     short:
       'Quando você paga só parte da fatura e o resto vira dívida com juros muito altos.',
     long:
-      'Se você paga menos que o valor total da fatura do cartão, o que ficou faltando vira um empréstimo automático. Os juros do rotativo estão entre os mais altos do mercado. Pelas regras do Banco Central, esse saldo não pode ficar no rotativo por mais de um mês: depois, ele vira um parcelamento.',
+      'Se você paga menos que o valor total da fatura do cartão, o que ficou faltando vira um empréstimo automático. Os juros do rotativo estão entre os mais altos do mercado. Pelas regras do Banco Central, esse saldo só pode ficar no rotativo até a fatura seguinte: depois, o banco precisa oferecer um parcelamento.',
     example:
       'Fatura de R$ 1.000 e pagamento de R$ 300: os R$ 700 que faltaram passam a ter juros do rotativo.',
     whyItMatters:
@@ -289,7 +291,7 @@ const entries = [
     example:
       'Uma pessoa aposentada com benefício de R$ 2.000 e consignado de R$ 300 recebe R$ 1.700 na conta.',
     whyItMatters:
-      'Como o desconto é automático, é fácil esquecer dessa parcela. Mesmo descontada direto, ela é uma dívida e pesa no seu orçamento.',
+      'Como o desconto é automático, é fácil esquecer dessa parcela. No SAFE, cadastre o consignado em Dívidas e informe sua renda sem esse desconto, para a parcela contar uma vez só.',
     related: ['parcela', 'juros', 'renda-liquida'],
   },
   {

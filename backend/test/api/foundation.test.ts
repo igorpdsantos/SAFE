@@ -1,17 +1,15 @@
 import express from 'express';
 import request from 'supertest';
-import { describe, expect, it } from 'vitest';
-import { createApp } from '../../src/http/app.js';
+import { afterAll, describe, expect, it } from 'vitest';
 import { errorHandler } from '../../src/http/middlewares/errors.js';
 import { requestId } from '../../src/http/middlewares/requestId.js';
-import { createLogger } from '../../src/lib/logger.js';
-import { testEnv } from '../helpers/env.js';
+import { buildApp, closeAll } from '../helpers/app.js';
 import { captureLogger } from '../helpers/logCapture.js';
 
-const silent = createLogger('silent');
+afterAll(closeAll);
 
 describe('T-01.7 – app Express (SPEC-01 §5)', () => {
-  const app = createApp({ env: testEnv(), logger: silent });
+  const { app } = buildApp();
 
   it('GET /api/v1/health → 200 {"status":"ok"}', async () => {
     const res = await request(app).get('/api/v1/health');
@@ -32,13 +30,13 @@ describe('T-01.7 – app Express (SPEC-01 §5)', () => {
   });
 
   it('manda HSTS em produção', async () => {
-    const prod = createApp({ env: testEnv({ NODE_ENV: 'production' }), logger: silent });
+    const { app: prod } = buildApp({ env: { NODE_ENV: 'production' } });
     const res = await request(prod).get('/api/v1/health').set('X-Forwarded-Proto', 'https');
     expect(res.headers['strict-transport-security']).toContain('max-age=31536000');
   });
 
   it('redireciona http → https em produção', async () => {
-    const prod = createApp({ env: testEnv({ NODE_ENV: 'production' }), logger: silent });
+    const { app: prod } = buildApp({ env: { NODE_ENV: 'production' } });
     const res = await request(prod).get('/api/v1/health').set('X-Forwarded-Proto', 'http');
     expect(res.status).toBe(308);
   });
@@ -92,7 +90,7 @@ describe('T-01.5 – tratador de erros', () => {
 describe('T-01.6 – logger sem dados pessoais', () => {
   it('o log de acesso não contém cookie nem corpo', async () => {
     const cap = captureLogger();
-    const app = createApp({ env: testEnv(), logger: cap.logger });
+    const { app } = buildApp({ logger: cap.logger });
     await request(app)
       .post('/api/v1/health')
       .set('Cookie', '__Host-safe_sid=sessao-secreta')
@@ -108,7 +106,7 @@ describe('T-01.6 – logger sem dados pessoais', () => {
 
   it('loga a rota parametrizada, não a URL', async () => {
     const cap = captureLogger();
-    const app = createApp({ env: testEnv(), logger: cap.logger });
+    const { app } = buildApp({ logger: cap.logger });
     await request(app).get('/api/v1/health');
     const line = JSON.parse(cap.lines[0] ?? '{}');
     expect(line.route).toBe('/api/v1/health');

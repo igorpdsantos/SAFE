@@ -6,7 +6,7 @@ O usuário cadastra renda, despesas, dívidas e reserva. O SAFE calcula o **índ
 
 Projeto de TCC do curso de Engenharia de Software da Universidade São Judas Tadeu (2026), orientado pelo Prof. Nelson Aguiar. O artigo correspondente é *"Prevenção do superendividamento por meio da tecnologia: a abordagem de simulação financeira do SAFE"*.
 
-> **Status (29/10/2026):** especificação completa; fundação do código (SPEC-01) em andamento. Entrega do software: **02/11/2026**. O progresso fica no [`TASKS.md`](TASKS.md); rode `node scripts/tasks-status.mjs` para ver o painel.
+> **Status (29/10/2026):** backend, frontend, avaliação e testes (unidade, integração, segurança e E2E) implementados e na `main`. Faltam itens que dependem da equipe: projeto OAuth no Google (T-00.2), e-mail de contato e revisão dos textos legais (T-00.3, T-03.5), revisão de linguagem (T-15.6), verificação manual nos navegadores (T-11.7), respostas dos especialistas (T-12.4) e homologação (T-13.4, T-13.5). Veja o `TASKS.md`. Entrega do software: **02/11/2026**. O progresso fica no [`TASKS.md`](TASKS.md); rode `node scripts/tasks-status.mjs` para ver o painel.
 
 ---
 
@@ -168,42 +168,39 @@ A escolha da stack é a decisão D-02 (PRD §12). Por que o motor é "puro": API
 
 ## 5. Estrutura de pastas
 
-> Legenda: ✅ já existe · 🔜 criado nas próximas specs
-
 ```
 SAFE/
-├── README.md  PRD.md  SEGURANCA_LGPD.md  SPECS.md  TASKS.md       ✅ documentação
-├── CLAUDE.md  AGENTS.md  CONTRIBUTING.md                          ✅ como trabalhar (pessoas e IAs)
-├── specs/SPEC-01 … SPEC-15                                         ✅ especificações
-├── docs/referencias/       artigo, especificação original e relatório  ✅ só consulta
-├── scripts/tasks-status.mjs                                        ✅ painel das tarefas
-├── package.json            workspaces + scripts npm                ✅
-├── tsconfig.base.json  eslint.config.js  .prettierrc.json          ✅ TS strict, lint e formatação
-├── docker-compose.yml      postgres + redis (api e web opcionais)  ✅
-├── .env.example            variáveis (valores fictícios)           ✅
-├── .github/
-│   ├── workflows/ci.yml    lint, typecheck, testes, cobertura, audit  ✅
-│   └── pull_request_template.md                                    ✅
+├── README.md  PRD.md  SEGURANCA_LGPD.md  SPECS.md  TASKS.md       documentação
+├── CLAUDE.md  AGENTS.md  CONTRIBUTING.md                          como trabalhar (pessoas e IAs)
+├── specs/SPEC-01 … SPEC-15                                         especificações
+├── docs/aceite.md          critérios de aceite de todas as specs e sua situação
+├── docs/referencias/       artigo, especificação original e relatório (só consulta)
+├── scripts/tasks-status.mjs                                        painel das tarefas
+├── package.json            workspaces (backend, frontend, evaluation) + scripts npm
+├── tsconfig.base.json  eslint.config.js  .prettierrc.json          TS strict, lint e formatação
+├── docker-compose.yml      postgres (com o banco safe_test) + redis; api e web opcionais
+├── .env.example            variáveis (valores fictícios)
+├── .github/                workflows/ci.yml e pull_request_template.md
 ├── backend/
-│   ├── prisma.config.ts    configuração do Prisma 7 (lê o .env da raiz)  ✅
-│   ├── prisma/             schema.prisma + migrations              ✅
-│   ├── data/context/       (opcional) séries Peic/BCB              🔜
-│   ├── test/               api/, security/ e helpers/              ✅
+│   ├── prisma.config.ts    configuração do Prisma 7 (lê o .env da raiz)
+│   ├── prisma/             schema.prisma + migrations (CHECKs no SQL)
+│   ├── scripts/            reapplyDeletions.ts (npm run privacy:reapply-deletions)
+│   ├── test/               api/ (integração), security/ (suíte da SPEC-13), perf/, helpers/
 │   └── src/
-│       ├── config/         env.ts (variáveis validadas com zod)    ✅
-│       ├── engine/         MOTOR PURO do IRE (decimal.ts já existe)  ✅
+│       ├── config/env.ts   variáveis validadas com zod
+│       ├── engine/         MOTOR PURO: decimal, types, config, indicators, normalize, ire, decomposition,
+│       │                   diagnose, labels, time, projection, simulation, explain, format
 │       ├── generated/      Prisma Client (gerado no npm install; fora do Git)
-│       ├── lib/            decimal, errors, logger ✅ · crypto, audit, cache 🔜
-│       ├── repositories/   acesso a dados (sempre por userId)      🔜
-│       ├── modules/        health ✅ · auth, terms, budget, analysis, simulations, history, alerts, privacy 🔜
-│       ├── http/           app.ts, routes.ts, deps.ts, middlewares/  ✅
-│       └── server.ts                                               ✅
+│       ├── lib/            decimal, crypto, logger, errors, audit, cache, events, clock, prisma, redis
+│       ├── repositories/   orçamento: interface, Prisma e em memória (userId em todo método)
+│       ├── modules/        health, auth, terms, budget, analysis, projection, simulations, history, privacy
+│       ├── http/           app.ts, routes.ts, container.ts, deps.ts, guards.ts, middlewares/
+│       └── server.ts       sobe a API e agenda os jobs de retenção
 ├── frontend/
-│   ├── index.html  vite.config.ts                                  ✅
-│   ├── public/legal/       Termos e Política versionados           🔜
-│   ├── e2e/                testes Playwright                       🔜
-│   └── src/                main.tsx, App.tsx ✅ · api/, components/, content/glossary.ts, lib/, pages/, fixtures/ 🔜
-└── evaluation/             personas, scripts de avaliação, results/   🔜
+│   ├── public/legal/       termos-v1.0.md e privacidade-v1.0.md (rascunhos, T-03.5)
+│   ├── e2e/                10 fluxos Playwright (SPEC-13 §4)
+│   └── src/                api/, components/, content/ (glossary, labels), lib/ (storage, session, format), pages/
+└── evaluation/             personas.csv, especialistas.csv, scripts/, results/ (ver evaluation/README.md)
 ```
 
 ---
@@ -234,6 +231,7 @@ Para aplicar as migrations no banco de testes: `DATABASE_URL=$TEST_DATABASE_URL 
 | Comando | O que faz |
 |---|---|
 | `npm run dev` | API + frontend com recarga automática |
+| `npm run dev:demo` | Igual, mas com a API em modo de teste: habilita o botão "Entrar como pessoa de teste" (útil enquanto não há OAuth do Google). Nunca em produção |
 | `npm run lint` / `npm run typecheck` | ESLint + Prettier / tipos dos dois workspaces |
 | `npm run format` | Formata tudo com o Prettier |
 | `npm test` | Testes de unidade e integração (backend e frontend) |
@@ -242,9 +240,24 @@ Para aplicar as migrations no banco de testes: `DATABASE_URL=$TEST_DATABASE_URL 
 | `npm run db:migrate` | `prisma migrate dev` (cria e aplica migrations) |
 | `npm run build` | Compila a API (`backend/dist`) e o site (`frontend/dist`) |
 | `npm run eval:<script>` | Avaliação do modelo: `personas`, `agreement`, `sensitivity`, `baseline`, `simulation-check`, `latency` (SPEC-12) |
+| `npm run privacy:reapply-deletions` | Depois de restaurar um backup, reaplica as exclusões de conta (SPEC-10 §4) |
+| `npm run test:e2e` | Os 10 fluxos E2E com Playwright |
 | `npm run tasks` | Painel do `TASKS.md` |
 
 Sem alguma variável obrigatória, a API não sobe e lista o que falta (por exemplo, `REDIS_URL está faltando`).
+
+### Backup e restauração (SPEC-10 §4, RNF09)
+- **Backup diário** criptografado, com retenção de 30 dias:
+  ```bash
+  pg_dump "$DATABASE_URL" --format=custom | age -r <chave-publica> > backups/safe-$(date +%F).dump.age
+  ```
+  (ou o backup criptografado do provedor do banco). A pasta `backups/` está no `.gitignore`.
+- **Restauração:**
+  ```bash
+  age -d -i <chave-privada> backups/safe-AAAA-MM-DD.dump.age | pg_restore --clean --dbname "$DATABASE_URL"
+  npm run privacy:reapply-deletions   # apaga de novo quem pediu exclusão depois daquele backup
+  ```
+- Os jobs de retenção (contas inativas há 12 meses, simulações com mais de 12 meses, auditoria com mais de 6 meses, aceites órfãos e a lista de exclusões com mais de 30 dias) rodam todo dia às 03:00 (America/Sao_Paulo), dentro da API.
 
 ---
 
@@ -396,15 +409,25 @@ O projeto foi preparado para ser desenvolvido com assistentes de IA, com regras 
 
 ## 11. Testes e avaliação do modelo
 
-| Tipo | Ferramenta | Destaques |
-|---|---|---|
-| Unidade | Vitest + fast-check | O primeiro teste é o **exemplo do artigo** (IRE 0,19 → 0,38); propriedades matemáticas da simulação |
-| API | Supertest | Cada endpoint: sucesso, validação, permissões, efeitos |
-| Segurança | Supertest | Acesso a dados de outro usuário, CSRF, sessão, cookies, logs, criptografia, exclusão |
-| E2E | Playwright | 10 fluxos, do primeiro acesso à exclusão de conta, incluindo celular |
-| Avaliação (artigo) | `evaluation/` | 30 personas, concordância com especialistas, sensibilidade dos pesos, comparação com regra simples, latência |
+| Tipo | Ferramenta | Onde | Situação (29/10/2026) |
+|---|---|---|---|
+| Unidade (motor) | Vitest + fast-check | `backend/src/engine/*.test.ts` | Caso do artigo exato; propriedades em 1000 casos; cobertura 100% das linhas e 95,9% dos ramos |
+| Integração de API | Vitest + Supertest + Postgres/Redis de teste | `backend/test/api/` | Todos os endpoints, inclusive IDOR com 2 usuários e relógio falso |
+| Segurança | Supertest | `backend/test/security/` | Os 12 itens da SPEC-13 §3 |
+| Frontend | Vitest + Testing Library | `frontend/src/**/*.test.ts(x)` | Glossário, linguagem (sem sigla solta), storage, componentes |
+| E2E | Playwright | `frontend/e2e/` | 10/10 fluxos, inclusive celular 375 px |
+| Avaliação (artigo) | `evaluation/` | `evaluation/results/` | Ver abaixo |
 
-Detalhes: [SPEC-12](specs/SPEC-12-avaliacao.md) e [SPEC-13](specs/SPEC-13-qualidade-testes.md).
+Rodar tudo: `npm run lint && npm run typecheck && npm test`; cobertura: `npm run test:coverage`; E2E: `npm run test:e2e` (sobe os servidores em modo demo se não estiverem rodando; na 1ª vez, `npx playwright install chromium` em `frontend/`). Latência dentro dos testes: `PERF=1 npx vitest run test/perf` em `backend/`.
+
+**Resultados da avaliação (detalhes e como reproduzir em [`evaluation/README.md`](evaluation/README.md)):**
+- PA2 sensibilidade: M = 0 sem perturbação; no pior caso com pesos ±10/±20%, M = 0,100.
+- PA3 regra simples × IRE: 12 divergências em 30 personas, cada uma com o motivo.
+- PA4 simulação: 209 cenários, 0 falhas.
+- RNF01 latência (500 requisições, Apple M4): p95 de 1,8 ms em `/analysis` e 2,1 ms em `/simulations`.
+- PA1 concordância: aguarda as respostas dos especialistas (`evaluation/especialistas-respostas.csv`).
+
+A situação de cada critério de aceite está em [`docs/aceite.md`](docs/aceite.md).
 
 ---
 

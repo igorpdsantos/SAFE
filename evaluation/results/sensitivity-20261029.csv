@@ -1,0 +1,23 @@
+# commit: 1b6af5f5e298f2c98b586565e589366703e9d6bb · data: 2026-10-29
+cenario,parametro,delta,M,mudaram
+sem perturbação (sanidade),-,0%,0.000,
+peso,cr,-20%,0.100,P02 P14 P30
+peso,cr,-10%,0.100,P02 P14 P30
+peso,cr,+10%,0.033,P16
+peso,cr,+20%,0.067,P07 P16
+peso,cp,-20%,0.067,P16 P30
+peso,cp,-10%,0.033,P30
+peso,cp,+10%,0.067,P02 P14
+peso,cp,+20%,0.100,P02 P14 P28
+peso,lf,-20%,0.067,P16 P28
+peso,lf,-10%,0.000,
+peso,lf,+10%,0.033,P30
+peso,lf,+20%,0.033,P30
+peso,ne,-20%,0.033,P14
+peso,ne,-10%,0.000,
+peso,ne,+10%,0.000,
+peso,ne,+20%,0.000,
+limites das faixas,todos,-0.05,0.167,P07 P11 P13 P16 P30
+limites das faixas,todos,-0.02,0.100,P07 P16 P30
+limites das faixas,todos,+0.02,0.100,P02 P14 P28
+limites das faixas,todos,+0.05,0.200,P02 P03 P09 P12 P14 P28

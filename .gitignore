@@ -34,3 +34,7 @@ Thumbs.db
 
 # Prisma Client gerado (npm install roda prisma generate)
 backend/src/generated/
+
+# Cópias de conflito criadas pela sincronização do iCloud (ex.: "arquivo 2.ts")
+* 2.*
+* 2

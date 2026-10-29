@@ -1,0 +1,72 @@
+import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { glossary } from '../content/glossary';
+
+const normalize = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+
+/** Glossário em ordem alfabética, com busca (SPEC-15 §4.5). */
+export function Glossary() {
+  const [q, setQ] = useState('');
+  const items = useMemo(() => {
+    const needle = normalize(q.trim());
+    return [...glossary]
+      .sort((a, b) => a.term.localeCompare(b.term, 'pt-BR'))
+      .filter(
+        (e) =>
+          !needle ||
+          normalize(`${e.term} ${e.acronym ?? ''} ${e.short} ${e.long}`).includes(needle),
+      );
+  }, [q]);
+
+  return (
+    <div className="main stack">
+      <p>
+        <Link to="/">← Voltar</Link>
+      </p>
+      <h1>Glossário</h1>
+      <p className="muted">
+        As palavras de finanças que aparecem no SAFE, explicadas de um jeito simples.
+      </p>
+      <div className="field">
+        <label htmlFor="busca">Buscar um termo</label>
+        <input
+          id="busca"
+          className="input"
+          type="search"
+          autoComplete="off"
+          placeholder="Ex.: parcela, reserva, juros"
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+        />
+      </div>
+      <p className="small muted" role="status">
+        {items.length} {items.length === 1 ? 'termo' : 'termos'}
+      </p>
+      <dl className="stack">
+        {items.map((e) => (
+          <div key={e.id} id={e.id} className="card">
+            <dt>
+              <h2 style={{ margin: 0 }}>
+                {e.term}
+                {e.acronym && e.acronym !== e.term ? ` (${e.acronym})` : ''}
+              </h2>
+            </dt>
+            <dd style={{ margin: '0.5rem 0 0' }}>
+              <p>{e.long || e.short}</p>
+              {e.example && (
+                <p className="small">
+                  <strong>Exemplo:</strong> {e.example}
+                </p>
+              )}
+              {e.whyItMatters && (
+                <p className="small muted" style={{ margin: 0 }}>
+                  <strong>Por que importa:</strong> {e.whyItMatters}
+                </p>
+              )}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  );
+}

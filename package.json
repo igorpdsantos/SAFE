@@ -7,7 +7,8 @@
   },
   "workspaces": [
     "backend",
-    "frontend"
+    "frontend",
+    "evaluation"
   ],
   "scripts": {
     "dev": "concurrently -k -n api,web -c blue,green \"npm run dev -w backend\" \"npm run dev -w frontend\"",
@@ -19,7 +20,16 @@
     "test:coverage": "npm run test:coverage -w backend",
     "test:e2e": "npm run test:e2e -w frontend",
     "db:migrate": "npm run db:migrate -w backend",
-    "tasks": "node scripts/tasks-status.mjs"
+    "tasks": "node scripts/tasks-status.mjs",
+    "privacy:reapply-deletions": "npm run privacy:reapply-deletions -w backend",
+    "dev:demo": "concurrently -k -n api,web -c blue,green \"npm run dev:demo -w backend\" \"npm run dev -w frontend\"",
+    "eval:personas": "npm run eval:personas -w evaluation --",
+    "eval:agreement": "npm run eval:agreement -w evaluation --",
+    "eval:sensitivity": "npm run eval:sensitivity -w evaluation --",
+    "eval:baseline": "npm run eval:baseline -w evaluation --",
+    "eval:simulation-check": "npm run eval:simulation-check -w evaluation --",
+    "eval:latency": "npm run eval:latency -w evaluation --",
+    "generate-personas": "npm run generate-personas -w evaluation"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

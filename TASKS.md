@@ -41,10 +41,10 @@
 ---
 
 ## Fase 0 · Preparação (equipe, sem código)
-- [ ] **T-00.1** `A+B` Validar com o grupo as decisões D-01…D-15 (PRD §12) e S-01…S-09 (SEGURANCA_LGPD §1) → pronto quando: decisões aprovadas ou ajustadas nos documentos
+- [ ] **T-00.1** `A+B` Validar com o grupo as decisões D-01…D-16 (PRD §12) e S-01…S-09 (SEGURANCA_LGPD §1) → pronto quando: decisões aprovadas ou ajustadas nos documentos
 - [ ] **T-00.2** `B` Criar projeto no Google Cloud com tela de consentimento OAuth, escopo `openid email` e redirect URIs de dev e produção (SPEC-02 §2) → pronto quando: `GOOGLE_CLIENT_ID`/`SECRET` no `.env` local de quem vai codar
 - [ ] **T-00.3** `A+B` Criar o e-mail de contato de privacidade do projeto e definir o responsável (SEGURANCA_LGPD §2.2)
-- [ ] **T-00.4** `A` Criar o repositório no GitHub, convidar a equipe e proteger a branch `main` (PR + CI verde)
+- [ ] **T-00.4** `A` Criar o repositório no GitHub, convidar a equipe e proteger a branch `main` (PR + CI verde) · repositório criado; proteção da `main` indisponível no plano grátis (CONTRIBUTING §9)
 - [ ] **T-00.5** `B` Converter o dashboard do colega (Peic/BCB) para CSV com fonte e data de extração (insumo da SPEC-14; só se a SPEC-14 for entrar)
 
 ## Fase 1 · Fundação — [SPEC-01](specs/SPEC-01-fundacao.md)
@@ -61,105 +61,105 @@
 
 ## Fase 2 · Motor e projeção — [SPEC-05](specs/SPEC-05-motor-ire.md), [SPEC-06](specs/SPEC-06-projecao.md)
 > Pode começar em paralelo com a Fase 1 (só precisa de `decimal.js`).
-- [ ] **T-05.1** `A` `engine/types.ts`, `engine/config.ts` (`DEFAULT_CONFIG`, `withConfig` imutável) e regra ESLint `no-restricted-imports` em `engine/` (§2, §7)
-- [ ] **T-05.2** `A` **Escrever primeiro** o teste T1 (caso do artigo) e o teste do caso de simulação do PRD §6.6, ainda falhando
-- [ ] **T-05.3** `A` `totals`, `computeIndicators` (erro sem renda), `normalize` com saturação e **clamp de R_CP** (§3.1–3.3)
-- [ ] **T-05.4** `A` `computeIre` (arredondamento só no `rounded`), faixas e `engine/labels.ts` (rótulos, cores, ícones, recomendações) (§3.4, §5)
-- [ ] **T-05.5** `A` `staticDecomposition` com a regra dos 75% e desempate fixo (§3.5)
-- [ ] **T-05.6** `A` `diagnose` com renda residual e regras críticas (§3.6) → pronto quando: T1 passa
-- [ ] **T-05.7** `A` `elapsedMonths` + testes T7 (§3.7)
-- [ ] **T-05.8** `A` Testes T2–T6 e T8 (fronteiras, saturações, casos-limite, ME, propriedades com fast-check, config)
-- [ ] **T-05.9** `A` Cobertura de `engine/` ≥ 80% de linhas e ramos no CI (RNF08)
-- [ ] **T-06.1** `A` `engine/projection.ts` `project()` com e sem `extra`, horizonte, rótulos de mês + testes do §5
-- [ ] **T-06.2** `A` `GET /api/v1/projection` com cache Redis e 409 sem renda *(depende de T-04.7)*
+- [x] **T-05.1** `A` `engine/types.ts`, `engine/config.ts` (`DEFAULT_CONFIG`, `withConfig` imutável) e regra ESLint `no-restricted-imports` em `engine/` (§2, §7) · início 2026-10-29 18:06 · Igor + IA · feito 2026-10-29 18:07
+- [x] **T-05.2** `A` **Escrever primeiro** o teste T1 (caso do artigo) e o teste do caso de simulação do PRD §6.6, ainda falhando · início 2026-10-29 18:07 · Igor + IA · feito 2026-10-29 18:07
+- [x] **T-05.3** `A` `totals`, `computeIndicators` (erro sem renda), `normalize` com saturação e **clamp de R_CP** (§3.1–3.3) · início 2026-10-29 18:07 · Igor + IA · feito 2026-10-29 18:09
+- [x] **T-05.4** `A` `computeIre` (arredondamento só no `rounded`), faixas e `engine/labels.ts` (rótulos, cores, ícones, recomendações) (§3.4, §5) · início 2026-10-29 18:09 · Igor + IA · feito 2026-10-29 18:09
+- [x] **T-05.5** `A` `staticDecomposition` com a regra dos 75% e desempate fixo (§3.5) · início 2026-10-29 18:09 · Igor + IA · feito 2026-10-29 18:09
+- [x] **T-05.6** `A` `diagnose` com renda residual e regras críticas (§3.6) → pronto quando: T1 passa · início 2026-10-29 18:09 · Igor + IA · feito 2026-10-29 18:09
+- [x] **T-05.7** `A` `elapsedMonths` + testes T7 (§3.7) · início 2026-10-29 18:09 · Igor + IA · feito 2026-10-29 18:09
+- [x] **T-05.8** `A` Testes T2–T6 e T8 (fronteiras, saturações, casos-limite, ME, propriedades com fast-check, config) · início 2026-10-29 18:09 · Igor + IA · feito 2026-10-29 18:09
+- [x] **T-05.9** `A` Cobertura de `engine/` ≥ 80% de linhas e ramos no CI (RNF08) · início 2026-10-29 18:11 · Igor + IA · feito 2026-10-29 18:11
+- [x] **T-06.1** `A` `engine/projection.ts` `project()` com e sem `extra`, horizonte, rótulos de mês + testes do §5 · início 2026-10-29 18:09 · Igor + IA · feito 2026-10-29 18:11
+- [x] **T-06.2** `A` `GET /api/v1/projection` com cache Redis e 409 sem renda *(depende de T-04.7)* · início 2026-10-29 18:29 · Igor + IA · feito 2026-10-29 18:29
 
 ## Fase 3 · Login, sessão e termos — [SPEC-02](specs/SPEC-02-autenticacao-sessao.md), [SPEC-03](specs/SPEC-03-termos-consentimento.md)
-- [ ] **T-02.1** `B` `openid-client` + `GET /auth/google` com `state`/`nonce`/PKCE em cookie assinado (§2)
-- [ ] **T-02.2** `B` Callback: valida `state`, troca o code, valida o id_token, descarta tokens, upsert do usuário por `sub`, erros E01–E03 (§2)
-- [ ] **T-02.3** `B` Sessão no Redis: criação com ID novo, `requireAuth`, expiração 30 min / 8 h, índice `user_sessions` (§3)
-- [ ] **T-02.4** `B` `requireCsrf` (Origin + `X-SAFE-CSRF` em tempo constante) (§4)
-- [ ] **T-02.5** `B` `GET /auth/me`, `POST /auth/logout`, `POST /auth/logout-all` com `Clear-Site-Data`; `destroyAllSessions` exportada (§5)
-- [ ] **T-02.6** `B` Rate limits no Redis (§6)
-- [ ] **T-02.7** `B` Auditoria `LOGIN`/`LOGOUT`/`LOGOUT_ALL` (§7)
-- [ ] **T-02.8** `B` Rota `POST /test/login` só com `NODE_ENV=test` + teste de que não existe em produção (SPEC-13 §2)
-- [ ] **T-02.9** `B` Testes dos critérios da SPEC-02 §8
-- [ ] **T-03.1** `B` `GET /terms/current` e `POST /terms/accept` com validações, prova no banco e cookie `safe_terms` (§3, §4)
-- [ ] **T-03.2** `B` Middleware `requireTermsAccepted` com cache na sessão; exceções `/me/export` e `DELETE /me` (§3)
-- [ ] **T-03.3** `B` `GET/PUT /me/research-consent` com revogação (§4)
-- [ ] **T-03.4** `B` Arquivos legais versionados em `frontend/public/legal/` (estrutura) (§2)
-- [ ] **T-03.5** `A+B` **(equipe)** Redigir Termos de Uso v1.0 e Política de Privacidade v1.0 com o conteúdo mínimo da SEGURANCA_LGPD §7.1, cada um com "Em resumo" em linguagem simples (SPEC-15 §5)
-- [ ] **T-03.6** `B` Tela `/termos` (3 obrigatórios + pesquisa opcional, nada pré-marcado) e `<CookieNotice>` (§5) *(depende de T-11.1)*
-- [ ] **T-03.7** `B` Testes dos critérios da SPEC-03 §6
+- [x] **T-02.1** `B` `openid-client` + `GET /auth/google` com `state`/`nonce`/PKCE em cookie assinado (§2) · início 2026-10-29 18:12 · Igor + IA · feito 2026-10-29 18:16
+- [x] **T-02.2** `B` Callback: valida `state`, troca o code, valida o id_token, descarta tokens, upsert do usuário por `sub`, erros E01–E03 (§2) · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:16
+- [x] **T-02.3** `B` Sessão no Redis: criação com ID novo, `requireAuth`, expiração 30 min / 8 h, índice `user_sessions` (§3) · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:16
+- [x] **T-02.4** `B` `requireCsrf` (Origin + `X-SAFE-CSRF` em tempo constante) (§4) · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:16
+- [x] **T-02.5** `B` `GET /auth/me`, `POST /auth/logout`, `POST /auth/logout-all` com `Clear-Site-Data`; `destroyAllSessions` exportada (§5) · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:16
+- [x] **T-02.6** `B` Rate limits no Redis (§6) · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:16
+- [x] **T-02.7** `B` Auditoria `LOGIN`/`LOGOUT`/`LOGOUT_ALL` (§7) · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:16
+- [x] **T-02.8** `B` Rota `POST /test/login` só com `NODE_ENV=test` + teste de que não existe em produção (SPEC-13 §2) · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:16
+- [x] **T-02.9** `B` Testes dos critérios da SPEC-02 §8 · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:16
+- [x] **T-03.1** `B` `GET /terms/current` e `POST /terms/accept` com validações, prova no banco e cookie `safe_terms` (§3, §4) · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:19
+- [x] **T-03.2** `B` Middleware `requireTermsAccepted` com cache na sessão; exceções `/me/export` e `DELETE /me` (§3) · início 2026-10-29 18:19 · Igor + IA · feito 2026-10-29 18:19
+- [x] **T-03.3** `B` `GET/PUT /me/research-consent` com revogação (§4) · início 2026-10-29 18:19 · Igor + IA · feito 2026-10-29 18:19
+- [x] **T-03.4** `B` Arquivos legais versionados em `frontend/public/legal/` (estrutura) (§2) · início 2026-10-29 18:19 · Igor + IA · feito 2026-10-29 18:19
+- [ ] **T-03.5** `A+B` **(equipe)** Redigir Termos de Uso v1.0 e Política de Privacidade v1.0 com o conteúdo mínimo da SEGURANCA_LGPD §7.1, cada um com "Em resumo" em linguagem simples (SPEC-15 §5) · rascunho em `frontend/public/legal/` (2026-10-29, Igor + IA); falta o e-mail de contato (T-00.3) e a revisão da equipe
+- [x] **T-03.6** `B` Tela `/termos` (3 obrigatórios + pesquisa opcional, nada pré-marcado) e `<CookieNotice>` (§5) *(depende de T-11.1)* · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
+- [x] **T-03.7** `B` Testes dos critérios da SPEC-03 §6 · início 2026-10-29 18:19 · Igor + IA · feito 2026-10-29 18:19
 
 ## Fase 4 · Orçamento — [SPEC-04](specs/SPEC-04-orcamento.md)
-- [ ] **T-04.1** `A` `lib/crypto.ts` AES-256-GCM (`encrypt`/`decrypt`) + testes (§2.2)
-- [ ] **T-04.2** `A` Repositórios Prisma e em memória com `userId` obrigatório em todo método; descrição cifrada e decifrada no repositório (§2.2, §5)
-- [ ] **T-04.3** `A` Schemas zod das 4 entidades + enums de categoria + limites de quantidade (§2, §2.1)
-- [ ] **T-04.4** `A` Rotas CRUD de `incomes`, `expenses`, `debts`, `reserves` + `GET /budget/summary` (§3)
-- [ ] **T-04.5** `A` `reference_date`, `remainingNow`, `active` e `balanceUsed` nas dívidas (§2.3, §2.4)
-- [ ] **T-04.6** `A` Efeitos de escrita: auditoria só com nomes de campos (na transação), invalidar cache e emitir `budgetChanged` (§4)
-- [ ] **T-04.7** `A` `buildSnapshot(userId, today)` só com dívidas ativas (§5)
-- [ ] **T-04.8** `A` Testes da SPEC-04 §7, incluindo IDOR com 2 usuários e relógio falso para parcelas
+- [x] **T-04.1** `A` `lib/crypto.ts` AES-256-GCM (`encrypt`/`decrypt`) + testes (§2.2) · início 2026-10-29 18:20 · Igor + IA · feito 2026-10-29 18:24
+- [x] **T-04.2** `A` Repositórios Prisma e em memória com `userId` obrigatório em todo método; descrição cifrada e decifrada no repositório (§2.2, §5) · início 2026-10-29 18:24 · Igor + IA · feito 2026-10-29 18:24
+- [x] **T-04.3** `A` Schemas zod das 4 entidades + enums de categoria + limites de quantidade (§2, §2.1) · início 2026-10-29 18:24 · Igor + IA · feito 2026-10-29 18:24
+- [x] **T-04.4** `A` Rotas CRUD de `incomes`, `expenses`, `debts`, `reserves` + `GET /budget/summary` (§3) · início 2026-10-29 18:24 · Igor + IA · feito 2026-10-29 18:24
+- [x] **T-04.5** `A` `reference_date`, `remainingNow`, `active` e `balanceUsed` nas dívidas (§2.3, §2.4) · início 2026-10-29 18:24 · Igor + IA · feito 2026-10-29 18:24
+- [x] **T-04.6** `A` Efeitos de escrita: auditoria só com nomes de campos (na transação), invalidar cache e emitir `budgetChanged` (§4) · início 2026-10-29 18:24 · Igor + IA · feito 2026-10-29 18:24
+- [x] **T-04.7** `A` `buildSnapshot(userId, today)` só com dívidas ativas (§5) · início 2026-10-29 18:24 · Igor + IA · feito 2026-10-29 18:24
+- [x] **T-04.8** `A` Testes da SPEC-04 §7, incluindo IDOR com 2 usuários e relógio falso para parcelas · início 2026-10-29 18:24 · Igor + IA · feito 2026-10-29 18:24
 
 ## Fase 5 · Análise e simulação — [SPEC-07](specs/SPEC-07-analise-alertas.md), [SPEC-08](specs/SPEC-08-simulacao.md)
-- [ ] **T-07.1** `A` `analysisService.getAnalysis` + DTO formatado em pt-BR (`display`, `level`, `exceedsIncome`) (§2, §3)
-- [ ] **T-07.2** `A` `refresh` no `budgetChanged`: upsert do indicador, histórico 1 por dia, alertas sem duplicar e resolução automática (§2)
-- [ ] **T-07.3** `A` `GET /analysis`, `GET /alerts`, `PATCH /alerts/:id` (§3)
-- [ ] **T-07.4** `A` Testes da SPEC-07 §6
-- [ ] **T-08.1** `A` `validateSimulation` com tolerância de 1 centavo por parcela (§2.1)
-- [ ] **T-08.2** `A` `simulate()`: cenário em memória, ΔIRE, ΔC_i, π_i, principais, `unchanged`, `saturatedBoth`, desfecho e severidade, projeção dupla (§2.2–2.5)
-- [ ] **T-08.3** `A` `engine/explain.ts` com os templates e a formatação pt-BR (§2.6) → pronto quando: gera exatamente a frase do artigo
-- [ ] **T-08.4** `A` Testes: caso do artigo completo, propriedades (fast-check), V/n/p limites, crítico por CP e por ME, saturado (§5)
-- [ ] **T-08.5** `A` `POST/GET/PATCH /simulations` com persistência só em `simulacao_financeira` e rate limit (§3)
-- [ ] **T-08.6** `A` Teste de não alteração: depois de simular, orçamento, análise e histórico idênticos (§5)
-- [ ] **T-08.7** `A` Medir p95 de `/analysis` e `/simulations` localmente (preliminar do RNF01)
+- [x] **T-07.1** `A` `analysisService.getAnalysis` + DTO formatado em pt-BR (`display`, `level`, `exceedsIncome`) (§2, §3) · início 2026-10-29 18:24 · Igor + IA · feito 2026-10-29 18:29
+- [x] **T-07.2** `A` `refresh` no `budgetChanged`: upsert do indicador, histórico 1 por dia, alertas sem duplicar e resolução automática (§2) · início 2026-10-29 18:29 · Igor + IA · feito 2026-10-29 18:29
+- [x] **T-07.3** `A` `GET /analysis`, `GET /alerts`, `PATCH /alerts/:id` (§3) · início 2026-10-29 18:29 · Igor + IA · feito 2026-10-29 18:29
+- [x] **T-07.4** `A` Testes da SPEC-07 §6 · início 2026-10-29 18:29 · Igor + IA · feito 2026-10-29 18:29
+- [x] **T-08.1** `A` `validateSimulation` com tolerância de 1 centavo por parcela (§2.1) · início 2026-10-29 18:11 · Igor + IA · feito 2026-10-29 18:11
+- [x] **T-08.2** `A` `simulate()`: cenário em memória, ΔIRE, ΔC_i, π_i, principais, `unchanged`, `saturatedBoth`, desfecho e severidade, projeção dupla (§2.2–2.5) · início 2026-10-29 18:11 · Igor + IA · feito 2026-10-29 18:11
+- [x] **T-08.3** `A` `engine/explain.ts` com os templates e a formatação pt-BR (§2.6) → pronto quando: gera exatamente a frase do artigo · início 2026-10-29 18:11 · Igor + IA · feito 2026-10-29 18:11
+- [x] **T-08.4** `A` Testes: caso do artigo completo, propriedades (fast-check), V/n/p limites, crítico por CP e por ME, saturado (§5) · início 2026-10-29 18:11 · Igor + IA · feito 2026-10-29 18:11
+- [x] **T-08.5** `A` `POST/GET/PATCH /simulations` com persistência só em `simulacao_financeira` e rate limit (§3) · início 2026-10-29 18:29 · Igor + IA · feito 2026-10-29 18:29
+- [x] **T-08.6** `A` Teste de não alteração: depois de simular, orçamento, análise e histórico idênticos (§5) · início 2026-10-29 18:29 · Igor + IA · feito 2026-10-29 18:29
+- [x] **T-08.7** `A` Medir p95 de `/analysis` e `/simulations` localmente (preliminar do RNF01) · início 2026-10-29 18:29 · Igor + IA · feito 2026-10-29 18:29 · p95 local: /analysis 4,1 ms (sem cache) e 1,7 ms (com cache), /simulations 2,8 ms (`PERF=1 npx vitest run test/perf`)
 
 ## Fase 6 · Frontend e linguagem — [SPEC-11](specs/SPEC-11-frontend-base.md), [SPEC-15](specs/SPEC-15-linguagem-glossario.md) e telas
-- [ ] **T-11.1** `B` Rotas, guardas (`/auth/me`, termos), layout responsivo com menu lateral/inferior (§2, §5)
-- [ ] **T-11.2** `B` Cliente HTTP com CSRF e tratamento padronizado de erros; TanStack Query **sem persistência** (§3)
-- [ ] **T-11.3** `B` `lib/storage.ts` (lista fechada) + lint contra `localStorage` direto + `handleSessionEnd` + `BroadcastChannel` (§4)
-- [ ] **T-11.4** `B` Tokens de cor e tema, `RiskBadge`, `IreGauge`, `IndicatorCard`, `FactorList`, `MoneyInput`, `ConfirmDialog`, `AlertBanner`, `Disclaimer` (§5)
-- [ ] **T-11.5** `B` Formatadores pt-BR (`formatMoney`, `formatPercent`, datas) + testes
-- [ ] **T-11.6** `B` Tela de login com avisos e mensagens de erro e de expiração (§6)
+- [x] **T-11.1** `B` Rotas, guardas (`/auth/me`, termos), layout responsivo com menu lateral/inferior (§2, §5) · início 2026-10-29 18:33 · Igor + IA · feito 2026-10-29 18:49
+- [x] **T-11.2** `B` Cliente HTTP com CSRF e tratamento padronizado de erros; TanStack Query **sem persistência** (§3) · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
+- [x] **T-11.3** `B` `lib/storage.ts` (lista fechada) + lint contra `localStorage` direto + `handleSessionEnd` + `BroadcastChannel` (§4) · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
+- [x] **T-11.4** `B` Tokens de cor e tema, `RiskBadge`, `IreGauge`, `IndicatorCard`, `FactorList`, `MoneyInput`, `ConfirmDialog`, `AlertBanner`, `Disclaimer` (§5) · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
+- [x] **T-11.5** `B` Formatadores pt-BR (`formatMoney`, `formatPercent`, datas) + testes · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
+- [x] **T-11.6** `B` Tela de login com avisos e mensagens de erro e de expiração (§6) · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
 - [x] **T-15.1** `B` `content/glossary.ts` com as 33 entradas e `short` (§3) · início 2026-10-29 16:56 · Igor + IA · feito 2026-10-29 16:57
 - [x] **T-15.2** `B` Escrever `long`, `example` e `whyItMatters` de todas as entradas (§3) · início 2026-10-29 16:59 · Igor + IA · feito 2026-10-29 17:02
-- [ ] **T-15.3** `B` Componentes `<Term>` (toque, teclado, hover), `<FieldHelp>`, `<HelpPanel>`, `<ResultExplainer>` acessíveis (§4)
-- [ ] **T-15.4** `B` Página `/glossario` com busca + cartão "Como o SAFE funciona" (§4.5, §4.6)
-- [ ] **T-15.5** `B` Testes: todo `<Term id>` existe, `short` ≤ 140 caracteres, termos e siglas proibidos soltos nos textos (§6)
-- [ ] **T-04.9** `B` Tela "Meu orçamento" (4 abas, `<FieldHelp>` em todos os campos, aviso da descrição, confirmação de exclusão, estados vazios) — SPEC-04 §6 + SPEC-15 §5
-- [ ] **T-07.5** `B` Dashboard (card do IRE, 4 indicadores com `<Term>` e `<ResultExplainer>`, "Por que meu risco é este?", alertas, checklist sem dados) — SPEC-07 §5
-- [ ] **T-08.8** `B` Tela "Simular" (formulário explicado, 4 blocos, banners por desfecho, premissas, "simular outros valores") — SPEC-08 §4
-- [ ] **T-06.3** `B` Tela "Projeção" (gráfico + tabela + resumo + premissas) — SPEC-06 §4
+- [x] **T-15.3** `B` Componentes `<Term>` (toque, teclado, hover), `<FieldHelp>`, `<HelpPanel>`, `<ResultExplainer>` acessíveis (§4) · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
+- [x] **T-15.4** `B` Página `/glossario` com busca + cartão "Como o SAFE funciona" (§4.5, §4.6) · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
+- [x] **T-15.5** `B` Testes: todo `<Term id>` existe, `short` ≤ 140 caracteres, termos e siglas proibidos soltos nos textos (§6) · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
+- [x] **T-04.9** `B` Tela "Meu orçamento" (4 abas, `<FieldHelp>` em todos os campos, aviso da descrição, confirmação de exclusão, estados vazios) — SPEC-04 §6 + SPEC-15 §5 · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
+- [x] **T-07.5** `B` Dashboard (card do IRE, 4 indicadores com `<Term>` e `<ResultExplainer>`, "Por que meu risco é este?", alertas, checklist sem dados) — SPEC-07 §5 · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
+- [x] **T-08.8** `B` Tela "Simular" (formulário explicado, 4 blocos, banners por desfecho, premissas, "simular outros valores") — SPEC-08 §4 · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
+- [x] **T-06.3** `B` Tela "Projeção" (gráfico + tabela + resumo + premissas) — SPEC-06 §4 · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
 - [ ] **T-15.6** `B` Revisão de linguagem de todas as telas com o checklist da SPEC-15 §5, feita por alguém que não escreveu a tela
 - [x] **T-15.7** `B` Alinhar o glossário com a D-16 (renda e consignado) e precisar o texto do rotativo pelas fontes consultadas · início 2026-10-29 17:49 · Igor + IA · feito 2026-10-29 17:49
-- [ ] **T-11.7** `B` Verificação manual da SPEC-11 §7 (DevTools: storage, cookies, rede externa; 375 px; 4 navegadores; Lighthouse ≥ 90)
+- [ ] **T-11.7** `B` Verificação manual da SPEC-11 §7 (DevTools: storage, cookies, rede externa; 375 px; 4 navegadores; Lighthouse ≥ 90) · parte automatizada no E2E (armazenamento, logout entre abas, voltar, 375 px no Chromium)
 
 ## Fase 7 · Histórico e privacidade — [SPEC-09](specs/SPEC-09-historico.md), [SPEC-10](specs/SPEC-10-privacidade-dados.md)
-- [ ] **T-09.1** `A` `GET /history` com período, limites e `trend` + testes (§2, §4)
-- [ ] **T-09.2** `B` Tela "Evolução" (gráfico com faixas de fundo, tabela, seletor de período, 0/1 ponto) (§3)
-- [ ] **T-10.1** `B` `GET /me` e `GET /me/export` (download, sem salvar, auditado) (§2, §2.1)
-- [ ] **T-10.2** `B` `DELETE /me` com o fluxo transacional, limpeza de sessões e cache e `Clear-Site-Data` (§2.2)
-- [ ] **T-10.3** `B` Jobs de retenção com `node-cron` + testes com relógio falso (§3)
-- [ ] **T-10.4** `B` `npm run privacy:reapply-deletions` + procedimento de backup e restauração no README (§4)
-- [ ] **T-10.5** `B` Tela "Minha conta" (meus dados, pesquisa, exportar, sair de todos, excluir com `EXCLUIR`) + `/conta-excluida` (§5)
-- [ ] **T-10.6** `B` Testes da SPEC-10 §6
+- [x] **T-09.1** `A` `GET /history` com período, limites e `trend` + testes (§2, §4) · início 2026-10-29 18:29 · Igor + IA · feito 2026-10-29 18:29
+- [x] **T-09.2** `B` Tela "Evolução" (gráfico com faixas de fundo, tabela, seletor de período, 0/1 ponto) (§3) · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
+- [x] **T-10.1** `B` `GET /me` e `GET /me/export` (download, sem salvar, auditado) (§2, §2.1) · início 2026-10-29 18:30 · Igor + IA · feito 2026-10-29 18:32
+- [x] **T-10.2** `B` `DELETE /me` com o fluxo transacional, limpeza de sessões e cache e `Clear-Site-Data` (§2.2) · início 2026-10-29 18:32 · Igor + IA · feito 2026-10-29 18:32
+- [x] **T-10.3** `B` Jobs de retenção com `node-cron` + testes com relógio falso (§3) · início 2026-10-29 18:32 · Igor + IA · feito 2026-10-29 18:32
+- [x] **T-10.4** `B` `npm run privacy:reapply-deletions` + procedimento de backup e restauração no README (§4) · início 2026-10-29 18:32 · Igor + IA · feito 2026-10-29 18:32
+- [x] **T-10.5** `B` Tela "Minha conta" (meus dados, pesquisa, exportar, sair de todos, excluir com `EXCLUIR`) + `/conta-excluida` (§5) · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
+- [x] **T-10.6** `B` Testes da SPEC-10 §6 · início 2026-10-29 18:32 · Igor + IA · feito 2026-10-29 18:32
 
 ## Fase 8 · Avaliação — [SPEC-12](specs/SPEC-12-avaliacao.md)
-- [ ] **T-12.1** `A` `generate-personas.ts` (semente 2026, regras documentadas) → `personas.csv` com 30 linhas commitado (§2)
-- [ ] **T-12.2** `A` `eval:personas` + `especialistas.csv` sem IRE (§3)
-- [ ] **T-12.3** `A` `stats.ts` (Spearman com empates, Kappa ponderado quadrático) + testes (§3)
-- [ ] **T-12.4** `A` `eval:agreement` (roda quando as respostas dos especialistas chegarem)
-- [ ] **T-12.5** `A` `eval:sensitivity` (pesos ±10/±20% renormalizados; limites ±0,02/±0,05; M por cenário)
-- [ ] **T-12.6** `A` `eval:baseline` (regra só de CR vs IRE em 3 níveis; divergências com motivo)
-- [ ] **T-12.7** `A` `eval:simulation-check` (200 aleatórios + 9 de ME; 0 falhas)
-- [ ] **T-12.8** `A` `eval:latency` (500 req; mediana, p95, p99, hardware)
-- [ ] **T-12.9** `A` `evaluation/README.md` + cabeçalho com commit e data em todo CSV (§4)
+- [x] **T-12.1** `A` `generate-personas.ts` (semente 2026, regras documentadas) → `personas.csv` com 30 linhas commitado (§2) · início 2026-10-29 18:50 · Igor + IA · feito 2026-10-29 18:53
+- [x] **T-12.2** `A` `eval:personas` + `especialistas.csv` sem IRE (§3) · início 2026-10-29 18:53 · Igor + IA · feito 2026-10-29 18:53
+- [x] **T-12.3** `A` `stats.ts` (Spearman com empates, Kappa ponderado quadrático) + testes (§3) · início 2026-10-29 18:53 · Igor + IA · feito 2026-10-29 18:53
+- [ ] **T-12.4** `A` `eval:agreement` (roda quando as respostas dos especialistas chegarem) · script pronto (2026-10-29, Igor + IA); falta `evaluation/especialistas-respostas.csv`
+- [x] **T-12.5** `A` `eval:sensitivity` (pesos ±10/±20% renormalizados; limites ±0,02/±0,05; M por cenário) · início 2026-10-29 18:53 · Igor + IA · feito 2026-10-29 18:53
+- [x] **T-12.6** `A` `eval:baseline` (regra só de CR vs IRE em 3 níveis; divergências com motivo) · início 2026-10-29 18:53 · Igor + IA · feito 2026-10-29 18:53
+- [x] **T-12.7** `A` `eval:simulation-check` (200 aleatórios + 9 de ME; 0 falhas) · início 2026-10-29 18:53 · Igor + IA · feito 2026-10-29 18:53
+- [x] **T-12.8** `A` `eval:latency` (500 req; mediana, p95, p99, hardware) · início 2026-10-29 18:53 · Igor + IA · feito 2026-10-29 18:53
+- [x] **T-12.9** `A` `evaluation/README.md` + cabeçalho com commit e data em todo CSV (§4) · início 2026-10-29 18:53 · Igor + IA · feito 2026-10-29 18:53
 
 ## Fase 9 · Qualidade e entrega — [SPEC-13](specs/SPEC-13-qualidade-testes.md)
-- [ ] **T-13.1** `A` Infra de testes de integração (Postgres e Redis de teste, reset entre testes, login de teste) · **fazer logo depois do M2, antes da T-04.8**
-- [ ] **T-13.2** `B` Suíte de segurança completa (§3)
-- [ ] **T-13.3** `B` Playwright com os fluxos E2E 1–10 (§4)
-- [ ] **T-13.4** `A+B` `docs/aceite.md` com cada HU e seus critérios marcados (§5)
+- [x] **T-13.1** `A` Infra de testes de integração (Postgres e Redis de teste, reset entre testes, login de teste) · **fazer logo depois do M2, antes da T-04.8** · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:16
+- [x] **T-13.2** `B` Suíte de segurança completa (§3) · início 2026-10-29 18:54 · Igor + IA · feito 2026-10-29 18:55
+- [x] **T-13.3** `B` Playwright com os fluxos E2E 1–10 (§4) · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
+- [ ] **T-13.4** `A+B` `docs/aceite.md` com cada HU e seus critérios marcados (§5) · rascunho por spec em `docs/aceite.md` (2026-10-29, Igor + IA); falta mapear por HU
 - [ ] **T-13.5** `A+B` Homologação: CI verde, E2E ok, checklist da SEGURANCA_LGPD §12, README final, tag `v1.0.0` (§6)
 
 ## Fase 10 · Opcional (só com tudo acima pronto)
@@ -174,7 +174,9 @@
 ## Bloqueios
 | Tarefa | Motivo | Desde | Quem destrava |
 |---|---|---|---|
-| — | — | — | — |
+| T-00.2 | Falta criar o projeto OAuth no Google Cloud; até lá, usar `npm run dev:demo` | 2026-10-29 | Equipe (trilha B) |
+| T-03.5 | Falta o e-mail de contato de privacidade (T-00.3) e a revisão da equipe nos rascunhos em `frontend/public/legal/` | 2026-10-29 | Equipe |
+| T-12.4 | Falta `evaluation/especialistas-respostas.csv` com as respostas dos especialistas | 2026-10-29 | Equipe |
 
 ## Fora do código (lembrete)
 As correções do artigo e da especificação estão no `docs/referencias/Relatorio_Inconsistencias_TCC.docx`. Os números finais da Seção 7 do artigo vêm das tarefas T-05.9, T-08.7, T-12.x e T-13.4.

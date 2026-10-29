@@ -27,7 +27,7 @@ refresh(userId): Promise<void>              // chamado pelo evento budgetChanged
    Para cada tipo: se já existe alerta `NAO_LIDO` igual, não cria outro. Se a condição deixou de existir, marca os `NAO_LIDO` desse tipo como `LIDO` (resolvidos). A `description` é a frase do §4 (sem valores pessoais além do necessário).
 5. Grava `cache:analysis:<userId>` (TTL 10 min).
 
-`getAnalysis` lê o cache. Se não houver, chama o mesmo cálculo (sem gravar histórico) e cacheia.
+`getAnalysis` lê o cache. Se não houver, chama o mesmo `refresh` (grava indicador, histórico do dia e alertas, como manda a D-09 do PRD: "após qualquer alteração de dados ou consulta da análise") e cacheia. O histórico guarda o IRE **arredondado** (o mesmo que define a faixa).
 
 ## 3. Endpoint `GET /api/v1/analysis` (auth + termos)
 ```json

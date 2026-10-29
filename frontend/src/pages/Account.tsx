@@ -1,0 +1,202 @@
+import { Download, LogOut, Trash2 } from 'lucide-react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
+import { api, userMessage } from '../api/client';
+import { keys, useConsent, useMyData } from '../api/hooks';
+import { LoadError, Loading } from '../components/States';
+import { Term } from '../components/Term';
+import { formatDate } from '../lib/format';
+import { handleSessionEnd } from '../lib/session';
+
+const COUNT_LABELS: Record<string, string> = {
+  incomes: 'rendas',
+  expenses: 'despesas',
+  debts: 'dívidas',
+  reserves: 'reservas',
+  simulations: 'simulações',
+  historyPoints: 'pontos de histórico',
+  alerts: 'alertas',
+};
+
+/** Minha conta: meus dados, pesquisa, exportar, sair de todos e excluir (SPEC-10 §5). */
+export function Account() {
+  const data = useMyData();
+  const consent = useConsent();
+  const qc = useQueryClient();
+  const [message, setMessage] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
+  const [confirm, setConfirm] = useState('');
+  const [busy, setBusy] = useState(false);
+
+  if (data.isLoading) return <Loading />;
+  if (data.isError || !data.data) return <LoadError error={data.error} />;
+  const me = data.data;
+
+  const toggleConsent = async (granted: boolean) => {
+    try {
+      await api('/me/research-consent', { method: 'PUT', body: { granted } });
+      await qc.invalidateQueries({ queryKey: keys.consent });
+      setMessage(
+        granted
+          ? 'Obrigado! Você está participando da pesquisa.'
+          : 'Pronto: você não participa mais da pesquisa.',
+      );
+    } catch (err) {
+      setMessage(userMessage(err));
+    }
+  };
+
+  const logoutAll = async () => {
+    try {
+      await api('/auth/logout-all', { method: 'POST' });
+    } finally {
+      handleSessionEnd('logout');
+    }
+  };
+
+  const remove = async () => {
+    setBusy(true);
+    try {
+      await api('/me', { method: 'DELETE', body: { confirm } });
+      handleSessionEnd('deleted');
+    } catch (err) {
+      setMessage(userMessage(err));
+      setBusy(false);
+    }
+  };
+
+  return (
+    <div className="stack">
+      <h1>Minha conta</h1>
+      {message && (
+        <p className="notice" role="status">
+          {message}
+        </p>
+      )}
+
+      <section className="card stack" aria-labelledby="dados">
+        <h2 id="dados">Meus dados</h2>
+        <p style={{ margin: 0 }}>
+          <strong>E-mail:</strong> {me.email}
+        </p>
+        <p style={{ margin: 0 }}>
+          <strong>Conta criada em:</strong> {formatDate(me.createdAt)}
+        </p>
+        <p style={{ margin: 0 }}>
+          <strong>Termos aceitos:</strong>{' '}
+          {me.termsAcceptedAt
+            ? `versão ${me.termsVersion} dos Termos e ${me.privacyVersion} da Política, em ${formatDate(me.termsAcceptedAt)}`
+            : 'ainda não'}
+        </p>
+        <p className="small muted" style={{ margin: 0 }}>
+          Guardamos:{' '}
+          {Object.entries(me.counts)
+            .map(([k, n]) => `${n} ${COUNT_LABELS[k] ?? k}`)
+            .join(', ')}
+          .
+        </p>
+      </section>
+
+      <section className="card stack" aria-labelledby="pesquisa">
+        <h2 id="pesquisa">Pesquisa do trabalho de conclusão de curso</h2>
+        <p style={{ margin: 0 }}>
+          Se você quiser, seus <Term id="anonimizado">dados anonimizados</Term> ajudam no estudo do
+          SAFE. É opcional e você pode mudar quando quiser. Isso não muda nada no uso do sistema.
+        </p>
+        <label className="row" style={{ flexWrap: 'nowrap' }}>
+          <input
+            type="checkbox"
+            style={{ width: 22, height: 22 }}
+            checked={consent.data?.granted ?? me.researchConsent}
+            onChange={(e) => toggleConsent(e.target.checked)}
+          />
+          Participar da pesquisa
+        </label>
+      </section>
+
+      <section className="card stack" aria-labelledby="exportar">
+        <h2 id="exportar">Baixar meus dados</h2>
+        <p style={{ margin: 0 }}>
+          Um arquivo com tudo o que o SAFE guarda sobre você. Ele é gerado na hora e não fica salvo
+          no servidor.
+        </p>
+        <div>
+          <a className="btn" href="/api/v1/me/export" download>
+            <Download size={18} aria-hidden="true" /> Baixar meus dados (arquivo JSON)
+          </a>
+        </div>
+      </section>
+
+      <section className="card stack" aria-labelledby="sair">
+        <h2 id="sair">Sair de todos os dispositivos</h2>
+        <p style={{ margin: 0 }}>
+          Encerra o acesso em todos os navegadores em que você entrou, inclusive este.
+        </p>
+        <div>
+          <button type="button" className="btn" onClick={logoutAll}>
+            <LogOut size={18} aria-hidden="true" /> Sair de todos os dispositivos
+          </button>
+        </div>
+      </section>
+
+      <section
+        className="card stack"
+        aria-labelledby="excluir"
+        style={{ borderColor: 'var(--danger)' }}
+      >
+        <h2 id="excluir">Excluir minha conta</h2>
+        {!deleting ? (
+          <div>
+            <button type="button" className="btn" onClick={() => setDeleting(true)}>
+              <Trash2 size={18} aria-hidden="true" /> Quero excluir minha conta
+            </button>
+          </div>
+        ) : (
+          <>
+            <p style={{ margin: 0 }}>Vamos apagar para sempre:</p>
+            <ul style={{ margin: 0 }}>
+              <li>sua conta e seu e-mail;</li>
+              <li>sua renda, despesas, dívidas e reserva;</li>
+              <li>seu índice, seu histórico, suas simulações e seus alertas;</li>
+              <li>sua participação na pesquisa.</li>
+            </ul>
+            <p style={{ margin: 0 }}>
+              <strong>Esta ação não pode ser desfeita.</strong> Se quiser guardar uma cópia, baixe
+              seus dados antes.
+            </p>
+            <div className="field">
+              <label htmlFor="confirm-delete">Para confirmar, digite EXCLUIR</label>
+              <input
+                id="confirm-delete"
+                className="input"
+                autoComplete="off"
+                value={confirm}
+                onChange={(e) => setConfirm(e.target.value)}
+                placeholder="EXCLUIR"
+              />
+            </div>
+            <div className="row">
+              <button
+                type="button"
+                className="btn btn-danger"
+                disabled={confirm !== 'EXCLUIR' || busy}
+                onClick={remove}
+              >
+                Excluir minha conta para sempre
+              </button>
+              <button type="button" className="btn" onClick={() => setDeleting(false)}>
+                Cancelar
+              </button>
+            </div>
+          </>
+        )}
+      </section>
+
+      <p className="small">
+        <Link to="/privacidade">Política de Privacidade</Link> ·{' '}
+        <Link to="/termos-de-uso">Termos de Uso</Link>
+      </p>
+    </div>
+  );
+}

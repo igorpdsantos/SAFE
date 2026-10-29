@@ -1,10 +1,43 @@
 import { Router } from 'express';
 import type { AppDeps } from './deps.js';
+import { authedRouter } from './guards.js';
 import { healthRouter } from '../modules/health/router.js';
+import { authRouter } from '../modules/auth/router.js';
+import { testLoginRouter } from '../modules/auth/testLogin.js';
+import { registerResearchConsent, termsRouter } from '../modules/terms/router.js';
+import {
+  BUDGET_KINDS,
+  budgetResourceRouter,
+  budgetSummaryRouter,
+} from '../modules/budget/router.js';
+import { alertsRouter, analysisRouter } from '../modules/analysis/router.js';
+import { projectionRouter } from '../modules/projection/router.js';
+import { simulationsRouter } from '../modules/simulations/router.js';
+import { historyRouter } from '../modules/history/router.js';
+import { registerPrivacy } from '../modules/privacy/router.js';
 
-/** Registro dos routers: UMA linha por módulo (evita conflito entre as trilhas). */
-export function apiRouter(_deps: AppDeps): Router {
+/** Registro dos routers: UMA linha por módulo, cada um no seu prefixo (evita conflito entre as trilhas). */
+export function apiRouter(deps: AppDeps): Router {
   const router = Router();
   router.use(healthRouter());
+  router.use('/auth', authRouter(deps));
+  router.use('/terms', termsRouter(deps));
+  router.use('/me', meRouter(deps));
+  for (const kind of BUDGET_KINDS) router.use(`/${kind}`, budgetResourceRouter(deps, kind));
+  router.use('/budget', budgetSummaryRouter(deps));
+  router.use('/analysis', analysisRouter(deps));
+  router.use('/alerts', alertsRouter(deps));
+  router.use('/projection', projectionRouter(deps));
+  router.use('/simulations', simulationsRouter(deps));
+  router.use('/history', historyRouter(deps));
+  if (deps.env.NODE_ENV === 'test') router.use('/test', testLoginRouter(deps));
   return router;
+}
+
+/** /me reúne rotas de mais de um módulo sob a mesma checagem de sessão. */
+function meRouter(deps: AppDeps): Router {
+  const me = authedRouter(deps);
+  registerResearchConsent(me, deps);
+  registerPrivacy(me, deps);
+  return me;
 }

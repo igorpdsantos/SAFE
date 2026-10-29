@@ -4,7 +4,15 @@ declare global {
   namespace Express {
     interface Locals {
       requestId: string;
-      session?: { id: string; userId: number; csrf: string; termsOk?: string };
+      session?: {
+        id: string;
+        key: string;
+        userId: number;
+        createdAt: number;
+        lastSeenAt: number;
+        csrf: string;
+        termsOk?: string;
+      };
     }
   }
 }

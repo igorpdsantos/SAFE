@@ -1,6 +1,12 @@
 import { ConfigError, loadEnv } from './config/env.js';
 import { createApp } from './http/app.js';
+import { createDeps } from './http/container.js';
+import { systemClock } from './lib/clock.js';
 import { createLogger } from './lib/logger.js';
+import { createPrisma } from './lib/prisma.js';
+import { createRedis } from './lib/redis.js';
+import { googleOidc } from './modules/auth/oidc.js';
+import { scheduleRetention } from './modules/privacy/jobs.js';
 
 function main(): void {
   let env;
@@ -14,7 +20,12 @@ function main(): void {
     throw err;
   }
   const logger = createLogger(env.LOG_LEVEL);
-  const app = createApp({ env, logger });
+  const prisma = createPrisma(env.DATABASE_URL);
+  const redis = createRedis(env.REDIS_URL);
+  const clock = systemClock;
+  const deps = createDeps({ env, logger, prisma, redis, clock, oidc: googleOidc(env) });
+  const app = createApp(deps);
+  scheduleRetention(deps);
   app.listen(env.API_PORT, () => {
     logger.info({ port: env.API_PORT }, 'API do SAFE no ar');
   });

@@ -1,0 +1,16 @@
+{
+  "name": "@safe/evaluation",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "generate-personas": "tsx scripts/generate-personas.ts",
+    "eval:personas": "tsx scripts/personas.ts",
+    "eval:agreement": "tsx scripts/agreement.ts",
+    "eval:sensitivity": "tsx scripts/sensitivity.ts",
+    "eval:baseline": "tsx scripts/baseline.ts",
+    "eval:simulation-check": "tsx scripts/simulation-check.ts",
+    "eval:latency": "tsx scripts/latency.ts"
+  }
+}

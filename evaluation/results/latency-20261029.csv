@@ -1,0 +1,4 @@
+# commit: 1b6af5f5e298f2c98b586565e589366703e9d6bb · data: 2026-10-29
+endpoint,n,mediana_ms,p95_ms,p99_ms,hardware
+GET /analysis,500,1.0,1.8,2.8,"Apple M4 ×10, 16 GB, Node v22.22.2"
+POST /simulations,500,1.5,2.1,2.9,"Apple M4 ×10, 16 GB, Node v22.22.2"

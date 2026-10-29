@@ -74,7 +74,7 @@
 - [ ] **T-06.2** `A` `GET /api/v1/projection` com cache Redis e 409 sem renda *(depende de T-04.7)*
 
 ## Fase 3 · Login, sessão e termos — [SPEC-02](specs/SPEC-02-autenticacao-sessao.md), [SPEC-03](specs/SPEC-03-termos-consentimento.md)
-- [ ] **T-02.1** `B` `openid-client` + `GET /auth/google` com `state`/`nonce`/PKCE em cookie assinado (§2)
+- [~] **T-02.1** `B` `openid-client` + `GET /auth/google` com `state`/`nonce`/PKCE em cookie assinado (§2) · início 2026-10-29 18:12 · Igor + IA
 - [ ] **T-02.2** `B` Callback: valida `state`, troca o code, valida o id_token, descarta tokens, upsert do usuário por `sub`, erros E01–E03 (§2)
 - [ ] **T-02.3** `B` Sessão no Redis: criação com ID novo, `requireAuth`, expiração 30 min / 8 h, índice `user_sessions` (§3)
 - [ ] **T-02.4** `B` `requireCsrf` (Origin + `X-SAFE-CSRF` em tempo constante) (§4)

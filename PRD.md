@@ -5,7 +5,7 @@
 | **Produto** | SAFE (na especificação aparece como SARE; o nome oficial passa a ser SAFE) |
 | **Contexto** | TCC de Engenharia de Software, Universidade São Judas Tadeu. Orientador: Prof. Nelson Aguiar |
 | **Equipe** | Gabriel D. M. Ferreira, Guilherme P. Santos, Gustavo C. G. Perez, Gustavo X. F. Santos, Higor S. Santos, Igor P. Santos, Matheus C. Silva, Michael D. Braga |
-| **Fontes** | `../artigo_completo.tex` (modelo IRE e simulação, Seções 4 a 7), `../Plataforma de Apoio a Decisao Financeira Pessoal.pdf` (especificação: RF, RNF, UC, HU, modelo de dados), áudio do grupo de 28/10/2026 (dashboard) |
+| **Fontes** | `docs/referencias/artigo_completo.tex` (modelo IRE e simulação, Seções 4 a 7), `docs/referencias/especificacao_software_original.pdf` (especificação: RF, RNF, UC, HU, modelo de dados), áudio do grupo de 28/10/2026 (dashboard) |
 | **Status** | Nenhum código escrito em 29/10/2026. Entrega do software: **02/11/2026** |
 | **Versão** | 1.0 — 29/10/2026 |
 

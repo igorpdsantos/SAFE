@@ -49,7 +49,11 @@ export function explain(input: ExplainInput): string {
   } else {
     const main = input.factors.filter((f) => f.isMain);
     const phrases = main.map(phrase).filter((p): p is string => p !== null);
-    sentences.push(`Esta compra ${joinPt(phrases)}.`);
+    sentences.push(
+      phrases.length > 0
+        ? `Esta compra ${joinPt(phrases)}.`
+        : 'Esta compra aumentaria o seu índice de risco.',
+    );
     const total = main.reduce((acc, f) => acc.plus(f.share ?? ZERO), ZERO);
     sentences.push(
       main.length >= 2

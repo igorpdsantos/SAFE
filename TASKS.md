@@ -69,8 +69,8 @@
 - [x] **T-05.6** `A` `diagnose` com renda residual e regras críticas (§3.6) → pronto quando: T1 passa · início 2026-10-29 18:09 · Igor + IA · feito 2026-10-29 18:09
 - [x] **T-05.7** `A` `elapsedMonths` + testes T7 (§3.7) · início 2026-10-29 18:09 · Igor + IA · feito 2026-10-29 18:09
 - [x] **T-05.8** `A` Testes T2–T6 e T8 (fronteiras, saturações, casos-limite, ME, propriedades com fast-check, config) · início 2026-10-29 18:09 · Igor + IA · feito 2026-10-29 18:09
-- [ ] **T-05.9** `A` Cobertura de `engine/` ≥ 80% de linhas e ramos no CI (RNF08)
-- [~] **T-06.1** `A` `engine/projection.ts` `project()` com e sem `extra`, horizonte, rótulos de mês + testes do §5 · início 2026-10-29 18:09 · Igor + IA
+- [x] **T-05.9** `A` Cobertura de `engine/` ≥ 80% de linhas e ramos no CI (RNF08) · início 2026-10-29 18:11 · Igor + IA · feito 2026-10-29 18:11
+- [x] **T-06.1** `A` `engine/projection.ts` `project()` com e sem `extra`, horizonte, rótulos de mês + testes do §5 · início 2026-10-29 18:09 · Igor + IA · feito 2026-10-29 18:11
 - [ ] **T-06.2** `A` `GET /api/v1/projection` com cache Redis e 409 sem renda *(depende de T-04.7)*
 
 ## Fase 3 · Login, sessão e termos — [SPEC-02](specs/SPEC-02-autenticacao-sessao.md), [SPEC-03](specs/SPEC-03-termos-consentimento.md)
@@ -106,10 +106,10 @@
 - [ ] **T-07.2** `A` `refresh` no `budgetChanged`: upsert do indicador, histórico 1 por dia, alertas sem duplicar e resolução automática (§2)
 - [ ] **T-07.3** `A` `GET /analysis`, `GET /alerts`, `PATCH /alerts/:id` (§3)
 - [ ] **T-07.4** `A` Testes da SPEC-07 §6
-- [ ] **T-08.1** `A` `validateSimulation` com tolerância de 1 centavo por parcela (§2.1)
-- [ ] **T-08.2** `A` `simulate()`: cenário em memória, ΔIRE, ΔC_i, π_i, principais, `unchanged`, `saturatedBoth`, desfecho e severidade, projeção dupla (§2.2–2.5)
-- [ ] **T-08.3** `A` `engine/explain.ts` com os templates e a formatação pt-BR (§2.6) → pronto quando: gera exatamente a frase do artigo
-- [ ] **T-08.4** `A` Testes: caso do artigo completo, propriedades (fast-check), V/n/p limites, crítico por CP e por ME, saturado (§5)
+- [x] **T-08.1** `A` `validateSimulation` com tolerância de 1 centavo por parcela (§2.1) · início 2026-10-29 18:11 · Igor + IA · feito 2026-10-29 18:11
+- [x] **T-08.2** `A` `simulate()`: cenário em memória, ΔIRE, ΔC_i, π_i, principais, `unchanged`, `saturatedBoth`, desfecho e severidade, projeção dupla (§2.2–2.5) · início 2026-10-29 18:11 · Igor + IA · feito 2026-10-29 18:11
+- [x] **T-08.3** `A` `engine/explain.ts` com os templates e a formatação pt-BR (§2.6) → pronto quando: gera exatamente a frase do artigo · início 2026-10-29 18:11 · Igor + IA · feito 2026-10-29 18:11
+- [x] **T-08.4** `A` Testes: caso do artigo completo, propriedades (fast-check), V/n/p limites, crítico por CP e por ME, saturado (§5) · início 2026-10-29 18:11 · Igor + IA · feito 2026-10-29 18:11
 - [ ] **T-08.5** `A` `POST/GET/PATCH /simulations` com persistência só em `simulacao_financeira` e rate limit (§3)
 - [ ] **T-08.6** `A` Teste de não alteração: depois de simular, orçamento, análise e histórico idênticos (§5)
 - [ ] **T-08.7** `A` Medir p95 de `/analysis` e `/simulations` localmente (preliminar do RNF01)

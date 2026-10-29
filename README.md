@@ -56,7 +56,7 @@ Leia as seções 3 e 4 deste README, depois o [`PRD.md`](PRD.md) §1–§7.
 | Arquivo | Para que serve | Quem lê |
 |---|---|---|
 | [`README.md`](README.md) | Porta de entrada: visão geral, estrutura, como rodar e como trabalhar | Todos |
-| [`PRD.md`](PRD.md) | **O quê e por quê:** problema, escopo, modelo matemático completo, requisitos (RF/RNF), modelo de dados, API, decisões D-01…D-15, plano até a entrega | Todos |
+| [`PRD.md`](PRD.md) | **O quê e por quê:** problema, escopo, modelo matemático completo, requisitos (RF/RNF), modelo de dados, API, decisões D-01…D-16, plano até a entrega | Todos |
 | [`SEGURANCA_LGPD.md`](SEGURANCA_LGPD.md) | **Privacidade e segurança:** bases legais, dados permitidos e proibidos, login, sessão, cookies, `localStorage`, criptografia, logs, direitos do titular, incidentes. Decisões S-01…S-09 | Todos que mexem em dados de usuário |
 | [`SPECS.md`](SPECS.md) | Índice das 15 especificações, com resumo, dependências e cobertura dos requisitos | Quem vai implementar |
 | [`specs/SPEC-NN-*.md`](specs/) | **Como, em detalhe:** contratos (tipos e JSON), regras, telas, erros e critérios de aceite de cada parte | Quem implementa aquela parte |

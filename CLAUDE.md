@@ -11,7 +11,7 @@ Prazo de entrega: **02/11/2026**. Ordem de corte se faltar tempo: PRD §13.
 | `README.md` | Visão geral para quem chega do zero: o que é o SAFE, mapa dos documentos, estrutura, como rodar, configuração, modo de trabalho |
 | `TASKS.md` | **Sempre, primeiro** (depois do README na primeira sessão). Diz o que está feito, o que está em andamento, o que vem a seguir e **de qual trilha (A/B)** é cada tarefa |
 | `CONTRIBUTING.md` | Fluxo do GitHub: trilhas, branches, PRs, merges, arquivos com risco de conflito, regras para IAs |
-| `PRD.md` | Contexto do produto, fórmulas (§5–7), requisitos (§8), modelo de dados (§11), decisões D-01…D-15 (§12) |
+| `PRD.md` | Contexto do produto, fórmulas (§5–7), requisitos (§8), modelo de dados (§11), decisões D-01…D-16 (§12) |
 | `SEGURANCA_LGPD.md` | Antes de mexer em login, sessão, cookies, formulários, logs, exportação ou exclusão. **Prevalece** sobre o PRD nesses temas |
 | `SPECS.md` → `specs/SPEC-NN-*.md` | A spec da tarefa que você vai fazer: contratos, regras, telas e critérios de aceite. **É o que você implementa** |
 | `docs/referencias/artigo_completo.tex`, `docs/referencias/especificacao_software_original.pdf`, `docs/referencias/Relatorio_Inconsistencias_TCC.docx` | Fontes originais; só consulta. Em conflito, valem PRD, SEGURANCA_LGPD e specs |

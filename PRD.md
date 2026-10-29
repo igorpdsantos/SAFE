@@ -441,6 +441,7 @@ Todo CRUD de dados financeiros: grava em `log_auditoria`, invalida o cache Redis
 | D-13 | `DT_ACEITE_TERMS NOT NULL` quebrava o 1º login | Aceite só em `aceitacao_termos`, com versão |
 | D-14 | Alertas na situação atual | Faixa ≥ 3 ou regra crítica (Seção 5.7) |
 | D-15 | A especificação prevê JWT Bearer e cookie de termos sem regras de privacidade | Decisões S-01 a S-09 do `SEGURANCA_LGPD.md`: sessão opaca no Redis, só cookies essenciais, base legal contrato + consentimento separado para pesquisa, minimização, categorias, exclusão em cascata, 18+, aceite comprovado no banco |
+| D-16 | Consignado é descontado antes de a renda cair na conta; se o usuário informar a renda já sem esse desconto **e** cadastrar o consignado como dívida, a parcela conta duas vezes. Se não cadastrar, o comprometimento da renda fica subestimado | A renda líquida é o valor **sem os descontos obrigatórios** (INSS, imposto de renda), mas **com** os descontos de empréstimos em folha devolvidos à conta. O consignado entra como dívida (categoria `CONSIGNADO`). Leitura conservadora, coerente com o objetivo preventivo (SPEC-04 §2.5) |
 
 ## 13. Plano de entrega (29/10 → 02/11)
 

@@ -242,9 +242,23 @@ Para aplicar as migrations no banco de testes: `DATABASE_URL=$TEST_DATABASE_URL 
 | `npm run db:migrate` | `prisma migrate dev` (cria e aplica migrations) |
 | `npm run build` | Compila a API (`backend/dist`) e o site (`frontend/dist`) |
 | `npm run eval:<script>` | Avaliação do modelo: `personas`, `agreement`, `sensitivity`, `baseline`, `simulation-check`, `latency` (SPEC-12) |
+| `npm run privacy:reapply-deletions` | Depois de restaurar um backup, reaplica as exclusões de conta (SPEC-10 §4) |
 | `npm run tasks` | Painel do `TASKS.md` |
 
 Sem alguma variável obrigatória, a API não sobe e lista o que falta (por exemplo, `REDIS_URL está faltando`).
+
+### Backup e restauração (SPEC-10 §4, RNF09)
+- **Backup diário** criptografado, com retenção de 30 dias:
+  ```bash
+  pg_dump "$DATABASE_URL" --format=custom | age -r <chave-publica> > backups/safe-$(date +%F).dump.age
+  ```
+  (ou o backup criptografado do provedor do banco). A pasta `backups/` está no `.gitignore`.
+- **Restauração:**
+  ```bash
+  age -d -i <chave-privada> backups/safe-AAAA-MM-DD.dump.age | pg_restore --clean --dbname "$DATABASE_URL"
+  npm run privacy:reapply-deletions   # apaga de novo quem pediu exclusão depois daquele backup
+  ```
+- Os jobs de retenção (contas inativas há 12 meses, simulações com mais de 12 meses, auditoria com mais de 6 meses, aceites órfãos e a lista de exclusões com mais de 30 dias) rodam todo dia às 03:00 (America/Sao_Paulo), dentro da API.
 
 ---
 

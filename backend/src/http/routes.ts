@@ -14,6 +14,7 @@ import { alertsRouter, analysisRouter } from '../modules/analysis/router.js';
 import { projectionRouter } from '../modules/projection/router.js';
 import { simulationsRouter } from '../modules/simulations/router.js';
 import { historyRouter } from '../modules/history/router.js';
+import { registerPrivacy } from '../modules/privacy/router.js';
 
 /** Registro dos routers: UMA linha por módulo, cada um no seu prefixo (evita conflito entre as trilhas). */
 export function apiRouter(deps: AppDeps): Router {
@@ -37,5 +38,6 @@ export function apiRouter(deps: AppDeps): Router {
 function meRouter(deps: AppDeps): Router {
   const me = authedRouter(deps);
   registerResearchConsent(me, deps);
+  registerPrivacy(me, deps);
   return me;
 }

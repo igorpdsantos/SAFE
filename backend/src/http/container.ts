@@ -12,6 +12,7 @@ import { AnalysisService } from '../modules/analysis/service.js';
 import { ProjectionService } from '../modules/projection/service.js';
 import { SimulationService } from '../modules/simulations/service.js';
 import { HistoryService } from '../modules/history/service.js';
+import { PrivacyService } from '../modules/privacy/service.js';
 import type { BudgetRepository } from '../repositories/budgetRepository.js';
 import { PrismaBudgetRepository } from '../repositories/prismaBudgetRepository.js';
 import type { AppDeps } from './deps.js';
@@ -38,14 +39,23 @@ export function createDeps(infra: Infra): AppDeps {
   events.onBudgetChanged(async (userId) => {
     await analysis.refresh(userId);
   });
+  const sessions = new SessionStore(infra.redis, infra.clock);
   return {
     ...infra,
-    sessions: new SessionStore(infra.redis, infra.clock),
+    sessions,
     events,
     budget,
     analysis,
     projection: new ProjectionService(infra.redis, budget),
     simulations: new SimulationService(infra.prisma, budget, infra.clock),
     history: new HistoryService(infra.prisma, infra.clock),
+    privacy: new PrivacyService(
+      infra.prisma,
+      infra.redis,
+      sessions,
+      budget,
+      infra.clock,
+      infra.logger,
+    ),
   };
 }

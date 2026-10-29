@@ -11,6 +11,7 @@ import type { AnalysisService } from '../modules/analysis/service.js';
 import type { ProjectionService } from '../modules/projection/service.js';
 import type { SimulationService } from '../modules/simulations/service.js';
 import type { HistoryService } from '../modules/history/service.js';
+import type { PrivacyService } from '../modules/privacy/service.js';
 
 /** Dependências que o app recebe prontas (permite trocar por versões de teste). */
 export interface AppDeps {
@@ -27,4 +28,5 @@ export interface AppDeps {
   projection: ProjectionService;
   simulations: SimulationService;
   history: HistoryService;
+  privacy: PrivacyService;
 }

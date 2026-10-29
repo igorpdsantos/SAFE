@@ -6,6 +6,7 @@ import { createLogger } from './lib/logger.js';
 import { createPrisma } from './lib/prisma.js';
 import { createRedis } from './lib/redis.js';
 import { googleOidc } from './modules/auth/oidc.js';
+import { scheduleRetention } from './modules/privacy/jobs.js';
 
 function main(): void {
   let env;
@@ -22,7 +23,9 @@ function main(): void {
   const prisma = createPrisma(env.DATABASE_URL);
   const redis = createRedis(env.REDIS_URL);
   const clock = systemClock;
-  const app = createApp(createDeps({ env, logger, prisma, redis, clock, oidc: googleOidc(env) }));
+  const deps = createDeps({ env, logger, prisma, redis, clock, oidc: googleOidc(env) });
+  const app = createApp(deps);
+  scheduleRetention(deps);
   app.listen(env.API_PORT, () => {
     logger.info({ port: env.API_PORT }, 'API do SAFE no ar');
   });

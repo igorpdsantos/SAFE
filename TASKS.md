@@ -136,12 +136,12 @@
 ## Fase 7 · Histórico e privacidade — [SPEC-09](specs/SPEC-09-historico.md), [SPEC-10](specs/SPEC-10-privacidade-dados.md)
 - [x] **T-09.1** `A` `GET /history` com período, limites e `trend` + testes (§2, §4) · início 2026-10-29 18:29 · Igor + IA · feito 2026-10-29 18:29
 - [ ] **T-09.2** `B` Tela "Evolução" (gráfico com faixas de fundo, tabela, seletor de período, 0/1 ponto) (§3)
-- [~] **T-10.1** `B` `GET /me` e `GET /me/export` (download, sem salvar, auditado) (§2, §2.1) · início 2026-10-29 18:30 · Igor + IA
-- [ ] **T-10.2** `B` `DELETE /me` com o fluxo transacional, limpeza de sessões e cache e `Clear-Site-Data` (§2.2)
-- [ ] **T-10.3** `B` Jobs de retenção com `node-cron` + testes com relógio falso (§3)
-- [ ] **T-10.4** `B` `npm run privacy:reapply-deletions` + procedimento de backup e restauração no README (§4)
+- [x] **T-10.1** `B` `GET /me` e `GET /me/export` (download, sem salvar, auditado) (§2, §2.1) · início 2026-10-29 18:30 · Igor + IA · feito 2026-10-29 18:32
+- [x] **T-10.2** `B` `DELETE /me` com o fluxo transacional, limpeza de sessões e cache e `Clear-Site-Data` (§2.2) · início 2026-10-29 18:32 · Igor + IA · feito 2026-10-29 18:32
+- [x] **T-10.3** `B` Jobs de retenção com `node-cron` + testes com relógio falso (§3) · início 2026-10-29 18:32 · Igor + IA · feito 2026-10-29 18:32
+- [x] **T-10.4** `B` `npm run privacy:reapply-deletions` + procedimento de backup e restauração no README (§4) · início 2026-10-29 18:32 · Igor + IA · feito 2026-10-29 18:32
 - [ ] **T-10.5** `B` Tela "Minha conta" (meus dados, pesquisa, exportar, sair de todos, excluir com `EXCLUIR`) + `/conta-excluida` (§5)
-- [ ] **T-10.6** `B` Testes da SPEC-10 §6
+- [x] **T-10.6** `B` Testes da SPEC-10 §6 · início 2026-10-29 18:32 · Igor + IA · feito 2026-10-29 18:32
 
 ## Fase 8 · Avaliação — [SPEC-12](specs/SPEC-12-avaliacao.md)
 - [ ] **T-12.1** `A` `generate-personas.ts` (semente 2026, regras documentadas) → `personas.csv` com 30 linhas commitado (§2)

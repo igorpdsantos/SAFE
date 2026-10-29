@@ -71,7 +71,7 @@
 - [x] **T-05.8** `A` Testes T2–T6 e T8 (fronteiras, saturações, casos-limite, ME, propriedades com fast-check, config) · início 2026-10-29 18:09 · Igor + IA · feito 2026-10-29 18:09
 - [x] **T-05.9** `A` Cobertura de `engine/` ≥ 80% de linhas e ramos no CI (RNF08) · início 2026-10-29 18:11 · Igor + IA · feito 2026-10-29 18:11
 - [x] **T-06.1** `A` `engine/projection.ts` `project()` com e sem `extra`, horizonte, rótulos de mês + testes do §5 · início 2026-10-29 18:09 · Igor + IA · feito 2026-10-29 18:11
-- [ ] **T-06.2** `A` `GET /api/v1/projection` com cache Redis e 409 sem renda *(depende de T-04.7)*
+- [x] **T-06.2** `A` `GET /api/v1/projection` com cache Redis e 409 sem renda *(depende de T-04.7)* · início 2026-10-29 18:29 · Igor + IA · feito 2026-10-29 18:29
 
 ## Fase 3 · Login, sessão e termos — [SPEC-02](specs/SPEC-02-autenticacao-sessao.md), [SPEC-03](specs/SPEC-03-termos-consentimento.md)
 - [x] **T-02.1** `B` `openid-client` + `GET /auth/google` com `state`/`nonce`/PKCE em cookie assinado (§2) · início 2026-10-29 18:12 · Igor + IA · feito 2026-10-29 18:16
@@ -102,17 +102,17 @@
 - [x] **T-04.8** `A` Testes da SPEC-04 §7, incluindo IDOR com 2 usuários e relógio falso para parcelas · início 2026-10-29 18:24 · Igor + IA · feito 2026-10-29 18:24
 
 ## Fase 5 · Análise e simulação — [SPEC-07](specs/SPEC-07-analise-alertas.md), [SPEC-08](specs/SPEC-08-simulacao.md)
-- [~] **T-07.1** `A` `analysisService.getAnalysis` + DTO formatado em pt-BR (`display`, `level`, `exceedsIncome`) (§2, §3) · início 2026-10-29 18:24 · Igor + IA
-- [ ] **T-07.2** `A` `refresh` no `budgetChanged`: upsert do indicador, histórico 1 por dia, alertas sem duplicar e resolução automática (§2)
-- [ ] **T-07.3** `A` `GET /analysis`, `GET /alerts`, `PATCH /alerts/:id` (§3)
-- [ ] **T-07.4** `A` Testes da SPEC-07 §6
+- [x] **T-07.1** `A` `analysisService.getAnalysis` + DTO formatado em pt-BR (`display`, `level`, `exceedsIncome`) (§2, §3) · início 2026-10-29 18:24 · Igor + IA · feito 2026-10-29 18:29
+- [x] **T-07.2** `A` `refresh` no `budgetChanged`: upsert do indicador, histórico 1 por dia, alertas sem duplicar e resolução automática (§2) · início 2026-10-29 18:29 · Igor + IA · feito 2026-10-29 18:29
+- [x] **T-07.3** `A` `GET /analysis`, `GET /alerts`, `PATCH /alerts/:id` (§3) · início 2026-10-29 18:29 · Igor + IA · feito 2026-10-29 18:29
+- [x] **T-07.4** `A` Testes da SPEC-07 §6 · início 2026-10-29 18:29 · Igor + IA · feito 2026-10-29 18:29
 - [x] **T-08.1** `A` `validateSimulation` com tolerância de 1 centavo por parcela (§2.1) · início 2026-10-29 18:11 · Igor + IA · feito 2026-10-29 18:11
 - [x] **T-08.2** `A` `simulate()`: cenário em memória, ΔIRE, ΔC_i, π_i, principais, `unchanged`, `saturatedBoth`, desfecho e severidade, projeção dupla (§2.2–2.5) · início 2026-10-29 18:11 · Igor + IA · feito 2026-10-29 18:11
 - [x] **T-08.3** `A` `engine/explain.ts` com os templates e a formatação pt-BR (§2.6) → pronto quando: gera exatamente a frase do artigo · início 2026-10-29 18:11 · Igor + IA · feito 2026-10-29 18:11
 - [x] **T-08.4** `A` Testes: caso do artigo completo, propriedades (fast-check), V/n/p limites, crítico por CP e por ME, saturado (§5) · início 2026-10-29 18:11 · Igor + IA · feito 2026-10-29 18:11
-- [ ] **T-08.5** `A` `POST/GET/PATCH /simulations` com persistência só em `simulacao_financeira` e rate limit (§3)
-- [ ] **T-08.6** `A` Teste de não alteração: depois de simular, orçamento, análise e histórico idênticos (§5)
-- [ ] **T-08.7** `A` Medir p95 de `/analysis` e `/simulations` localmente (preliminar do RNF01)
+- [x] **T-08.5** `A` `POST/GET/PATCH /simulations` com persistência só em `simulacao_financeira` e rate limit (§3) · início 2026-10-29 18:29 · Igor + IA · feito 2026-10-29 18:29
+- [x] **T-08.6** `A` Teste de não alteração: depois de simular, orçamento, análise e histórico idênticos (§5) · início 2026-10-29 18:29 · Igor + IA · feito 2026-10-29 18:29
+- [x] **T-08.7** `A` Medir p95 de `/analysis` e `/simulations` localmente (preliminar do RNF01) · início 2026-10-29 18:29 · Igor + IA · feito 2026-10-29 18:29 · p95 local: /analysis 4,1 ms (sem cache) e 1,7 ms (com cache), /simulations 2,8 ms (`PERF=1 npx vitest run test/perf`)
 
 ## Fase 6 · Frontend e linguagem — [SPEC-11](specs/SPEC-11-frontend-base.md), [SPEC-15](specs/SPEC-15-linguagem-glossario.md) e telas
 - [ ] **T-11.1** `B` Rotas, guardas (`/auth/me`, termos), layout responsivo com menu lateral/inferior (§2, §5)
@@ -134,7 +134,7 @@
 - [ ] **T-11.7** `B` Verificação manual da SPEC-11 §7 (DevTools: storage, cookies, rede externa; 375 px; 4 navegadores; Lighthouse ≥ 90)
 
 ## Fase 7 · Histórico e privacidade — [SPEC-09](specs/SPEC-09-historico.md), [SPEC-10](specs/SPEC-10-privacidade-dados.md)
-- [ ] **T-09.1** `A` `GET /history` com período, limites e `trend` + testes (§2, §4)
+- [x] **T-09.1** `A` `GET /history` com período, limites e `trend` + testes (§2, §4) · início 2026-10-29 18:29 · Igor + IA · feito 2026-10-29 18:29
 - [ ] **T-09.2** `B` Tela "Evolução" (gráfico com faixas de fundo, tabela, seletor de período, 0/1 ponto) (§3)
 - [ ] **T-10.1** `B` `GET /me` e `GET /me/export` (download, sem salvar, auditado) (§2, §2.1)
 - [ ] **T-10.2** `B` `DELETE /me` com o fluxo transacional, limpeza de sessões e cache e `Clear-Site-Data` (§2.2)

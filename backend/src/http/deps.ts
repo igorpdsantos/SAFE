@@ -7,6 +7,10 @@ import type { Redis } from '../lib/redis.js';
 import type { OidcProvider } from '../modules/auth/oidc.js';
 import type { SessionStore } from '../modules/auth/sessions.js';
 import type { BudgetService } from '../modules/budget/service.js';
+import type { AnalysisService } from '../modules/analysis/service.js';
+import type { ProjectionService } from '../modules/projection/service.js';
+import type { SimulationService } from '../modules/simulations/service.js';
+import type { HistoryService } from '../modules/history/service.js';
 
 /** Dependências que o app recebe prontas (permite trocar por versões de teste). */
 export interface AppDeps {
@@ -19,4 +23,8 @@ export interface AppDeps {
   sessions: SessionStore;
   events: BudgetEvents;
   budget: BudgetService;
+  analysis: AnalysisService;
+  projection: ProjectionService;
+  simulations: SimulationService;
+  history: HistoryService;
 }

@@ -61,7 +61,7 @@ export interface GlossaryEntry {
 | `capacidade-pagamento` | Folga mensal (capacidade de pagamento, CP) | Quanto sobra no mês depois de pagar suas despesas e parcelas. |
 | `liquidez` | Reserva de emergência (liquidez, LF) | Por quantos meses seu dinheiro guardado pagaria suas despesas se a renda parasse. |
 | `nivel-endividamento` | Tamanho das dívidas (nível de endividamento, NE) | Quantos meses de renda você precisaria para pagar tudo o que deve. |
-| `renda-liquida` | Renda líquida | O que cai na sua conta, já sem descontos como INSS e imposto de renda. |
+| `renda-liquida` | Renda líquida | O que você recebe por mês, já sem INSS e imposto de renda. Não tire o consignado: ele entra como dívida. |
 | `despesa-fixa` | Despesa fixa | Conta que se repete todo mês com valor parecido, como aluguel e internet. |
 | `despesa-variavel` | Despesa variável | Gasto que muda de mês para mês, como mercado e transporte. |
 | `parcela` | Parcela | Cada pagamento mensal de uma compra ou empréstimo dividido. |

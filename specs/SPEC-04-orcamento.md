@@ -37,6 +37,12 @@ CRUD das quatro entidades que formam a situação financeira do usuário, com va
 ### 2.4 Saldo usado no cálculo (D-04)
 `balanceUsed = balanceDue` se informado; senão, `installmentValue × remainingNow`. Se informado, a interface avisa: "Atualize o saldo devedor de vez em quando; ele não diminui sozinho."
 
+### 2.5 Renda e consignado (D-16)
+- A renda informada é a líquida **dos descontos obrigatórios** (INSS, imposto de renda). Descontos de empréstimo em folha (consignado) **não** são tirados da renda: o consignado é cadastrado como dívida, categoria `CONSIGNADO`.
+- Assim a parcela conta uma vez só e pesa no comprometimento da renda, como qualquer outra dívida.
+- `<FieldHelp>` do campo de renda: "Quanto você recebe por mês, já sem INSS e imposto de renda. Se você tem consignado, some a parcela de volta e cadastre o consignado em Dívidas." Placeholder "Ex.: 2.700,00".
+- Ao escolher a categoria `CONSIGNADO` numa dívida, a interface lembra: "Confira se você somou a parcela deste consignado de volta à sua renda, para ela não contar duas vezes."
+
 ## 3. Endpoints (todos: `requireAuth` + `requireTermsAccepted`; os que alteram, também `requireCsrf`)
 Para cada recurso `R` ∈ {`incomes`, `expenses`, `debts`, `reserves`}:
 

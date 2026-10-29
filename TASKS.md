@@ -63,14 +63,14 @@
 > Pode começar em paralelo com a Fase 1 (só precisa de `decimal.js`).
 - [x] **T-05.1** `A` `engine/types.ts`, `engine/config.ts` (`DEFAULT_CONFIG`, `withConfig` imutável) e regra ESLint `no-restricted-imports` em `engine/` (§2, §7) · início 2026-10-29 18:06 · Igor + IA · feito 2026-10-29 18:07
 - [x] **T-05.2** `A` **Escrever primeiro** o teste T1 (caso do artigo) e o teste do caso de simulação do PRD §6.6, ainda falhando · início 2026-10-29 18:07 · Igor + IA · feito 2026-10-29 18:07
-- [~] **T-05.3** `A` `totals`, `computeIndicators` (erro sem renda), `normalize` com saturação e **clamp de R_CP** (§3.1–3.3) · início 2026-10-29 18:07 · Igor + IA
-- [ ] **T-05.4** `A` `computeIre` (arredondamento só no `rounded`), faixas e `engine/labels.ts` (rótulos, cores, ícones, recomendações) (§3.4, §5)
-- [ ] **T-05.5** `A` `staticDecomposition` com a regra dos 75% e desempate fixo (§3.5)
-- [ ] **T-05.6** `A` `diagnose` com renda residual e regras críticas (§3.6) → pronto quando: T1 passa
-- [ ] **T-05.7** `A` `elapsedMonths` + testes T7 (§3.7)
-- [ ] **T-05.8** `A` Testes T2–T6 e T8 (fronteiras, saturações, casos-limite, ME, propriedades com fast-check, config)
+- [x] **T-05.3** `A` `totals`, `computeIndicators` (erro sem renda), `normalize` com saturação e **clamp de R_CP** (§3.1–3.3) · início 2026-10-29 18:07 · Igor + IA · feito 2026-10-29 18:09
+- [x] **T-05.4** `A` `computeIre` (arredondamento só no `rounded`), faixas e `engine/labels.ts` (rótulos, cores, ícones, recomendações) (§3.4, §5) · início 2026-10-29 18:09 · Igor + IA · feito 2026-10-29 18:09
+- [x] **T-05.5** `A` `staticDecomposition` com a regra dos 75% e desempate fixo (§3.5) · início 2026-10-29 18:09 · Igor + IA · feito 2026-10-29 18:09
+- [x] **T-05.6** `A` `diagnose` com renda residual e regras críticas (§3.6) → pronto quando: T1 passa · início 2026-10-29 18:09 · Igor + IA · feito 2026-10-29 18:09
+- [x] **T-05.7** `A` `elapsedMonths` + testes T7 (§3.7) · início 2026-10-29 18:09 · Igor + IA · feito 2026-10-29 18:09
+- [x] **T-05.8** `A` Testes T2–T6 e T8 (fronteiras, saturações, casos-limite, ME, propriedades com fast-check, config) · início 2026-10-29 18:09 · Igor + IA · feito 2026-10-29 18:09
 - [ ] **T-05.9** `A` Cobertura de `engine/` ≥ 80% de linhas e ramos no CI (RNF08)
-- [ ] **T-06.1** `A` `engine/projection.ts` `project()` com e sem `extra`, horizonte, rótulos de mês + testes do §5
+- [~] **T-06.1** `A` `engine/projection.ts` `project()` com e sem `extra`, horizonte, rótulos de mês + testes do §5 · início 2026-10-29 18:09 · Igor + IA
 - [ ] **T-06.2** `A` `GET /api/v1/projection` com cache Redis e 409 sem renda *(depende de T-04.7)*
 
 ## Fase 3 · Login, sessão e termos — [SPEC-02](specs/SPEC-02-autenticacao-sessao.md), [SPEC-03](specs/SPEC-03-termos-consentimento.md)

@@ -92,17 +92,17 @@
 - [x] **T-03.7** `B` Testes dos critérios da SPEC-03 §6 · início 2026-10-29 18:19 · Igor + IA · feito 2026-10-29 18:19
 
 ## Fase 4 · Orçamento — [SPEC-04](specs/SPEC-04-orcamento.md)
-- [~] **T-04.1** `A` `lib/crypto.ts` AES-256-GCM (`encrypt`/`decrypt`) + testes (§2.2) · início 2026-10-29 18:20 · Igor + IA
-- [ ] **T-04.2** `A` Repositórios Prisma e em memória com `userId` obrigatório em todo método; descrição cifrada e decifrada no repositório (§2.2, §5)
-- [ ] **T-04.3** `A` Schemas zod das 4 entidades + enums de categoria + limites de quantidade (§2, §2.1)
-- [ ] **T-04.4** `A` Rotas CRUD de `incomes`, `expenses`, `debts`, `reserves` + `GET /budget/summary` (§3)
-- [ ] **T-04.5** `A` `reference_date`, `remainingNow`, `active` e `balanceUsed` nas dívidas (§2.3, §2.4)
-- [ ] **T-04.6** `A` Efeitos de escrita: auditoria só com nomes de campos (na transação), invalidar cache e emitir `budgetChanged` (§4)
-- [ ] **T-04.7** `A` `buildSnapshot(userId, today)` só com dívidas ativas (§5)
-- [ ] **T-04.8** `A` Testes da SPEC-04 §7, incluindo IDOR com 2 usuários e relógio falso para parcelas
+- [x] **T-04.1** `A` `lib/crypto.ts` AES-256-GCM (`encrypt`/`decrypt`) + testes (§2.2) · início 2026-10-29 18:20 · Igor + IA · feito 2026-10-29 18:24
+- [x] **T-04.2** `A` Repositórios Prisma e em memória com `userId` obrigatório em todo método; descrição cifrada e decifrada no repositório (§2.2, §5) · início 2026-10-29 18:24 · Igor + IA · feito 2026-10-29 18:24
+- [x] **T-04.3** `A` Schemas zod das 4 entidades + enums de categoria + limites de quantidade (§2, §2.1) · início 2026-10-29 18:24 · Igor + IA · feito 2026-10-29 18:24
+- [x] **T-04.4** `A` Rotas CRUD de `incomes`, `expenses`, `debts`, `reserves` + `GET /budget/summary` (§3) · início 2026-10-29 18:24 · Igor + IA · feito 2026-10-29 18:24
+- [x] **T-04.5** `A` `reference_date`, `remainingNow`, `active` e `balanceUsed` nas dívidas (§2.3, §2.4) · início 2026-10-29 18:24 · Igor + IA · feito 2026-10-29 18:24
+- [x] **T-04.6** `A` Efeitos de escrita: auditoria só com nomes de campos (na transação), invalidar cache e emitir `budgetChanged` (§4) · início 2026-10-29 18:24 · Igor + IA · feito 2026-10-29 18:24
+- [x] **T-04.7** `A` `buildSnapshot(userId, today)` só com dívidas ativas (§5) · início 2026-10-29 18:24 · Igor + IA · feito 2026-10-29 18:24
+- [x] **T-04.8** `A` Testes da SPEC-04 §7, incluindo IDOR com 2 usuários e relógio falso para parcelas · início 2026-10-29 18:24 · Igor + IA · feito 2026-10-29 18:24
 
 ## Fase 5 · Análise e simulação — [SPEC-07](specs/SPEC-07-analise-alertas.md), [SPEC-08](specs/SPEC-08-simulacao.md)
-- [ ] **T-07.1** `A` `analysisService.getAnalysis` + DTO formatado em pt-BR (`display`, `level`, `exceedsIncome`) (§2, §3)
+- [~] **T-07.1** `A` `analysisService.getAnalysis` + DTO formatado em pt-BR (`display`, `level`, `exceedsIncome`) (§2, §3) · início 2026-10-29 18:24 · Igor + IA
 - [ ] **T-07.2** `A` `refresh` no `budgetChanged`: upsert do indicador, histórico 1 por dia, alertas sem duplicar e resolução automática (§2)
 - [ ] **T-07.3** `A` `GET /analysis`, `GET /alerts`, `PATCH /alerts/:id` (§3)
 - [ ] **T-07.4** `A` Testes da SPEC-07 §6

@@ -3,11 +3,11 @@ import type { Express } from 'express';
 import type { Env } from '../../src/config/env.js';
 import { createApp } from '../../src/http/app.js';
 import type { AppDeps } from '../../src/http/deps.js';
+import { createDeps } from '../../src/http/container.js';
 import { FakeClock } from '../../src/lib/clock.js';
 import { createLogger, type Logger } from '../../src/lib/logger.js';
 import { createPrisma, type PrismaClient } from '../../src/lib/prisma.js';
 import { createRedis, type Redis } from '../../src/lib/redis.js';
-import { SessionStore } from '../../src/modules/auth/sessions.js';
 import { testEnv } from './env.js';
 import { FakeOidc } from './fakeOidc.js';
 
@@ -66,15 +66,14 @@ export function buildApp(opts: { env?: Partial<Env>; logger?: Logger } = {}): Te
   const env = testEnv(opts.env);
   const clock = new FakeClock();
   const oidc = new FakeOidc();
-  const deps: AppDeps = {
+  const deps: AppDeps = createDeps({
     env,
     logger: opts.logger ?? createLogger('silent'),
     prisma,
     redis,
     clock,
     oidc,
-    sessions: new SessionStore(redis, clock),
-  };
+  });
   return { app: createApp(deps), deps, clock, oidc };
 }
 

@@ -178,7 +178,7 @@ model Alert {
 model AuditLog {
   id         Int      @id @default(autoincrement()) @map("log_id")
   userId     Int?     @map("user_id")
-  operation  String   @map("operacao") @db.VarChar(20)
+  operation  String   @map("operacao") @db.VarChar(30)
   entity     String   @map("entidade") @db.VarChar(40)
   entityId   Int?     @map("entidade_id")
   occurredAt DateTime @default(now()) @map("dt_evento") @db.Timestamptz(3)

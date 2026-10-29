@@ -170,7 +170,7 @@ a {
   color: var(--brand);
 }
 .main {
-  padding: 1.5rem;
+  padding: 1.5rem 1.5rem 8rem;
   max-width: 1100px;
   width: 100%;
   margin: 0 auto;
@@ -550,7 +550,8 @@ th {
   min-height: 100vh;
   display: grid;
   place-items: center;
-  padding: 1rem;
+  /* Espaço para o aviso de cookies fixo não cobrir os botões. */
+  padding: 1rem 1rem 10rem;
 }
 .center-page > .card {
   width: min(520px, 100%);

@@ -88,7 +88,7 @@
 - [x] **T-03.3** `B` `GET/PUT /me/research-consent` com revogação (§4) · início 2026-10-29 18:19 · Igor + IA · feito 2026-10-29 18:19
 - [x] **T-03.4** `B` Arquivos legais versionados em `frontend/public/legal/` (estrutura) (§2) · início 2026-10-29 18:19 · Igor + IA · feito 2026-10-29 18:19
 - [ ] **T-03.5** `A+B` **(equipe)** Redigir Termos de Uso v1.0 e Política de Privacidade v1.0 com o conteúdo mínimo da SEGURANCA_LGPD §7.1, cada um com "Em resumo" em linguagem simples (SPEC-15 §5) · rascunho em `frontend/public/legal/` (2026-10-29, Igor + IA); falta o e-mail de contato (T-00.3) e a revisão da equipe
-- [ ] **T-03.6** `B` Tela `/termos` (3 obrigatórios + pesquisa opcional, nada pré-marcado) e `<CookieNotice>` (§5) *(depende de T-11.1)*
+- [x] **T-03.6** `B` Tela `/termos` (3 obrigatórios + pesquisa opcional, nada pré-marcado) e `<CookieNotice>` (§5) *(depende de T-11.1)* · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
 - [x] **T-03.7** `B` Testes dos critérios da SPEC-03 §6 · início 2026-10-29 18:19 · Igor + IA · feito 2026-10-29 18:19
 
 ## Fase 4 · Orçamento — [SPEC-04](specs/SPEC-04-orcamento.md)
@@ -115,33 +115,33 @@
 - [x] **T-08.7** `A` Medir p95 de `/analysis` e `/simulations` localmente (preliminar do RNF01) · início 2026-10-29 18:29 · Igor + IA · feito 2026-10-29 18:29 · p95 local: /analysis 4,1 ms (sem cache) e 1,7 ms (com cache), /simulations 2,8 ms (`PERF=1 npx vitest run test/perf`)
 
 ## Fase 6 · Frontend e linguagem — [SPEC-11](specs/SPEC-11-frontend-base.md), [SPEC-15](specs/SPEC-15-linguagem-glossario.md) e telas
-- [~] **T-11.1** `B` Rotas, guardas (`/auth/me`, termos), layout responsivo com menu lateral/inferior (§2, §5) · início 2026-10-29 18:33 · Igor + IA
-- [ ] **T-11.2** `B` Cliente HTTP com CSRF e tratamento padronizado de erros; TanStack Query **sem persistência** (§3)
-- [ ] **T-11.3** `B` `lib/storage.ts` (lista fechada) + lint contra `localStorage` direto + `handleSessionEnd` + `BroadcastChannel` (§4)
-- [ ] **T-11.4** `B` Tokens de cor e tema, `RiskBadge`, `IreGauge`, `IndicatorCard`, `FactorList`, `MoneyInput`, `ConfirmDialog`, `AlertBanner`, `Disclaimer` (§5)
-- [ ] **T-11.5** `B` Formatadores pt-BR (`formatMoney`, `formatPercent`, datas) + testes
-- [ ] **T-11.6** `B` Tela de login com avisos e mensagens de erro e de expiração (§6)
+- [x] **T-11.1** `B` Rotas, guardas (`/auth/me`, termos), layout responsivo com menu lateral/inferior (§2, §5) · início 2026-10-29 18:33 · Igor + IA · feito 2026-10-29 18:49
+- [x] **T-11.2** `B` Cliente HTTP com CSRF e tratamento padronizado de erros; TanStack Query **sem persistência** (§3) · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
+- [x] **T-11.3** `B` `lib/storage.ts` (lista fechada) + lint contra `localStorage` direto + `handleSessionEnd` + `BroadcastChannel` (§4) · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
+- [x] **T-11.4** `B` Tokens de cor e tema, `RiskBadge`, `IreGauge`, `IndicatorCard`, `FactorList`, `MoneyInput`, `ConfirmDialog`, `AlertBanner`, `Disclaimer` (§5) · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
+- [x] **T-11.5** `B` Formatadores pt-BR (`formatMoney`, `formatPercent`, datas) + testes · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
+- [x] **T-11.6** `B` Tela de login com avisos e mensagens de erro e de expiração (§6) · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
 - [x] **T-15.1** `B` `content/glossary.ts` com as 33 entradas e `short` (§3) · início 2026-10-29 16:56 · Igor + IA · feito 2026-10-29 16:57
 - [x] **T-15.2** `B` Escrever `long`, `example` e `whyItMatters` de todas as entradas (§3) · início 2026-10-29 16:59 · Igor + IA · feito 2026-10-29 17:02
-- [ ] **T-15.3** `B` Componentes `<Term>` (toque, teclado, hover), `<FieldHelp>`, `<HelpPanel>`, `<ResultExplainer>` acessíveis (§4)
-- [ ] **T-15.4** `B` Página `/glossario` com busca + cartão "Como o SAFE funciona" (§4.5, §4.6)
-- [ ] **T-15.5** `B` Testes: todo `<Term id>` existe, `short` ≤ 140 caracteres, termos e siglas proibidos soltos nos textos (§6)
-- [ ] **T-04.9** `B` Tela "Meu orçamento" (4 abas, `<FieldHelp>` em todos os campos, aviso da descrição, confirmação de exclusão, estados vazios) — SPEC-04 §6 + SPEC-15 §5
-- [ ] **T-07.5** `B` Dashboard (card do IRE, 4 indicadores com `<Term>` e `<ResultExplainer>`, "Por que meu risco é este?", alertas, checklist sem dados) — SPEC-07 §5
-- [ ] **T-08.8** `B` Tela "Simular" (formulário explicado, 4 blocos, banners por desfecho, premissas, "simular outros valores") — SPEC-08 §4
-- [ ] **T-06.3** `B` Tela "Projeção" (gráfico + tabela + resumo + premissas) — SPEC-06 §4
+- [x] **T-15.3** `B` Componentes `<Term>` (toque, teclado, hover), `<FieldHelp>`, `<HelpPanel>`, `<ResultExplainer>` acessíveis (§4) · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
+- [x] **T-15.4** `B` Página `/glossario` com busca + cartão "Como o SAFE funciona" (§4.5, §4.6) · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
+- [x] **T-15.5** `B` Testes: todo `<Term id>` existe, `short` ≤ 140 caracteres, termos e siglas proibidos soltos nos textos (§6) · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
+- [x] **T-04.9** `B` Tela "Meu orçamento" (4 abas, `<FieldHelp>` em todos os campos, aviso da descrição, confirmação de exclusão, estados vazios) — SPEC-04 §6 + SPEC-15 §5 · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
+- [x] **T-07.5** `B` Dashboard (card do IRE, 4 indicadores com `<Term>` e `<ResultExplainer>`, "Por que meu risco é este?", alertas, checklist sem dados) — SPEC-07 §5 · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
+- [x] **T-08.8** `B` Tela "Simular" (formulário explicado, 4 blocos, banners por desfecho, premissas, "simular outros valores") — SPEC-08 §4 · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
+- [x] **T-06.3** `B` Tela "Projeção" (gráfico + tabela + resumo + premissas) — SPEC-06 §4 · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
 - [ ] **T-15.6** `B` Revisão de linguagem de todas as telas com o checklist da SPEC-15 §5, feita por alguém que não escreveu a tela
 - [x] **T-15.7** `B` Alinhar o glossário com a D-16 (renda e consignado) e precisar o texto do rotativo pelas fontes consultadas · início 2026-10-29 17:49 · Igor + IA · feito 2026-10-29 17:49
 - [ ] **T-11.7** `B` Verificação manual da SPEC-11 §7 (DevTools: storage, cookies, rede externa; 375 px; 4 navegadores; Lighthouse ≥ 90)
 
 ## Fase 7 · Histórico e privacidade — [SPEC-09](specs/SPEC-09-historico.md), [SPEC-10](specs/SPEC-10-privacidade-dados.md)
 - [x] **T-09.1** `A` `GET /history` com período, limites e `trend` + testes (§2, §4) · início 2026-10-29 18:29 · Igor + IA · feito 2026-10-29 18:29
-- [ ] **T-09.2** `B` Tela "Evolução" (gráfico com faixas de fundo, tabela, seletor de período, 0/1 ponto) (§3)
+- [x] **T-09.2** `B` Tela "Evolução" (gráfico com faixas de fundo, tabela, seletor de período, 0/1 ponto) (§3) · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
 - [x] **T-10.1** `B` `GET /me` e `GET /me/export` (download, sem salvar, auditado) (§2, §2.1) · início 2026-10-29 18:30 · Igor + IA · feito 2026-10-29 18:32
 - [x] **T-10.2** `B` `DELETE /me` com o fluxo transacional, limpeza de sessões e cache e `Clear-Site-Data` (§2.2) · início 2026-10-29 18:32 · Igor + IA · feito 2026-10-29 18:32
 - [x] **T-10.3** `B` Jobs de retenção com `node-cron` + testes com relógio falso (§3) · início 2026-10-29 18:32 · Igor + IA · feito 2026-10-29 18:32
 - [x] **T-10.4** `B` `npm run privacy:reapply-deletions` + procedimento de backup e restauração no README (§4) · início 2026-10-29 18:32 · Igor + IA · feito 2026-10-29 18:32
-- [ ] **T-10.5** `B` Tela "Minha conta" (meus dados, pesquisa, exportar, sair de todos, excluir com `EXCLUIR`) + `/conta-excluida` (§5)
+- [x] **T-10.5** `B` Tela "Minha conta" (meus dados, pesquisa, exportar, sair de todos, excluir com `EXCLUIR`) + `/conta-excluida` (§5) · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
 - [x] **T-10.6** `B` Testes da SPEC-10 §6 · início 2026-10-29 18:32 · Igor + IA · feito 2026-10-29 18:32
 
 ## Fase 8 · Avaliação — [SPEC-12](specs/SPEC-12-avaliacao.md)
@@ -158,7 +158,7 @@
 ## Fase 9 · Qualidade e entrega — [SPEC-13](specs/SPEC-13-qualidade-testes.md)
 - [x] **T-13.1** `A` Infra de testes de integração (Postgres e Redis de teste, reset entre testes, login de teste) · **fazer logo depois do M2, antes da T-04.8** · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:16
 - [ ] **T-13.2** `B` Suíte de segurança completa (§3)
-- [ ] **T-13.3** `B` Playwright com os fluxos E2E 1–10 (§4)
+- [x] **T-13.3** `B` Playwright com os fluxos E2E 1–10 (§4) · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
 - [ ] **T-13.4** `A+B` `docs/aceite.md` com cada HU e seus critérios marcados (§5)
 - [ ] **T-13.5** `A+B` Homologação: CI verde, E2E ok, checklist da SEGURANCA_LGPD §12, README final, tag `v1.0.0` (§6)
 

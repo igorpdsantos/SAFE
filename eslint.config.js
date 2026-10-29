@@ -94,7 +94,8 @@ export default tseslint.config(
     },
   },
   {
-    files: ['frontend/src/lib/storage.ts'],
+    // Os testes E2E inspecionam o armazenamento para provar que ele está limpo.
+    files: ['frontend/src/lib/storage.ts', 'frontend/src/lib/storage.test.ts', 'frontend/e2e/**'],
     rules: { 'no-restricted-globals': 'off', 'no-restricted-properties': 'off' },
   },
 );

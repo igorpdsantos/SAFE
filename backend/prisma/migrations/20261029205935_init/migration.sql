@@ -137,7 +137,7 @@ CREATE TABLE "alerta" (
 CREATE TABLE "log_auditoria" (
     "log_id" SERIAL NOT NULL,
     "user_id" INTEGER,
-    "operacao" VARCHAR(20) NOT NULL,
+    "operacao" VARCHAR(30) NOT NULL,
     "entidade" VARCHAR(40) NOT NULL,
     "entidade_id" INTEGER,
     "dt_evento" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

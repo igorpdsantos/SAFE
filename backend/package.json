@@ -13,7 +13,8 @@
     "db:deploy": "prisma migrate deploy",
     "db:generate": "prisma generate",
     "postinstall": "prisma generate || true",
-    "privacy:reapply-deletions": "tsx --env-file-if-exists=../.env scripts/reapplyDeletions.ts"
+    "privacy:reapply-deletions": "tsx --env-file-if-exists=../.env scripts/reapplyDeletions.ts",
+    "dev:demo": "NODE_ENV=test tsx watch --env-file-if-exists=../.env src/server.ts"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.10",

@@ -50,8 +50,8 @@
 ## Fase 1 · Fundação — [SPEC-01](specs/SPEC-01-fundacao.md)
 - [x] **T-01.1** `A` Monorepo com workspaces `backend`/`frontend`, TypeScript strict, ESLint + Prettier, Vitest (§3) · início 2026-10-29 17:53 · Igor + IA · feito 2026-10-29 17:57
 - [x] **T-01.2** `A` `docker-compose.yml` (Postgres 16, Redis 7 sem persistência), `.env.example` e `config/env.ts` validando com zod (§4.5, §4.7) → pronto quando: faltar variável impede o boot com mensagem clara · início 2026-10-29 17:57 · Igor + IA · feito 2026-10-29 17:58
-- [~] **T-01.3** `A` `schema.prisma` com todas as tabelas do PRD §11.2 + SEGURANCA_LGPD §11, `CHECK`s e `ON DELETE`; migration inicial (§4.6) · início 2026-10-29 17:58 · Igor + IA
-- [ ] **T-01.4** `A` `lib/decimal.ts` (`parseMoney`, `toMoneyString`, `toRatioString`, `round2`) + testes (§4.1)
+- [x] **T-01.3** `A` `schema.prisma` com todas as tabelas do PRD §11.2 + SEGURANCA_LGPD §11, `CHECK`s e `ON DELETE`; migration inicial (§4.6) · início 2026-10-29 17:58 · Igor + IA · feito 2026-10-29 18:00
+- [~] **T-01.4** `A` `lib/decimal.ts` (`parseMoney`, `toMoneyString`, `toRatioString`, `round2`) + testes (§4.1) · início 2026-10-29 18:00 · Igor + IA
 - [ ] **T-01.5** `A` `lib/errors.ts` (`AppError`) + tratador de erros + 404 JSON (§4.2)
 - [ ] **T-01.6** `A` Logger `pino` com `redact` + `requestId` + log de acesso sem corpo (§4.3)
 - [ ] **T-01.7** `A` App Express com middlewares na ordem do §4.4 + `GET /api/v1/health`

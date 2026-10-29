@@ -6,7 +6,7 @@ O usuário cadastra renda, despesas, dívidas e reserva. O SAFE calcula o **índ
 
 Projeto de TCC do curso de Engenharia de Software da Universidade São Judas Tadeu (2026), orientado pelo Prof. Nelson Aguiar. O artigo correspondente é *"Prevenção do superendividamento por meio da tecnologia: a abordagem de simulação financeira do SAFE"*.
 
-> **Status (29/10/2026):** especificação completa e **nenhum código ainda**. Entrega do software: **02/11/2026**. O progresso fica no [`TASKS.md`](TASKS.md); rode `node scripts/tasks-status.mjs` para ver o painel.
+> **Status (29/10/2026):** especificação completa; fundação do código (SPEC-01) em andamento. Entrega do software: **02/11/2026**. O progresso fica no [`TASKS.md`](TASKS.md); rode `node scripts/tasks-status.mjs` para ver o painel.
 
 ---
 
@@ -168,7 +168,7 @@ A escolha da stack é a decisão D-02 (PRD §12). Por que o motor é "puro": API
 
 ## 5. Estrutura de pastas
 
-> Legenda: ✅ já existe · 🔜 criado na Fase 1 ([SPEC-01](specs/SPEC-01-fundacao.md)) ou depois
+> Legenda: ✅ já existe · 🔜 criado nas próximas specs
 
 ```
 SAFE/
@@ -177,27 +177,32 @@ SAFE/
 ├── specs/SPEC-01 … SPEC-15                                         ✅ especificações
 ├── docs/referencias/       artigo, especificação original e relatório  ✅ só consulta
 ├── scripts/tasks-status.mjs                                        ✅ painel das tarefas
-├── package.json            workspaces + scripts npm                🔜
-├── docker-compose.yml      postgres + redis                        🔜
-├── .env.example            variáveis (valores fictícios)           🔜
+├── package.json            workspaces + scripts npm                ✅
+├── tsconfig.base.json  eslint.config.js  .prettierrc.json          ✅ TS strict, lint e formatação
+├── docker-compose.yml      postgres + redis (api e web opcionais)  ✅
+├── .env.example            variáveis (valores fictícios)           ✅
 ├── .github/
-│   ├── workflows/ci.yml    lint, typecheck, testes, cobertura, audit  🔜
-│   └── pull_request_template.md                                    🔜
+│   ├── workflows/ci.yml    lint, typecheck, testes, cobertura, audit  ✅
+│   └── pull_request_template.md                                    ✅
 ├── backend/
-│   ├── prisma/             schema.prisma + migrations              🔜
+│   ├── prisma.config.ts    configuração do Prisma 7 (lê o .env da raiz)  ✅
+│   ├── prisma/             schema.prisma + migrations              ✅
 │   ├── data/context/       (opcional) séries Peic/BCB              🔜
-│   ├── test/               api/ e security/                        🔜
+│   ├── test/               api/, security/ e helpers/              ✅
 │   └── src/
-│       ├── config/         env.ts (variáveis validadas)            🔜
-│       ├── engine/         MOTOR PURO do IRE                       🔜
-│       ├── lib/            decimal, crypto, logger, errors, audit, cache  🔜
+│       ├── config/         env.ts (variáveis validadas com zod)    ✅
+│       ├── engine/         MOTOR PURO do IRE (decimal.ts já existe)  ✅
+│       ├── generated/      Prisma Client (gerado no npm install; fora do Git)
+│       ├── lib/            decimal, errors, logger ✅ · crypto, audit, cache 🔜
 │       ├── repositories/   acesso a dados (sempre por userId)      🔜
-│       ├── modules/        auth, terms, budget, analysis, simulations, history, alerts, privacy  🔜
-│       └── http/           app.ts, routes.ts, middlewares          🔜
+│       ├── modules/        health ✅ · auth, terms, budget, analysis, simulations, history, alerts, privacy 🔜
+│       ├── http/           app.ts, routes.ts, deps.ts, middlewares/  ✅
+│       └── server.ts                                               ✅
 ├── frontend/
+│   ├── index.html  vite.config.ts                                  ✅
 │   ├── public/legal/       Termos e Política versionados           🔜
 │   ├── e2e/                testes Playwright                       🔜
-│   └── src/                api/, components/, content/glossary.ts, lib/, pages/, fixtures/  🔜
+│   └── src/                main.tsx, App.tsx ✅ · api/, components/, content/glossary.ts, lib/, pages/, fixtures/ 🔜
 └── evaluation/             personas, scripts de avaliação, results/   🔜
 ```
 
@@ -205,17 +210,16 @@ SAFE/
 
 ## 6. Rodando o projeto
 
-> ⚠️ Os comandos abaixo passam a funcionar quando a **Fase 1** (marco M1) estiver na `main`. Quem fizer a T-01.10 atualiza esta seção com o que realmente existir.
-
 **Pré-requisitos:** Node.js 22, Docker e Docker Compose, Git, GitHub CLI (`gh`, opcional) e uma conta Google para testar o login.
 
 ```bash
-git clone <url-do-repositorio> && cd SAFE
-cp .env.example .env              # preencher GOOGLE_CLIENT_ID/SECRET (tarefa T-00.2) e gerar os segredos
-docker compose up -d              # sobe Postgres e Redis
-npm install
+git clone https://github.com/igorpdsantos/SAFE.git && cd SAFE
+cp .env.example .env              # gerar DATA_ENC_KEY e SESSION_SECRET (abaixo); GOOGLE_* vêm da T-00.2
+docker compose up -d              # sobe Postgres (com o banco safe_test) e Redis
+npm install                       # também gera o Prisma Client
 npm run db:migrate                # cria as tabelas
 npm run dev                       # API em :3000 e site em http://localhost:5173
+curl localhost:5173/api/v1/health # {"status":"ok"}
 ```
 
 Gerar segredos:
@@ -223,15 +227,24 @@ Gerar segredos:
 node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
 ```
 
+**Já tem um Postgres rodando na porta 5432?** Use outra porta para o do Docker: no `.env`, `POSTGRES_PORT=5433` e troque `5432` por `5433` em `DATABASE_URL` e `TEST_DATABASE_URL`. O mesmo vale para o Redis com `REDIS_PORT`.
+
+Para aplicar as migrations no banco de testes: `DATABASE_URL=$TEST_DATABASE_URL npm run db:deploy -w backend`.
+
 | Comando | O que faz |
 |---|---|
 | `npm run dev` | API + frontend com recarga automática |
-| `npm run lint` / `npm run typecheck` | Padrões de código / tipos |
-| `npm test` | Testes de unidade e integração |
-| `npm run test:coverage` | Cobertura (meta: `engine/` ≥ 80%) |
+| `npm run lint` / `npm run typecheck` | ESLint + Prettier / tipos dos dois workspaces |
+| `npm run format` | Formata tudo com o Prettier |
+| `npm test` | Testes de unidade e integração (backend e frontend) |
+| `npm run test:coverage` | Cobertura do `engine/` (meta ≥ 80%, o CI falha abaixo disso) |
 | `npm run test:e2e` | Fluxos completos no navegador (Playwright) |
-| `npm run eval:<script>` | Avaliação do modelo: `personas`, `agreement`, `sensitivity`, `baseline`, `simulation-check`, `latency` |
-| `npm run tasks` | Painel do `TASKS.md` (o mesmo que `node scripts/tasks-status.mjs`, que já funciona hoje) |
+| `npm run db:migrate` | `prisma migrate dev` (cria e aplica migrations) |
+| `npm run build` | Compila a API (`backend/dist`) e o site (`frontend/dist`) |
+| `npm run eval:<script>` | Avaliação do modelo: `personas`, `agreement`, `sensitivity`, `baseline`, `simulation-check`, `latency` (SPEC-12) |
+| `npm run tasks` | Painel do `TASKS.md` |
+
+Sem alguma variável obrigatória, a API não sobe e lista o que falta (por exemplo, `REDIS_URL está faltando`).
 
 ---
 
@@ -241,12 +254,15 @@ node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
 |---|---|---|
 | `.env` | Segredos e configuração local | **Nunca** vai para o Git. Copiado do `.env.example` |
 | `.env.example` | Lista de variáveis com valores fictícios | Atualizar sempre que surgir variável nova |
-| `docker-compose.yml` | Postgres e Redis locais | Redis sem persistência (sessões somem ao reiniciar) |
-| `backend/prisma/schema.prisma` | Modelo do banco | Só a trilha A altera; uma migration por PR |
-| `.github/workflows/ci.yml` | CI de todo PR | Bloqueia merge se falhar |
+| `docker-compose.yml` | Postgres e Redis locais | Redis sem persistência (sessões somem ao reiniciar). `--profile app` sobe também `api` e `web` |
+| `backend/prisma/schema.prisma` | Modelo do banco | Só a trilha A altera; uma migration por PR. `CHECK`s ficam no SQL da migration |
+| `backend/prisma.config.ts` | Configuração do Prisma 7 (schema, migrations, `DATABASE_URL`) | Lê o `.env` da raiz |
+| `tsconfig.base.json` | TypeScript strict compartilhado | `backend/` usa NodeNext; `frontend/` usa Bundler |
+| `.github/workflows/ci.yml` | CI de todo PR | Lint, typecheck, migrations, testes, cobertura e `npm audit --audit-level=high` |
 | `.github/pull_request_template.md` | Checklist de PR | Conteúdo do `CONTRIBUTING.md` §5 |
-| `eslint.config.*` | Regras de código | Inclui: `engine/` não importa infraestrutura; `localStorage` só via `lib/storage.ts` |
-| `vite.config.ts` | Frontend | Proxy de `/api` para a API (mesma origem, sem CORS) |
+| `eslint.config.js` | Regras de código | Inclui: `engine/` não importa infraestrutura nem lê o relógio; `localStorage` só via `lib/storage.ts` |
+| `.prettierrc.json` | Formatação | Aspas simples, 100 colunas |
+| `frontend/vite.config.ts` | Frontend e testes do frontend | Proxy de `/api` para a API (mesma origem, sem CORS) |
 | `CLAUDE.md` / `AGENTS.md` | Instruções para IAs | Ver seção 9 |
 
 ### Variáveis de ambiente
@@ -255,7 +271,10 @@ node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
 | `NODE_ENV` | `development` | `development`, `test` ou `production` |
 | `APP_ORIGIN` | `http://localhost:5173` | Origem do site (CSRF, redirects, cookies) |
 | `API_PORT` | `3000` | Porta da API |
+| `LOG_LEVEL` | `info` | Nível do log (`silent` nos testes) |
 | `DATABASE_URL` | `postgresql://safe:safe@localhost:5432/safe` | Postgres |
+| `TEST_DATABASE_URL` | `postgresql://safe:safe@localhost:5432/safe_test` | Postgres dos testes de integração |
+| `POSTGRES_PORT` / `REDIS_PORT` | `5432` / `6379` | Portas expostas pelo Docker Compose |
 | `REDIS_URL` | `redis://localhost:6379` | Redis |
 | `SESSION_SECRET` | 32 bytes aleatórios | Assina cookies temporários do login |
 | `DATA_ENC_KEY` | 32 bytes em base64 | Criptografa as descrições (AES-256-GCM) |

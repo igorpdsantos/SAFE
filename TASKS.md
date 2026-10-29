@@ -57,7 +57,7 @@
 - [x] **T-01.7** `A` App Express com middlewares na ordem do §4.4 + `GET /api/v1/health` · início 2026-10-29 18:02 · Igor + IA · feito 2026-10-29 18:02
 - [x] **T-01.8** `A` Frontend Vite + React + TS vazio com proxy `/api` (mesma origem) · início 2026-10-29 18:02 · Igor + IA · feito 2026-10-29 18:03
 - [x] **T-01.9** `A` GitHub Actions: lint → typecheck → test → cobertura → `npm audit --audit-level=high` · início 2026-10-29 18:03 · Igor + IA · feito 2026-10-29 18:04
-- [~] **T-01.10** `A` Atualizar o README existente (seções 5, 6 e 7) com os comandos, scripts e arquivos de configuração reais → pronto quando: todos os critérios de aceite da SPEC-01 §5 passam · início 2026-10-29 18:04 · Igor + IA
+- [x] **T-01.10** `A` Atualizar o README existente (seções 5, 6 e 7) com os comandos, scripts e arquivos de configuração reais → pronto quando: todos os critérios de aceite da SPEC-01 §5 passam · início 2026-10-29 18:04 · Igor + IA · feito 2026-10-29 18:05
 
 ## Fase 2 · Motor e projeção — [SPEC-05](specs/SPEC-05-motor-ire.md), [SPEC-06](specs/SPEC-06-projecao.md)
 > Pode começar em paralelo com a Fase 1 (só precisa de `decimal.js`).

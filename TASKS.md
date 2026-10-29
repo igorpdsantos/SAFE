@@ -121,7 +121,7 @@
 - [ ] **T-11.4** `B` Tokens de cor e tema, `RiskBadge`, `IreGauge`, `IndicatorCard`, `FactorList`, `MoneyInput`, `ConfirmDialog`, `AlertBanner`, `Disclaimer` (§5)
 - [ ] **T-11.5** `B` Formatadores pt-BR (`formatMoney`, `formatPercent`, datas) + testes
 - [ ] **T-11.6** `B` Tela de login com avisos e mensagens de erro e de expiração (§6)
-- [ ] **T-15.1** `B` `content/glossary.ts` com as 33 entradas e `short` (§3)
+- [~] **T-15.1** `B` `content/glossary.ts` com as 33 entradas e `short` (§3) · início 2026-10-29 16:56 · Igor + IA
 - [ ] **T-15.2** `B` Escrever `long`, `example` e `whyItMatters` de todas as entradas (§3)
 - [ ] **T-15.3** `B` Componentes `<Term>` (toque, teclado, hover), `<FieldHelp>`, `<HelpPanel>`, `<ResultExplainer>` acessíveis (§4)
 - [ ] **T-15.4** `B` Página `/glossario` com busca + cartão "Como o SAFE funciona" (§4.5, §4.6)

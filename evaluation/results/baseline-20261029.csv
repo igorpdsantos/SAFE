@@ -1,0 +1,32 @@
+# commit: 1b6af5f5e298f2c98b586565e589366703e9d6bb · data: 2026-10-29
+id,CR,regra_CR,IRE,nivel_IRE,diverge,motivo
+P01,11%,baixo,0.10,baixo,não,
+P02,19%,baixo,0.21,baixo,não,
+P03,17%,baixo,0.23,baixo,não,
+P04,13%,baixo,0.11,baixo,não,
+P05,11%,baixo,0.10,baixo,não,
+P06,11%,baixo,0.11,baixo,não,
+P07,22%,baixo,0.19,baixo,não,
+P08,12%,baixo,0.11,baixo,não,
+P09,35%,médio,0.64,alto,sim,"CR 35%, folga apertada"
+P10,28%,baixo,0.52,médio,sim,"CR 28%, folga apertada"
+P11,28%,baixo,0.58,médio,sim,"CR 28%, folga apertada, dívidas de 9.1 rendas"
+P12,34%,médio,0.64,alto,sim,"CR 34%, folga apertada, dívidas de 10.5 rendas"
+P13,34%,médio,0.58,médio,não,
+P14,28%,baixo,0.41,médio,sim,"CR 28%, dívidas de 9.4 rendas"
+P15,28%,baixo,0.46,médio,sim,CR 28%
+P16,39%,médio,0.60,médio,não,
+P17,47%,médio,0.91,alto,sim,"CR 47%, sem folga mensal, dívidas de 6.1 rendas"
+P18,66%,alto,0.94,alto,não,
+P19,68%,alto,0.95,alto,não,
+P20,65%,alto,0.98,alto,não,
+P21,55%,alto,0.97,alto,não,
+P22,61%,alto,0.99,alto,não,
+P23,42%,médio,0.90,alto,sim,"CR 42%, folga apertada, dívidas de 17.4 rendas"
+P24,46%,médio,0.89,alto,sim,"CR 46%, folga apertada, dívidas de 9.2 rendas"
+P25,15%,baixo,0.34,baixo,não,
+P26,20%,baixo,0.47,médio,sim,CR 20%
+P27,30%,médio,0.55,médio,não,
+P28,18%,baixo,0.42,médio,sim,"CR 18%, dívidas de 20.0 rendas"
+P29,0%,baixo,0.48,médio,sim,"CR 0%, sem folga mensal"
+P30,0%,baixo,0.20,baixo,não,

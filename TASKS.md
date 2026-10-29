@@ -145,15 +145,15 @@
 - [x] **T-10.6** `B` Testes da SPEC-10 §6 · início 2026-10-29 18:32 · Igor + IA · feito 2026-10-29 18:32
 
 ## Fase 8 · Avaliação — [SPEC-12](specs/SPEC-12-avaliacao.md)
-- [~] **T-12.1** `A` `generate-personas.ts` (semente 2026, regras documentadas) → `personas.csv` com 30 linhas commitado (§2) · início 2026-10-29 18:50 · Igor + IA
-- [ ] **T-12.2** `A` `eval:personas` + `especialistas.csv` sem IRE (§3)
-- [ ] **T-12.3** `A` `stats.ts` (Spearman com empates, Kappa ponderado quadrático) + testes (§3)
-- [ ] **T-12.4** `A` `eval:agreement` (roda quando as respostas dos especialistas chegarem)
-- [ ] **T-12.5** `A` `eval:sensitivity` (pesos ±10/±20% renormalizados; limites ±0,02/±0,05; M por cenário)
-- [ ] **T-12.6** `A` `eval:baseline` (regra só de CR vs IRE em 3 níveis; divergências com motivo)
-- [ ] **T-12.7** `A` `eval:simulation-check` (200 aleatórios + 9 de ME; 0 falhas)
-- [ ] **T-12.8** `A` `eval:latency` (500 req; mediana, p95, p99, hardware)
-- [ ] **T-12.9** `A` `evaluation/README.md` + cabeçalho com commit e data em todo CSV (§4)
+- [x] **T-12.1** `A` `generate-personas.ts` (semente 2026, regras documentadas) → `personas.csv` com 30 linhas commitado (§2) · início 2026-10-29 18:50 · Igor + IA · feito 2026-10-29 18:53
+- [x] **T-12.2** `A` `eval:personas` + `especialistas.csv` sem IRE (§3) · início 2026-10-29 18:53 · Igor + IA · feito 2026-10-29 18:53
+- [x] **T-12.3** `A` `stats.ts` (Spearman com empates, Kappa ponderado quadrático) + testes (§3) · início 2026-10-29 18:53 · Igor + IA · feito 2026-10-29 18:53
+- [ ] **T-12.4** `A` `eval:agreement` (roda quando as respostas dos especialistas chegarem) · script pronto (2026-10-29, Igor + IA); falta `evaluation/especialistas-respostas.csv`
+- [x] **T-12.5** `A` `eval:sensitivity` (pesos ±10/±20% renormalizados; limites ±0,02/±0,05; M por cenário) · início 2026-10-29 18:53 · Igor + IA · feito 2026-10-29 18:53
+- [x] **T-12.6** `A` `eval:baseline` (regra só de CR vs IRE em 3 níveis; divergências com motivo) · início 2026-10-29 18:53 · Igor + IA · feito 2026-10-29 18:53
+- [x] **T-12.7** `A` `eval:simulation-check` (200 aleatórios + 9 de ME; 0 falhas) · início 2026-10-29 18:53 · Igor + IA · feito 2026-10-29 18:53
+- [x] **T-12.8** `A` `eval:latency` (500 req; mediana, p95, p99, hardware) · início 2026-10-29 18:53 · Igor + IA · feito 2026-10-29 18:53
+- [x] **T-12.9** `A` `evaluation/README.md` + cabeçalho com commit e data em todo CSV (§4) · início 2026-10-29 18:53 · Igor + IA · feito 2026-10-29 18:53
 
 ## Fase 9 · Qualidade e entrega — [SPEC-13](specs/SPEC-13-qualidade-testes.md)
 - [x] **T-13.1** `A` Infra de testes de integração (Postgres e Redis de teste, reset entre testes, login de teste) · **fazer logo depois do M2, antes da T-04.8** · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:16

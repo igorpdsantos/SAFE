@@ -22,7 +22,7 @@ export function createApp(deps: AppDeps): Express {
   app.use(requestId);
   app.use(securityHeaders(production));
   app.use(express.json({ limit: '10kb' }));
-  app.use(cookieParser());
+  app.use(cookieParser(deps.env.SESSION_SECRET));
   app.use(accessLog(deps.logger));
   app.use('/api', noStore);
   app.use('/api/v1', apiRouter(deps));

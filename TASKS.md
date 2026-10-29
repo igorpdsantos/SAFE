@@ -74,16 +74,16 @@
 - [ ] **T-06.2** `A` `GET /api/v1/projection` com cache Redis e 409 sem renda *(depende de T-04.7)*
 
 ## Fase 3 · Login, sessão e termos — [SPEC-02](specs/SPEC-02-autenticacao-sessao.md), [SPEC-03](specs/SPEC-03-termos-consentimento.md)
-- [~] **T-02.1** `B` `openid-client` + `GET /auth/google` com `state`/`nonce`/PKCE em cookie assinado (§2) · início 2026-10-29 18:12 · Igor + IA
-- [ ] **T-02.2** `B` Callback: valida `state`, troca o code, valida o id_token, descarta tokens, upsert do usuário por `sub`, erros E01–E03 (§2)
-- [ ] **T-02.3** `B` Sessão no Redis: criação com ID novo, `requireAuth`, expiração 30 min / 8 h, índice `user_sessions` (§3)
-- [ ] **T-02.4** `B` `requireCsrf` (Origin + `X-SAFE-CSRF` em tempo constante) (§4)
-- [ ] **T-02.5** `B` `GET /auth/me`, `POST /auth/logout`, `POST /auth/logout-all` com `Clear-Site-Data`; `destroyAllSessions` exportada (§5)
-- [ ] **T-02.6** `B` Rate limits no Redis (§6)
-- [ ] **T-02.7** `B` Auditoria `LOGIN`/`LOGOUT`/`LOGOUT_ALL` (§7)
-- [ ] **T-02.8** `B` Rota `POST /test/login` só com `NODE_ENV=test` + teste de que não existe em produção (SPEC-13 §2)
-- [ ] **T-02.9** `B` Testes dos critérios da SPEC-02 §8
-- [ ] **T-03.1** `B` `GET /terms/current` e `POST /terms/accept` com validações, prova no banco e cookie `safe_terms` (§3, §4)
+- [x] **T-02.1** `B` `openid-client` + `GET /auth/google` com `state`/`nonce`/PKCE em cookie assinado (§2) · início 2026-10-29 18:12 · Igor + IA · feito 2026-10-29 18:16
+- [x] **T-02.2** `B` Callback: valida `state`, troca o code, valida o id_token, descarta tokens, upsert do usuário por `sub`, erros E01–E03 (§2) · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:16
+- [x] **T-02.3** `B` Sessão no Redis: criação com ID novo, `requireAuth`, expiração 30 min / 8 h, índice `user_sessions` (§3) · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:16
+- [x] **T-02.4** `B` `requireCsrf` (Origin + `X-SAFE-CSRF` em tempo constante) (§4) · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:16
+- [x] **T-02.5** `B` `GET /auth/me`, `POST /auth/logout`, `POST /auth/logout-all` com `Clear-Site-Data`; `destroyAllSessions` exportada (§5) · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:16
+- [x] **T-02.6** `B` Rate limits no Redis (§6) · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:16
+- [x] **T-02.7** `B` Auditoria `LOGIN`/`LOGOUT`/`LOGOUT_ALL` (§7) · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:16
+- [x] **T-02.8** `B` Rota `POST /test/login` só com `NODE_ENV=test` + teste de que não existe em produção (SPEC-13 §2) · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:16
+- [x] **T-02.9** `B` Testes dos critérios da SPEC-02 §8 · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:16
+- [~] **T-03.1** `B` `GET /terms/current` e `POST /terms/accept` com validações, prova no banco e cookie `safe_terms` (§3, §4) · início 2026-10-29 18:16 · Igor + IA
 - [ ] **T-03.2** `B` Middleware `requireTermsAccepted` com cache na sessão; exceções `/me/export` e `DELETE /me` (§3)
 - [ ] **T-03.3** `B` `GET/PUT /me/research-consent` com revogação (§4)
 - [ ] **T-03.4** `B` Arquivos legais versionados em `frontend/public/legal/` (estrutura) (§2)
@@ -155,7 +155,7 @@
 - [ ] **T-12.9** `A` `evaluation/README.md` + cabeçalho com commit e data em todo CSV (§4)
 
 ## Fase 9 · Qualidade e entrega — [SPEC-13](specs/SPEC-13-qualidade-testes.md)
-- [ ] **T-13.1** `A` Infra de testes de integração (Postgres e Redis de teste, reset entre testes, login de teste) · **fazer logo depois do M2, antes da T-04.8**
+- [x] **T-13.1** `A` Infra de testes de integração (Postgres e Redis de teste, reset entre testes, login de teste) · **fazer logo depois do M2, antes da T-04.8** · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:16
 - [ ] **T-13.2** `B` Suíte de segurança completa (§3)
 - [ ] **T-13.3** `B` Playwright com os fluxos E2E 1–10 (§4)
 - [ ] **T-13.4** `A+B` `docs/aceite.md` com cada HU e seus critérios marcados (§5)

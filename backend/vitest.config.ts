@@ -4,6 +4,8 @@ export default defineConfig({
   test: {
     include: ['src/**/*.test.ts', 'test/**/*.test.ts'],
     environment: 'node',
+    // Os testes de integração compartilham o mesmo Postgres e Redis de teste.
+    fileParallelism: false,
     coverage: {
       provider: 'v8',
       include: ['src/engine/**/*.ts'],

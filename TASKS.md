@@ -83,13 +83,13 @@
 - [x] **T-02.7** `B` Auditoria `LOGIN`/`LOGOUT`/`LOGOUT_ALL` (§7) · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:16
 - [x] **T-02.8** `B` Rota `POST /test/login` só com `NODE_ENV=test` + teste de que não existe em produção (SPEC-13 §2) · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:16
 - [x] **T-02.9** `B` Testes dos critérios da SPEC-02 §8 · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:16
-- [~] **T-03.1** `B` `GET /terms/current` e `POST /terms/accept` com validações, prova no banco e cookie `safe_terms` (§3, §4) · início 2026-10-29 18:16 · Igor + IA
-- [ ] **T-03.2** `B` Middleware `requireTermsAccepted` com cache na sessão; exceções `/me/export` e `DELETE /me` (§3)
-- [ ] **T-03.3** `B` `GET/PUT /me/research-consent` com revogação (§4)
-- [ ] **T-03.4** `B` Arquivos legais versionados em `frontend/public/legal/` (estrutura) (§2)
-- [ ] **T-03.5** `A+B` **(equipe)** Redigir Termos de Uso v1.0 e Política de Privacidade v1.0 com o conteúdo mínimo da SEGURANCA_LGPD §7.1, cada um com "Em resumo" em linguagem simples (SPEC-15 §5)
+- [x] **T-03.1** `B` `GET /terms/current` e `POST /terms/accept` com validações, prova no banco e cookie `safe_terms` (§3, §4) · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:19
+- [x] **T-03.2** `B` Middleware `requireTermsAccepted` com cache na sessão; exceções `/me/export` e `DELETE /me` (§3) · início 2026-10-29 18:19 · Igor + IA · feito 2026-10-29 18:19
+- [x] **T-03.3** `B` `GET/PUT /me/research-consent` com revogação (§4) · início 2026-10-29 18:19 · Igor + IA · feito 2026-10-29 18:19
+- [x] **T-03.4** `B` Arquivos legais versionados em `frontend/public/legal/` (estrutura) (§2) · início 2026-10-29 18:19 · Igor + IA · feito 2026-10-29 18:19
+- [ ] **T-03.5** `A+B` **(equipe)** Redigir Termos de Uso v1.0 e Política de Privacidade v1.0 com o conteúdo mínimo da SEGURANCA_LGPD §7.1, cada um com "Em resumo" em linguagem simples (SPEC-15 §5) · rascunho em `frontend/public/legal/` (2026-10-29, Igor + IA); falta o e-mail de contato (T-00.3) e a revisão da equipe
 - [ ] **T-03.6** `B` Tela `/termos` (3 obrigatórios + pesquisa opcional, nada pré-marcado) e `<CookieNotice>` (§5) *(depende de T-11.1)*
-- [ ] **T-03.7** `B` Testes dos critérios da SPEC-03 §6
+- [x] **T-03.7** `B` Testes dos critérios da SPEC-03 §6 · início 2026-10-29 18:19 · Igor + IA · feito 2026-10-29 18:19
 
 ## Fase 4 · Orçamento — [SPEC-04](specs/SPEC-04-orcamento.md)
 - [ ] **T-04.1** `A` `lib/crypto.ts` AES-256-GCM (`encrypt`/`decrypt`) + testes (§2.2)

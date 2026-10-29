@@ -86,9 +86,12 @@ export async function login(app: Express, email = 'pessoa@exemplo.com') {
   const res = await agent.post('/api/v1/test/login').send({ email }).expect(200);
   const csrf: string = res.body.csrf;
   const userId: number = res.body.userId;
+  const setCookie = res.headers['set-cookie'] as unknown as string[];
+  /** Cabeçalho Cookie desta sessão, para usar em outro app ou em request() avulso. */
+  const cookie = setCookie.map((c) => c.split(';')[0]).join('; ');
   const send = (method: 'post' | 'put' | 'patch' | 'delete', url: string) =>
     agent[method](url).set('Origin', ORIGIN).set('X-SAFE-CSRF', csrf);
-  return { agent, csrf, userId, send };
+  return { agent, csrf, userId, cookie, send };
 }
 
 /** Login + aceite dos termos vigentes. */

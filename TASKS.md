@@ -157,7 +157,7 @@
 
 ## Fase 9 · Qualidade e entrega — [SPEC-13](specs/SPEC-13-qualidade-testes.md)
 - [x] **T-13.1** `A` Infra de testes de integração (Postgres e Redis de teste, reset entre testes, login de teste) · **fazer logo depois do M2, antes da T-04.8** · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:16
-- [ ] **T-13.2** `B` Suíte de segurança completa (§3)
+- [~] **T-13.2** `B` Suíte de segurança completa (§3) · início 2026-10-29 18:54 · Igor + IA
 - [x] **T-13.3** `B` Playwright com os fluxos E2E 1–10 (§4) · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
 - [ ] **T-13.4** `A+B` `docs/aceite.md` com cada HU e seus critérios marcados (§5)
 - [ ] **T-13.5** `A+B` Homologação: CI verde, E2E ok, checklist da SEGURANCA_LGPD §12, README final, tag `v1.0.0` (§6)

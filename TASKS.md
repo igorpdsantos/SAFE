@@ -41,10 +41,10 @@
 ---
 
 ## Fase 0 · Preparação (equipe, sem código)
-- [ ] **T-00.1** `A+B` Validar com o grupo as decisões D-01…D-15 (PRD §12) e S-01…S-09 (SEGURANCA_LGPD §1) → pronto quando: decisões aprovadas ou ajustadas nos documentos
+- [ ] **T-00.1** `A+B` Validar com o grupo as decisões D-01…D-16 (PRD §12) e S-01…S-09 (SEGURANCA_LGPD §1) → pronto quando: decisões aprovadas ou ajustadas nos documentos
 - [ ] **T-00.2** `B` Criar projeto no Google Cloud com tela de consentimento OAuth, escopo `openid email` e redirect URIs de dev e produção (SPEC-02 §2) → pronto quando: `GOOGLE_CLIENT_ID`/`SECRET` no `.env` local de quem vai codar
 - [ ] **T-00.3** `A+B` Criar o e-mail de contato de privacidade do projeto e definir o responsável (SEGURANCA_LGPD §2.2)
-- [ ] **T-00.4** `A` Criar o repositório no GitHub, convidar a equipe e proteger a branch `main` (PR + CI verde)
+- [ ] **T-00.4** `A` Criar o repositório no GitHub, convidar a equipe e proteger a branch `main` (PR + CI verde) · repositório criado; proteção da `main` indisponível no plano grátis (CONTRIBUTING §9)
 - [ ] **T-00.5** `B` Converter o dashboard do colega (Peic/BCB) para CSV com fonte e data de extração (insumo da SPEC-14; só se a SPEC-14 for entrar)
 
 ## Fase 1 · Fundação — [SPEC-01](specs/SPEC-01-fundacao.md)
@@ -132,7 +132,7 @@
 - [x] **T-06.3** `B` Tela "Projeção" (gráfico + tabela + resumo + premissas) — SPEC-06 §4 · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
 - [ ] **T-15.6** `B` Revisão de linguagem de todas as telas com o checklist da SPEC-15 §5, feita por alguém que não escreveu a tela
 - [x] **T-15.7** `B` Alinhar o glossário com a D-16 (renda e consignado) e precisar o texto do rotativo pelas fontes consultadas · início 2026-10-29 17:49 · Igor + IA · feito 2026-10-29 17:49
-- [ ] **T-11.7** `B` Verificação manual da SPEC-11 §7 (DevTools: storage, cookies, rede externa; 375 px; 4 navegadores; Lighthouse ≥ 90)
+- [ ] **T-11.7** `B` Verificação manual da SPEC-11 §7 (DevTools: storage, cookies, rede externa; 375 px; 4 navegadores; Lighthouse ≥ 90) · parte automatizada no E2E (armazenamento, logout entre abas, voltar, 375 px no Chromium)
 
 ## Fase 7 · Histórico e privacidade — [SPEC-09](specs/SPEC-09-historico.md), [SPEC-10](specs/SPEC-10-privacidade-dados.md)
 - [x] **T-09.1** `A` `GET /history` com período, limites e `trend` + testes (§2, §4) · início 2026-10-29 18:29 · Igor + IA · feito 2026-10-29 18:29
@@ -159,7 +159,7 @@
 - [x] **T-13.1** `A` Infra de testes de integração (Postgres e Redis de teste, reset entre testes, login de teste) · **fazer logo depois do M2, antes da T-04.8** · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:16
 - [x] **T-13.2** `B` Suíte de segurança completa (§3) · início 2026-10-29 18:54 · Igor + IA · feito 2026-10-29 18:55
 - [x] **T-13.3** `B` Playwright com os fluxos E2E 1–10 (§4) · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
-- [ ] **T-13.4** `A+B` `docs/aceite.md` com cada HU e seus critérios marcados (§5)
+- [ ] **T-13.4** `A+B` `docs/aceite.md` com cada HU e seus critérios marcados (§5) · rascunho por spec em `docs/aceite.md` (2026-10-29, Igor + IA); falta mapear por HU
 - [ ] **T-13.5** `A+B` Homologação: CI verde, E2E ok, checklist da SEGURANCA_LGPD §12, README final, tag `v1.0.0` (§6)
 
 ## Fase 10 · Opcional (só com tudo acima pronto)
@@ -174,7 +174,9 @@
 ## Bloqueios
 | Tarefa | Motivo | Desde | Quem destrava |
 |---|---|---|---|
-| — | — | — | — |
+| T-00.2 | Falta criar o projeto OAuth no Google Cloud; até lá, usar `npm run dev:demo` | 2026-10-29 | Equipe (trilha B) |
+| T-03.5 | Falta o e-mail de contato de privacidade (T-00.3) e a revisão da equipe nos rascunhos em `frontend/public/legal/` | 2026-10-29 | Equipe |
+| T-12.4 | Falta `evaluation/especialistas-respostas.csv` com as respostas dos especialistas | 2026-10-29 | Equipe |
 
 ## Fora do código (lembrete)
 As correções do artigo e da especificação estão no `docs/referencias/Relatorio_Inconsistencias_TCC.docx`. Os números finais da Seção 7 do artigo vêm das tarefas T-05.9, T-08.7, T-12.x e T-13.4.

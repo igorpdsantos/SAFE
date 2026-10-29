@@ -129,19 +129,27 @@ O usuário pode não saber nada de finanças. **Ele sempre tem que entender o qu
 
 Recomendar produtos, comparar ofertas de bancos, indicar investimentos, bloquear decisões, prever probabilidade de inadimplência, calcular juros ou CET, simular despesa recorrente (v1), usar analytics ou rastreamento. Nenhum texto pode apresentar a faixa verde como "permissão" ou "garantia".
 
-## Comandos (atualizar quando o scaffold existir — T-01.10)
+## Comandos
 
 ```bash
-docker compose up -d            # postgres + redis
-npm install
-npm run db:migrate              # prisma migrate dev
+docker compose up -d            # postgres (+ banco safe_test) + redis; POSTGRES_PORT/REDIS_PORT se a porta estiver ocupada
+npm install                     # também roda prisma generate (client em backend/src/generated, fora do Git)
+npm run db:migrate              # prisma migrate dev (Prisma 7: configuração em backend/prisma.config.ts)
 npm run dev                     # api (3000) + web (5173, proxy /api)
+npm run dev:demo                # igual, com a API em NODE_ENV=test: botão "Entrar como pessoa de teste" (sem Google)
 npm run lint && npm run typecheck
-npm test                        # unidade + integração
+npm test                        # backend (unidade + integração + segurança), frontend e evaluation
 npm run test:coverage           # meta engine/ ≥ 80%
-npm run test:e2e                # Playwright
+npm run test:e2e                # Playwright (10 fluxos)
 npm run eval:<script>           # personas | agreement | sensitivity | baseline | simulation-check | latency
+npm run privacy:reapply-deletions   # depois de restaurar um backup
 ```
+
+Notas de implementação:
+- Dependências montadas em `backend/src/http/container.ts` (`createDeps`), usado pelo `server.ts` e pelos testes (`backend/test/helpers/app.ts`: `buildApp`, `login`, `loginAccepted`, `resetAll`, relógio falso e OIDC falso).
+- Cada módulo tem seu prefixo em `routes.ts`; `/me` é um router compartilhado (termos e privacidade).
+- Testes de integração usam o banco `safe_test` e o Redis db 1, sem paralelismo entre arquivos.
+- Mudança de schema: nova migration (`npm run db:migrate -- --name x`); `CHECK`s vão à mão no SQL da migration.
 
 ## Segredos
 

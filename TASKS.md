@@ -121,8 +121,8 @@
 - [ ] **T-11.4** `B` Tokens de cor e tema, `RiskBadge`, `IreGauge`, `IndicatorCard`, `FactorList`, `MoneyInput`, `ConfirmDialog`, `AlertBanner`, `Disclaimer` (§5)
 - [ ] **T-11.5** `B` Formatadores pt-BR (`formatMoney`, `formatPercent`, datas) + testes
 - [ ] **T-11.6** `B` Tela de login com avisos e mensagens de erro e de expiração (§6)
-- [ ] **T-15.1** `B` `content/glossary.ts` com as 33 entradas e `short` (§3)
-- [ ] **T-15.2** `B` Escrever `long`, `example` e `whyItMatters` de todas as entradas (§3)
+- [x] **T-15.1** `B` `content/glossary.ts` com as 33 entradas e `short` (§3) · início 2026-10-29 16:56 · Igor + IA · feito 2026-10-29 16:57
+- [x] **T-15.2** `B` Escrever `long`, `example` e `whyItMatters` de todas as entradas (§3) · início 2026-10-29 16:59 · Igor + IA · feito 2026-10-29 17:02
 - [ ] **T-15.3** `B` Componentes `<Term>` (toque, teclado, hover), `<FieldHelp>`, `<HelpPanel>`, `<ResultExplainer>` acessíveis (§4)
 - [ ] **T-15.4** `B` Página `/glossario` com busca + cartão "Como o SAFE funciona" (§4.5, §4.6)
 - [ ] **T-15.5** `B` Testes: todo `<Term id>` existe, `short` ≤ 140 caracteres, termos e siglas proibidos soltos nos textos (§6)
@@ -131,6 +131,7 @@
 - [ ] **T-08.8** `B` Tela "Simular" (formulário explicado, 4 blocos, banners por desfecho, premissas, "simular outros valores") — SPEC-08 §4
 - [ ] **T-06.3** `B` Tela "Projeção" (gráfico + tabela + resumo + premissas) — SPEC-06 §4
 - [ ] **T-15.6** `B` Revisão de linguagem de todas as telas com o checklist da SPEC-15 §5, feita por alguém que não escreveu a tela
+- [x] **T-15.7** `B` Alinhar o glossário com a D-16 (renda e consignado) e precisar o texto do rotativo pelas fontes consultadas · início 2026-10-29 17:49 · Igor + IA · feito 2026-10-29 17:49
 - [ ] **T-11.7** `B` Verificação manual da SPEC-11 §7 (DevTools: storage, cookies, rede externa; 375 px; 4 navegadores; Lighthouse ≥ 90)
 
 ## Fase 7 · Histórico e privacidade — [SPEC-09](specs/SPEC-09-historico.md), [SPEC-10](specs/SPEC-10-privacidade-dados.md)

@@ -40,7 +40,7 @@ export function LogoMark({ size = 30 }: { size?: number }) {
       <path
         d="M11 18a5 5 0 0 1 10 0"
         fill="none"
-        style={{ stroke: 'var(--pine)' }}
+        style={{ stroke: 'var(--logo-ink, var(--pine))' }}
         strokeWidth="2.2"
         strokeLinecap="round"
       />
@@ -50,7 +50,7 @@ export function LogoMark({ size = 30 }: { size?: number }) {
         strokeWidth="2.2"
         strokeLinecap="round"
       />
-      <circle cx="16" cy="18" r="1.6" style={{ fill: 'var(--pine)' }} />
+      <circle cx="16" cy="18" r="1.6" style={{ fill: 'var(--logo-ink, var(--pine))' }} />
     </svg>
   );
 }

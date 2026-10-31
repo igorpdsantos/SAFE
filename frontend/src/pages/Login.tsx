@@ -65,8 +65,8 @@ export function Login() {
     <div className="auth">
       <section className="auth-art" aria-label="Sobre o SAFE">
         <div className="brand">
-          <LogoMark size={34} />
-          <span>
+          <LogoMark />
+          <span className="brand-text">
             <span className="brand-name">SAFE</span>
             <span className="brand-tag">Apoio à decisão financeira</span>
           </span>

@@ -59,7 +59,7 @@ function Brand({ tagline }: { tagline?: boolean }) {
   return (
     <NavLink to="/" className="brand" end aria-label="SAFE, página inicial">
       <LogoMark />
-      <span>
+      <span className="brand-text">
         <span className="brand-name">SAFE</span>
         {tagline && <span className="brand-tag">Decida com calma</span>}
       </span>

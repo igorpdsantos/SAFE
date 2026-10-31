@@ -70,9 +70,12 @@ export function Terms() {
   return (
     <div className="center-page">
       <div className="card card-lg stack reveal" style={{ width: 'min(640px, 100%)' }}>
-        <div className="row row-tight" style={{ color: 'var(--brand-strong)' }}>
-          <LogoMark size={36} />
-          <span className="brand-name">SAFE</span>
+        <div className="brand brand-static" style={{ color: 'var(--brand-strong)' }}>
+          <LogoMark />
+          <span className="brand-text">
+            <span className="brand-name">SAFE</span>
+            <span className="brand-tag">Apoio à decisão financeira</span>
+          </span>
         </div>
         <h1>Antes de começar</h1>
         <p>

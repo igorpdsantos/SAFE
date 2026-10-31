@@ -1,3 +1,4 @@
+import { CircleCheck, OctagonAlert, Siren, TriangleAlert, type LucideIcon } from 'lucide-react';
 import type { IndicatorKey, IndicatorView } from '../api/types';
 import type { GlossaryId } from '../content/glossary';
 import { ResultExplainer } from './ResultExplainer';
@@ -19,6 +20,21 @@ const TITLE: Record<IndicatorKey, string> = {
 };
 
 const risk = (v: IndicatorView) => Number(v.risk);
+
+/** Selo do comprometimento da renda (HU09 critérios 6 e 7): cor + ícone + rótulo, nunca só a cor (RNF05). */
+function crLevelPill(v: IndicatorView): { cls: string; Icon: LucideIcon; label: string } | null {
+  if (v.exceedsIncome) return { cls: 'risk-5', Icon: Siren, label: 'Acima da sua renda' };
+  switch (v.level) {
+    case 'OK':
+      return { cls: 'risk-1', Icon: CircleCheck, label: 'Confortável' };
+    case 'ATENCAO':
+      return { cls: 'risk-2', Icon: TriangleAlert, label: 'Atenção' };
+    case 'ALTO':
+      return { cls: 'risk-4', Icon: OctagonAlert, label: 'Alto' };
+    default:
+      return null;
+  }
+}
 
 /** Frase que traduz o número e a interpretação de cada indicador (SPEC-15 L3, L5). */
 function explain(key: IndicatorKey, v: IndicatorView): { meaning: string; interpretation: string } {
@@ -89,6 +105,7 @@ export function IndicatorCard({
   view: IndicatorView;
 }) {
   const { meaning, interpretation } = explain(indicatorKey, view);
+  const pill = indicatorKey === 'cr' ? crLevelPill(view) : null;
   return (
     <article className="card stack" style={{ gap: '0.5rem' }}>
       <ResultExplainer
@@ -97,6 +114,12 @@ export function IndicatorCard({
         meaning={meaning}
         interpretation={interpretation}
       />
+      {pill && (
+        <span className={`risk ${pill.cls}`} style={{ alignSelf: 'flex-start' }}>
+          <pill.Icon size={18} aria-hidden="true" />
+          {pill.label}
+        </span>
+      )}
       <RiskBar risk={view.risk} />
       {view.saturated && (
         <span className="badge" style={{ alignSelf: 'flex-start' }}>

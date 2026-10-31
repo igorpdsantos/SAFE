@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import { describe, expect, it } from 'vitest';
 import { HelpProvider } from './HelpPanel';
+import { IndicatorCard } from './IndicatorCard';
 import { MoneyInput } from './MoneyInput';
 import { RiskBadge } from './RiskBadge';
 import { Term } from './Term';
@@ -90,5 +91,42 @@ describe('T-11.4 – componentes de risco e dinheiro', () => {
     expect(last).toBe('1234.56');
     expect(input).toHaveAttribute('autocomplete', 'off');
     expect(input).toHaveAttribute('inputmode', 'decimal');
+  });
+});
+
+describe('HU09 – card do comprometimento da renda', () => {
+  const cr = (value: string, level: 'OK' | 'ATENCAO' | 'ALTO', exceedsIncome = false) => ({
+    value,
+    display: `${value.replace('.', ',')}%`,
+    risk: '0.5000',
+    saturated: false,
+    level,
+    exceedsIncome,
+  });
+  const renderCard = (view: ReturnType<typeof cr>) =>
+    render(
+      <HelpProvider>
+        <IndicatorCard indicatorKey="cr" view={view} />
+      </HelpProvider>,
+    );
+
+  it.each([
+    ['OK', 'risk-1', 'Confortável'],
+    ['ATENCAO', 'risk-2', 'Atenção'],
+    ['ALTO', 'risk-4', 'Alto'],
+  ] as const)('critério 6 – nível %s tem cor, ícone e rótulo', (level, cls, label) => {
+    const { container } = renderCard(cr('25.00', level));
+    const pill = container.querySelector(`.risk.${cls}`);
+    expect(pill).not.toBeNull();
+    expect(pill).toHaveTextContent(label);
+    expect(pill?.querySelector('svg')).not.toBeNull();
+  });
+
+  it('critério 7 – CR acima de 100% mostra o valor e um ícone de alerta', () => {
+    const { container } = renderCard(cr('115.00', 'ALTO', true));
+    expect(screen.getByText('115,00%')).toBeInTheDocument();
+    const pill = container.querySelector('.risk.risk-5');
+    expect(pill).toHaveTextContent('Acima da sua renda');
+    expect(pill?.querySelector('svg')).not.toBeNull();
   });
 });

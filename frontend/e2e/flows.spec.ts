@@ -63,6 +63,8 @@ test('2 – cadastro do caso do artigo pela tela → painel mostra 0,19 "Baixo r
   await page.getByRole('link', { name: 'Início' }).click();
   await expect(page.locator('.big').first()).toHaveText('0,19');
   await expect(page.getByText('Baixo risco').first()).toBeVisible();
+  // HU09 critério 6: comprometimento de 10% com cor, ícone e rótulo.
+  await expect(page.locator('.risk.risk-1', { hasText: 'Confortável' })).toBeVisible();
 });
 
 test('3 – simulação 6000 / 12 / 600 → 0,38 "Risco moderado", CR e CP principais; orçamento inalterado', async ({

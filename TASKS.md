@@ -159,7 +159,7 @@
 - [x] **T-13.1** `A` Infra de testes de integração (Postgres e Redis de teste, reset entre testes, login de teste) · **fazer logo depois do M2, antes da T-04.8** · início 2026-10-29 18:16 · Igor + IA · feito 2026-10-29 18:16
 - [x] **T-13.2** `B` Suíte de segurança completa (§3) · início 2026-10-29 18:54 · Igor + IA · feito 2026-10-29 18:55
 - [x] **T-13.3** `B` Playwright com os fluxos E2E 1–10 (§4) · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
-- [ ] **T-13.4** `A+B` `docs/aceite.md` com cada HU e seus critérios marcados (§5) · rascunho por spec em `docs/aceite.md` (2026-10-29, Igor + IA); falta mapear por HU
+- [x] **T-13.4** `A+B` `docs/aceite.md` com cada HU e seus critérios marcados (§5) · 23 HUs, 101/105 critérios; os 4 pendentes dependem da T-00.2 e da T-11.7; o card do comprometimento ganhou cor + ícone + rótulo (HU09 critérios 6 e 7) · início 2026-10-30 21:50 · Igor + IA · feito 2026-10-30 21:58
 - [ ] **T-13.5** `A+B` Homologação: CI verde, E2E ok, checklist da SEGURANCA_LGPD §12, README final, tag `v1.0.0` (§6)
 
 ## Fase 10 · Opcional (só com tudo acima pronto)

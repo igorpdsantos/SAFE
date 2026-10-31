@@ -155,9 +155,8 @@ describe('T-10.6 – exclusão da conta (SPEC-10 §2.2)', () => {
     expect(await deps.prisma.pendingBackupDeletion.count({ where: { userId: s.userId } })).toBe(1);
 
     const keys = await infra().redis.keys('*');
-    expect(keys.filter((k) => k.includes(`:${s.userId}`) || k.endsWith(`:${s.userId}`))).toEqual(
-      [],
-    );
+    // Compara o segmento inteiro: `includes(':2')` também casaria com `sess:29105f…` de outro usuário.
+    expect(keys.filter((k) => k.split(':').includes(String(s.userId)))).toEqual([]);
     const sessionUsers = await Promise.all(
       keys
         .filter((k) => k.startsWith('sess:'))

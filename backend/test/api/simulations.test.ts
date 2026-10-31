@@ -162,3 +162,76 @@ describe('T-08.5 – GET e PATCH /simulations', () => {
     expect((await a.agent.get(`${V}/simulations`)).body.items[0].state).toBe('DESCARTADA');
   });
 });
+
+describe('T-08.9 – POST /simulations/:id/register (D-12)', () => {
+  it('cria a dívida real, marca EFETIVADA e o painel recalcula com a nova parcela', async () => {
+    const { app, deps } = buildApp();
+    const s = await loginAccepted(app);
+    await seedArticle(s);
+    const sim = await s.send('post', `${V}/simulations`).send(ARTICLE).expect(200);
+    const res = await s.send('post', `${V}/simulations/${sim.body.id}/register`).expect(201);
+    expect(res.body.simulation).toEqual({ id: sim.body.id, state: 'EFETIVADA' });
+    expect(res.body.debt).toMatchObject({
+      description: null,
+      category: 'CREDIARIO',
+      installmentValue: '600.00',
+      remainingInstallments: 12,
+      totalInstallments: 12,
+      balanceDue: null,
+      remainingNow: 12,
+      active: true,
+      balanceUsed: '7200.00',
+    });
+    expect((await s.agent.get(`${V}/debts`)).body.items).toHaveLength(2);
+    expect((await deps.prisma.simulation.findFirstOrThrow()).state).toBe('EFETIVADA');
+    // Mesmo IRE que a simulação projetou: 0,38.
+    expect((await s.agent.get(`${V}/analysis`)).body.ire.value).toBe('0.38');
+    const audit = await deps.prisma.auditLog.findMany({ where: { entity: 'divida' } });
+    expect(audit.some((a) => a.operation === 'CREATE')).toBe(true);
+  });
+
+  it('registrar duas vezes ou depois de descartar → 400 e nenhuma dívida a mais', async () => {
+    const { app } = buildApp();
+    const s = await loginAccepted(app);
+    await seedArticle(s);
+    const sim = await s.send('post', `${V}/simulations`).send(ARTICLE).expect(200);
+    await s.send('post', `${V}/simulations/${sim.body.id}/register`).expect(201);
+    const again = await s.send('post', `${V}/simulations/${sim.body.id}/register`);
+    expect(again.status).toBe(400);
+    expect(again.body.error.code).toBe('VALIDATION_ERROR');
+
+    const other = await s.send('post', `${V}/simulations`).send(ARTICLE).expect(200);
+    await s
+      .send('patch', `${V}/simulations/${other.body.id}`)
+      .send({ state: 'DESCARTADA' })
+      .expect(200);
+    expect((await s.send('post', `${V}/simulations/${other.body.id}/register`)).status).toBe(400);
+    expect((await s.agent.get(`${V}/debts`)).body.items).toHaveLength(2);
+  });
+
+  it('simulação de outro usuário ou id inválido → 404; sem CSRF → 403', async () => {
+    const { app } = buildApp();
+    const a = await loginAccepted(app, 'a@exemplo.com');
+    const b = await loginAccepted(app, 'b@exemplo.com');
+    await seedArticle(a);
+    await seedArticle(b);
+    const sim = await a.send('post', `${V}/simulations`).send(ARTICLE).expect(200);
+    expect((await b.send('post', `${V}/simulations/${sim.body.id}/register`)).status).toBe(404);
+    expect((await b.send('post', `${V}/simulations/abc/register`)).status).toBe(404);
+    expect((await a.agent.post(`${V}/simulations/${sim.body.id}/register`)).status).toBe(403);
+    expect((await b.agent.get(`${V}/debts`)).body.items).toHaveLength(1);
+  });
+
+  it('limite de 100 dívidas → 400 e a simulação continua ATIVA', async () => {
+    const { app, deps } = buildApp();
+    const s = await loginAccepted(app);
+    await seedArticle(s);
+    const sim = await s.send('post', `${V}/simulations`).send(ARTICLE).expect(200);
+    const debt = (await deps.prisma.debt.findFirstOrThrow()) as Record<string, unknown>;
+    const { id: _id, ...copy } = debt;
+    await deps.prisma.debt.createMany({ data: Array.from({ length: 99 }, () => copy) as never });
+    const res = await s.send('post', `${V}/simulations/${sim.body.id}/register`);
+    expect(res.status).toBe(400);
+    expect((await deps.prisma.simulation.findFirstOrThrow()).state).toBe('ATIVA');
+  });
+});

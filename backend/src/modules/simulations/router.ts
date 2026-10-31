@@ -25,6 +25,12 @@ const body = z.object({
   installmentValue: moneyField('Digite o valor de cada parcela, maior que zero. Ex.: 100,00'),
 });
 
+function simulationId(raw: string): number {
+  const id = z.coerce.number().int().positive().safeParse(raw);
+  if (!id.success) throw notFound('Esta simulação não existe ou não é sua.');
+  return id.data;
+}
+
 export function simulationsRouter(deps: AppDeps): Router {
   const router = financialRouter(deps);
   router.post('/', rateLimit(deps, RATE_LIMITS.simulations), async (req, res) => {
@@ -41,12 +47,15 @@ export function simulationsRouter(deps: AppDeps): Router {
     res.json({ items: await deps.simulations.list(res.locals.session!.userId) });
   });
   router.patch('/:id', async (req, res) => {
-    const id = z.coerce.number().int().positive().safeParse(req.params.id);
-    if (!id.success) throw notFound('Esta simulação não existe ou não é sua.');
+    const id = simulationId(req.params.id);
     z.object({
       state: z.literal('DESCARTADA', { error: 'Só é possível descartar a simulação' }),
     }).parse(req.body);
-    res.json(await deps.simulations.discard(res.locals.session!.userId, id.data));
+    res.json(await deps.simulations.discard(res.locals.session!.userId, id));
+  });
+  router.post('/:id/register', async (req, res) => {
+    const id = simulationId(req.params.id);
+    res.status(201).json(await deps.simulations.register(res.locals.session!.userId, id));
   });
   return router;
 }

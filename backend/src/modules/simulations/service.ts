@@ -5,7 +5,7 @@ import { INDICATOR_NAMES } from '../../engine/labels.js';
 import { simulate, type SimulationInput, type SimulationResult } from '../../engine/simulation.js';
 import type { Clock } from '../../lib/clock.js';
 import { toMoneyString, toRatioString } from '../../lib/decimal.js';
-import { AppError, notFound } from '../../lib/errors.js';
+import { AppError, notFound, validationError } from '../../lib/errors.js';
 import type { PrismaClient } from '../../lib/prisma.js';
 import { indicatorDisplay, ireDto } from '../analysis/present.js';
 import type { BudgetService } from '../budget/service.js';
@@ -124,5 +124,42 @@ export class SimulationService {
     });
     if (count === 0) throw notFound('Esta simulação não existe ou não é sua.');
     return { id, state: 'DESCARTADA' as const };
+  }
+
+  /**
+   * D-12 (SPEC-08 §3): transforma a simulação numa dívida real. Marca EFETIVADA antes de criar a
+   * dívida, para que dois cliques não criem duas; se a criação falhar, volta para ATIVA.
+   */
+  async register(userId: number, id: number) {
+    const sim = await this.prisma.simulation.findFirst({ where: { id, userId } });
+    if (!sim) throw notFound('Esta simulação não existe ou não é sua.');
+    const { count } = await this.prisma.simulation.updateMany({
+      where: { id, userId, state: 'ATIVA' },
+      data: { state: 'EFETIVADA' },
+    });
+    if (count === 0) {
+      const message =
+        sim.state === 'EFETIVADA'
+          ? 'Esta simulação já foi registrada como dívida. Veja em Orçamento > Dívidas.'
+          : 'Esta simulação foi descartada. Faça uma nova simulação para registrar.';
+      throw validationError({ state: message }, message);
+    }
+    try {
+      const debt = await this.budget.create(userId, 'debts', {
+        description: null,
+        category: 'CREDIARIO',
+        installmentValue: new Decimal(sim.installmentValue.toString()),
+        remainingInstallments: sim.installments,
+        totalInstallments: sim.installments,
+        balanceDue: null,
+      });
+      return { simulation: { id, state: 'EFETIVADA' as const }, debt };
+    } catch (err) {
+      await this.prisma.simulation.updateMany({
+        where: { id, userId },
+        data: { state: 'ATIVA' },
+      });
+      throw err;
+    }
   }
 }

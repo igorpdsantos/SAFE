@@ -163,7 +163,7 @@
 - [ ] **T-13.5** `A+B` Homologação: CI verde, E2E ok, checklist da SEGURANCA_LGPD §12, README final, tag `v1.0.0` (§6)
 
 ## Fase 10 · Opcional (só com tudo acima pronto)
-- [ ] **T-08.9** `A` (D-12) `POST /simulations/:id/register` + botão "Registrar como dívida" (SPEC-08 §3)
+- [x] **T-08.9** `A` (D-12) `POST /simulations/:id/register` + botão "Registrar como dívida" (SPEC-08 §3) · início 2026-10-30 22:00 · Igor + IA · feito 2026-10-30 22:03
 - [ ] **T-14.1** `B` CSVs de contexto em `backend/data/context/` + `npm run context:update` (SPEC-14 §2)
 - [ ] **T-14.2** `B` `GET /context/series` (§3)
 - [ ] **T-14.3** `B` Tela `/entenda` com filtro, glossário e "como o SAFE calcula" (§4)

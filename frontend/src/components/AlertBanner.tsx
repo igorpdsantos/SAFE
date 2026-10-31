@@ -15,10 +15,10 @@ export function AlertBanner({
   const Icon = BAND_ICONS[band];
   return (
     <div className={`alert risk-${band}`} role="alert">
-      <Icon size={22} aria-hidden="true" style={{ flexShrink: 0 }} />
-      <div style={{ flex: 1 }}>
-        <p style={{ margin: 0, color: 'var(--text)' }}>{alert.message}</p>
-      </div>
+      <Icon size={24} aria-hidden="true" />
+      <p style={{ margin: 0, flex: 1, minWidth: 200, color: 'var(--text)', fontWeight: 550 }}>
+        {alert.message}
+      </p>
       <button type="button" className="btn btn-link" onClick={onRead} disabled={busy}>
         Marcar como lido
       </button>

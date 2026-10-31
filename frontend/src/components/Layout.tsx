@@ -2,31 +2,46 @@ import {
   BookOpen,
   Calculator,
   ChartLine,
+  Ellipsis,
   House,
   LogOut,
   Moon,
-  Shield,
   Sun,
   TrendingUp,
   UserRound,
   Wallet,
 } from 'lucide-react';
-import { useState, type ReactNode } from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
+import { useEffect, useState, type ReactNode } from 'react';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { api } from '../api/client';
 import { handleSessionEnd } from '../lib/session';
 import { getPref, setPref } from '../lib/storage';
+import { LogoMark } from './Art';
 import { CookieNotice } from './CookieNotice';
 import { Disclaimer } from './Disclaimer';
 
-const NAV: { to: string; label: string; icon: ReactNode }[] = [
-  { to: '/', label: 'Início', icon: <House size={20} aria-hidden="true" /> },
-  { to: '/orcamento', label: 'Orçamento', icon: <Wallet size={20} aria-hidden="true" /> },
-  { to: '/simular', label: 'Simular', icon: <Calculator size={20} aria-hidden="true" /> },
-  { to: '/projecao', label: 'Projeção', icon: <ChartLine size={20} aria-hidden="true" /> },
-  { to: '/evolucao', label: 'Evolução', icon: <TrendingUp size={20} aria-hidden="true" /> },
-  { to: '/conta', label: 'Conta', icon: <UserRound size={20} aria-hidden="true" /> },
+interface NavItem {
+  to: string;
+  label: string;
+  icon: ReactNode;
+}
+
+const icon = (Icon: typeof House) => <Icon size={20} aria-hidden="true" />;
+
+const MAIN: NavItem[] = [
+  { to: '/', label: 'Início', icon: icon(House) },
+  { to: '/orcamento', label: 'Orçamento', icon: icon(Wallet) },
+  { to: '/simular', label: 'Simular', icon: icon(Calculator) },
+  { to: '/projecao', label: 'Projeção', icon: icon(ChartLine) },
+  { to: '/evolucao', label: 'Evolução', icon: icon(TrendingUp) },
 ];
+const MORE: NavItem[] = [
+  { to: '/conta', label: 'Conta', icon: icon(UserRound) },
+  { to: '/glossario', label: 'Glossário', icon: icon(BookOpen) },
+];
+/** No celular, a barra inferior mostra só 4 destinos + "Mais" (menos coisa para ler). */
+const MOBILE_TABS = MAIN.slice(0, 4);
+const MOBILE_MORE = [MAIN[4]!, ...MORE];
 
 export function applyTheme(theme: string | null) {
   document.documentElement.dataset.theme = theme === 'dark' ? 'dark' : 'light';
@@ -40,55 +55,133 @@ async function logout() {
   }
 }
 
-/** Menu lateral no desktop e inferior no celular (SPEC-11 §5). */
+function Brand({ tagline }: { tagline?: boolean }) {
+  return (
+    <NavLink to="/" className="brand" end aria-label="SAFE, página inicial">
+      <LogoMark />
+      <span>
+        <span className="brand-name">SAFE</span>
+        {tagline && <span className="brand-tag">Decida com calma</span>}
+      </span>
+    </NavLink>
+  );
+}
+
+/** Menu lateral no desktop; barra superior e inferior no celular (SPEC-11 §5, RNF10). */
 export function Layout() {
   const [theme, setTheme] = useState(() => getPref('theme') ?? 'light');
+  const [moreOpen, setMoreOpen] = useState(false);
+  const location = useLocation();
+  useEffect(() => {
+    if (!moreOpen) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setMoreOpen(false);
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [moreOpen]);
+
   const toggleTheme = () => {
     const next = theme === 'dark' ? 'light' : 'dark';
     setPref('theme', next);
     applyTheme(next);
     setTheme(next);
   };
+  const themeLabel = theme === 'dark' ? 'Tema claro' : 'Tema escuro';
+  const ThemeIcon = theme === 'dark' ? Sun : Moon;
+  const inMore = MOBILE_MORE.some((i) => location.pathname.startsWith(i.to));
+
   return (
     <div className="app">
+      <a className="skip-link" href="#conteudo">
+        Pular para o conteúdo
+      </a>
       <nav className="sidebar" aria-label="Menu principal">
-        <NavLink to="/" className="brand" end>
-          <Shield size={22} aria-hidden="true" /> SAFE
-        </NavLink>
-        {NAV.map((item) => (
+        <Brand tagline />
+        {MAIN.map((item) => (
           <NavLink key={item.to} to={item.to} end={item.to === '/'} className="nav-link">
             {item.icon}
             <span>{item.label}</span>
           </NavLink>
         ))}
-        <NavLink to="/glossario" className="nav-link nav-extra">
-          <BookOpen size={20} aria-hidden="true" />
-          <span>Glossário</span>
-        </NavLink>
-        <button type="button" className="nav-link nav-extra" onClick={toggleTheme}>
-          {theme === 'dark' ? (
-            <Sun size={20} aria-hidden="true" />
-          ) : (
-            <Moon size={20} aria-hidden="true" />
-          )}
-          <span>{theme === 'dark' ? 'Tema claro' : 'Tema escuro'}</span>
-        </button>
-        <button type="button" className="nav-link" onClick={logout}>
-          <LogOut size={20} aria-hidden="true" />
-          <span>Sair</span>
-        </button>
+        <div className="nav-section">Você</div>
+        {MORE.map((item) => (
+          <NavLink key={item.to} to={item.to} className="nav-link">
+            {item.icon}
+            <span>{item.label}</span>
+          </NavLink>
+        ))}
+        <div className="sidebar-foot">
+          <button type="button" className="nav-link" onClick={toggleTheme}>
+            <ThemeIcon size={20} aria-hidden="true" />
+            <span>{themeLabel}</span>
+          </button>
+          <button type="button" className="nav-link" onClick={logout}>
+            <LogOut size={20} aria-hidden="true" />
+            <span>Sair</span>
+          </button>
+        </div>
       </nav>
+
+      <header className="topbar">
+        <Brand />
+        <button type="button" className="icon-btn" onClick={toggleTheme} aria-label={themeLabel}>
+          <ThemeIcon size={20} aria-hidden="true" />
+        </button>
+      </header>
+
       <main className="main" id="conteudo">
         <Outlet />
-        <footer className="footer stack">
+        <footer className="footer">
           <Disclaimer />
-          <p className="small muted">
+          <p>
             <NavLink to="/glossario">Glossário</NavLink> ·{' '}
             <NavLink to="/privacidade">Política de Privacidade</NavLink> ·{' '}
             <NavLink to="/termos-de-uso">Termos de Uso</NavLink>
           </p>
         </footer>
       </main>
+
+      <nav className="bottombar" aria-label="Menu do celular">
+        {MOBILE_TABS.map((item) => (
+          <NavLink key={item.to} to={item.to} end={item.to === '/'} className="tab-link">
+            {item.icon}
+            <span>{item.label}</span>
+          </NavLink>
+        ))}
+        <button
+          type="button"
+          className="tab-link"
+          aria-expanded={moreOpen}
+          aria-controls="menu-mais"
+          aria-current={inMore ? 'page' : undefined}
+          onClick={() => setMoreOpen((v) => !v)}
+        >
+          <Ellipsis size={20} aria-hidden="true" />
+          <span>Mais</span>
+        </button>
+      </nav>
+      {moreOpen && (
+        <>
+          <div className="panel-backdrop" onClick={() => setMoreOpen(false)} />
+          <div className="more-sheet" id="menu-mais" role="menu" aria-label="Mais opções">
+            {MOBILE_MORE.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                className="nav-link"
+                role="menuitem"
+                onClick={() => setMoreOpen(false)}
+              >
+                {item.icon}
+                <span>{item.label}</span>
+              </NavLink>
+            ))}
+            <button type="button" className="nav-link" role="menuitem" onClick={logout}>
+              <LogOut size={20} aria-hidden="true" />
+              <span>Sair</span>
+            </button>
+          </div>
+        </>
+      )}
       <CookieNotice />
     </div>
   );

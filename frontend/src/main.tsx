@@ -8,6 +8,8 @@ import { applyTheme } from './components/Layout';
 import { queryClient } from './lib/queryClient';
 import { listenForSessionEnd } from './lib/session';
 import { getPref } from './lib/storage';
+import '@fontsource-variable/fraunces/opsz.css';
+import '@fontsource-variable/hanken-grotesk/wght.css';
 import './styles.css';
 
 applyTheme(getPref('theme'));

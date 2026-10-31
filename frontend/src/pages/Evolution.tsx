@@ -10,6 +10,8 @@ import {
   YAxis,
 } from 'recharts';
 import { useHistory } from '../api/hooks';
+import { EmptyArt } from '../components/Art';
+import { PageHeader } from '../components/PageHeader';
 import { RiskBadge } from '../components/RiskBadge';
 import { LoadError, Loading } from '../components/States';
 import { Term } from '../components/Term';
@@ -35,16 +37,27 @@ export function Evolution() {
   const q = useHistory(months);
 
   return (
-    <div className="stack">
-      <h1>
-        Evolução do seu <Term id="ire">índice de risco</Term> (IRE)
-      </h1>
-      <div className="row" role="group" aria-label="Período">
+    <div className="stack-lg reveal">
+      <PageHeader
+        eyebrow="Sua trajetória"
+        title={
+          <>
+            Evolução do seu <Term id="ire">índice de risco</Term> (IRE)
+          </>
+        }
+        lead="Cada ponto é um dia em que algo mudou no seu orçamento."
+      />
+      <div
+        className="tabs"
+        role="group"
+        aria-label="Período"
+        style={{ maxWidth: 420, gridTemplateColumns: 'repeat(3, 1fr)' }}
+      >
         {PERIODS.map((m) => (
           <button
             key={m}
             type="button"
-            className={m === months ? 'btn btn-primary' : 'btn'}
+            className="tab"
             aria-pressed={m === months}
             onClick={() => setMonths(m)}
           >
@@ -55,14 +68,19 @@ export function Evolution() {
       {q.isLoading && <Loading />}
       {q.isError && <LoadError error={q.error} />}
       {q.data && q.data.points.length === 0 && (
-        <p className="notice">
-          Ainda não há histórico. Ele começa a ser registrado quando você cadastra seus dados.
-        </p>
+        <div className="empty">
+          <div className="art">
+            <EmptyArt kind="chart" />
+          </div>
+          <p>
+            Ainda não há histórico. Ele começa a ser registrado quando você cadastra seus dados.
+          </p>
+        </div>
       )}
       {q.data && q.data.points.length > 0 && (
         <>
           <section className="card stack">
-            <p style={{ margin: 0 }}>
+            <p style={{ margin: 0, fontSize: '1.15rem' }}>
               {q.data.trend === 'INSUFICIENTE'
                 ? 'Ainda não há dados suficientes para mostrar uma tendência.'
                 : `Seu risco está ${TREND[q.data.trend]} nos últimos ${months} meses.`}
@@ -84,7 +102,7 @@ export function Evolution() {
                   {BANDS.map(([y1, y2, fill]) => (
                     <ReferenceArea key={y1} y1={y1} y2={y2} fill={fill} fillOpacity={1} />
                   ))}
-                  <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+                  <CartesianGrid vertical={false} stroke="var(--border)" />
                   <XAxis dataKey="date" tick={{ fontSize: 12, fill: 'var(--muted)' }} />
                   <YAxis
                     domain={[0, 1]}
@@ -99,34 +117,35 @@ export function Evolution() {
                       'Índice',
                     ]}
                   />
-                  <Line dataKey="ire" stroke="var(--text)" strokeWidth={2} dot />
+                  <Line dataKey="ire" stroke="var(--brand)" strokeWidth={2.5} dot={{ r: 4 }} />
                 </LineChart>
               </ResponsiveContainer>
             </div>
-          </section>
-          <section className="card">
-            <div className="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th scope="col">Data</th>
-                    <th scope="col">Índice</th>
-                    <th scope="col">Faixa</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {q.data.points.map((p) => (
-                    <tr key={p.date}>
-                      <td>{formatDate(p.date)}</td>
-                      <td>{formatDecimal(p.ire)}</td>
-                      <td>
-                        <RiskBadge band={p.band} label={p.label} />
-                      </td>
+            <details className="more">
+              <summary>Ver todos os registros</summary>
+              <div className="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th scope="col">Data</th>
+                      <th scope="col">Índice</th>
+                      <th scope="col">Faixa</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {q.data.points.map((p) => (
+                      <tr key={p.date}>
+                        <td>{formatDate(p.date)}</td>
+                        <td>{formatDecimal(p.ire)}</td>
+                        <td>
+                          <RiskBadge band={p.band} label={p.label} />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </details>
           </section>
         </>
       )}

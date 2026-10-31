@@ -107,25 +107,31 @@ export function IndicatorCard({
   const { meaning, interpretation } = explain(indicatorKey, view);
   const pill = indicatorKey === 'cr' ? crLevelPill(view) : null;
   return (
-    <article className="card stack" style={{ gap: '0.5rem' }}>
+    <article className="card tile">
       <ResultExplainer
         title={<Term id={TERM[indicatorKey]}>{TITLE[indicatorKey]}</Term>}
         value={view.display}
         meaning={meaning}
         interpretation={interpretation}
       />
-      {pill && (
-        <span className={`risk ${pill.cls}`} style={{ alignSelf: 'flex-start' }}>
-          <pill.Icon size={18} aria-hidden="true" />
-          {pill.label}
-        </span>
+      {(pill || view.saturated) && (
+        <div className="row" style={{ gap: '0.4rem' }}>
+          {pill && (
+            <span className={`risk ${pill.cls}`}>
+              <pill.Icon size={18} aria-hidden="true" />
+              {pill.label}
+            </span>
+          )}
+          {view.saturated && (
+            <span className="badge">
+              <Term id="no-limite-escala">no limite da escala</Term>
+            </span>
+          )}
+        </div>
       )}
-      <RiskBar risk={view.risk} />
-      {view.saturated && (
-        <span className="badge" style={{ alignSelf: 'flex-start' }}>
-          <Term id="no-limite-escala">no limite da escala</Term>
-        </span>
-      )}
+      <div className="tile-foot">
+        <RiskBar risk={view.risk} />
+      </div>
     </article>
   );
 }

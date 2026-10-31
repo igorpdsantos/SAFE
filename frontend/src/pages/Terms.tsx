@@ -5,6 +5,7 @@ import { api, ApiError, userMessage } from '../api/client';
 import { keys, useTerms } from '../api/hooks';
 import { CookieNotice } from '../components/CookieNotice';
 import { LegalText } from '../components/Markdown';
+import { LogoMark } from '../components/Art';
 import { LoadError, Loading } from '../components/States';
 import { Term } from '../components/Term';
 import { handleSessionEnd } from '../lib/session';
@@ -56,12 +57,11 @@ export function Terms() {
   };
 
   const box = (key: keyof typeof checks, label: ReactNode) => (
-    <label className="row" style={{ alignItems: 'flex-start', flexWrap: 'nowrap', gap: '0.6rem' }}>
+    <label className="check">
       <input
         type="checkbox"
         checked={checks[key]}
         onChange={(e) => setChecks((c) => ({ ...c, [key]: e.target.checked }))}
-        style={{ width: 22, height: 22, marginTop: 2, flexShrink: 0 }}
       />
       <span>{label}</span>
     </label>
@@ -69,14 +69,18 @@ export function Terms() {
 
   return (
     <div className="center-page">
-      <div className="card stack" style={{ width: 'min(640px, 100%)' }}>
-        <h1>Antes de começar</h1>
+      <div className="card stack reveal" style={{ width: 'min(640px, 100%)', padding: '2rem' }}>
+        <div className="row" style={{ color: 'var(--brand-strong)', gap: '0.6rem' }}>
+          <LogoMark size={36} />
+          <span className="brand-name">SAFE</span>
+        </div>
+        <h1 style={{ margin: 0 }}>Antes de começar</h1>
         <p>
           Para usar o SAFE, você precisa aceitar os Termos de Uso, ler a Política de Privacidade e
           confirmar que tem 18 anos ou mais. Seus dados ficam protegidos pela{' '}
           <Term id="lgpd">LGPD</Term>.
         </p>
-        <div className="notice small">
+        <div className="notice notice-brand small">
           <strong>Em resumo:</strong> o SAFE calcula o risco do seu orçamento e simula compras
           parceladas. Ele não recomenda produtos nem decide por você. Usamos só o necessário e você
           pode exportar ou excluir seus dados quando quiser.
@@ -95,7 +99,7 @@ export function Terms() {
           </>,
         )}
         {show === 'termos' && (
-          <div className="card" style={{ maxHeight: 320, overflowY: 'auto' }}>
+          <div className="card card-flat legal" style={{ maxHeight: 320, overflowY: 'auto' }}>
             <LegalText url={terms.data.termsUrl} />
           </div>
         )}
@@ -113,7 +117,7 @@ export function Terms() {
           </>,
         )}
         {show === 'privacidade' && (
-          <div className="card" style={{ maxHeight: 320, overflowY: 'auto' }}>
+          <div className="card card-flat legal" style={{ maxHeight: 320, overflowY: 'auto' }}>
             <LegalText url={terms.data.privacyUrl} />
           </div>
         )}
@@ -155,7 +159,7 @@ export function Terms() {
           <div className="row">
             <button
               type="button"
-              className="btn btn-primary"
+              className="btn btn-primary btn-lg"
               disabled={!ready || busy}
               onClick={submit}
             >

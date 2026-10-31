@@ -14,13 +14,17 @@ export function ResultExplainer({
 }) {
   return (
     <div className="stack" style={{ gap: 0 }}>
-      <div className="small muted">{title}</div>
-      <div style={{ fontSize: '1.5rem', fontWeight: 800 }}>{value}</div>
-      <p className="small" style={{ margin: '0.25rem 0 0' }}>
+      <div className="small muted" style={{ fontWeight: 600 }}>
+        {title}
+      </div>
+      <div className="tile-value" style={{ marginTop: '0.35rem' }}>
+        {value}
+      </div>
+      <p className="tile-meaning" style={{ marginTop: '0.4rem' }}>
         {meaning}
       </p>
       {interpretation && (
-        <p className="small" style={{ margin: '0.25rem 0 0', fontWeight: 600 }}>
+        <p className="small" style={{ margin: '0.3rem 0 0', fontWeight: 650 }}>
           {interpretation}
         </p>
       )}

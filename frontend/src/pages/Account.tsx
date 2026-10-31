@@ -1,9 +1,9 @@
-import { Download, LogOut, Trash2 } from 'lucide-react';
+import { Download, FlaskConical, LogOut, ShieldCheck, Trash2, UserRound } from 'lucide-react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { api, userMessage } from '../api/client';
 import { keys, useConsent, useMyData } from '../api/hooks';
+import { PageHeader } from '../components/PageHeader';
 import { LoadError, Loading } from '../components/States';
 import { Term } from '../components/Term';
 import { formatDate } from '../lib/format';
@@ -67,8 +67,12 @@ export function Account() {
   };
 
   return (
-    <div className="stack">
-      <h1>Minha conta</h1>
+    <div className="stack reveal">
+      <PageHeader
+        eyebrow="Você"
+        title="Minha conta"
+        lead="Seus dados, sua privacidade e o controle de tudo o que o SAFE guarda."
+      />
       {message && (
         <p className="notice" role="status">
           {message}
@@ -76,7 +80,9 @@ export function Account() {
       )}
 
       <section className="card stack" aria-labelledby="dados">
-        <h2 id="dados">Meus dados</h2>
+        <h2 id="dados" className="card-title">
+          <UserRound size={22} aria-hidden="true" /> Meus dados
+        </h2>
         <p style={{ margin: 0 }}>
           <strong>E-mail:</strong> {me.email}
         </p>
@@ -99,15 +105,16 @@ export function Account() {
       </section>
 
       <section className="card stack" aria-labelledby="pesquisa">
-        <h2 id="pesquisa">Pesquisa do trabalho de conclusão de curso</h2>
+        <h2 id="pesquisa" className="card-title">
+          <FlaskConical size={22} aria-hidden="true" /> Pesquisa do trabalho de conclusão de curso
+        </h2>
         <p style={{ margin: 0 }}>
           Se você quiser, seus <Term id="anonimizado">dados anonimizados</Term> ajudam no estudo do
           SAFE. É opcional e você pode mudar quando quiser. Isso não muda nada no uso do sistema.
         </p>
-        <label className="row" style={{ flexWrap: 'nowrap' }}>
+        <label className="check">
           <input
             type="checkbox"
-            style={{ width: 22, height: 22 }}
             checked={consent.data?.granted ?? me.researchConsent}
             onChange={(e) => toggleConsent(e.target.checked)}
           />
@@ -115,37 +122,47 @@ export function Account() {
         </label>
       </section>
 
-      <section className="card stack" aria-labelledby="exportar">
-        <h2 id="exportar">Baixar meus dados</h2>
-        <p style={{ margin: 0 }}>
-          Um arquivo com tudo o que o SAFE guarda sobre você. Ele é gerado na hora e não fica salvo
-          no servidor.
-        </p>
-        <div>
-          <a className="btn" href="/api/v1/me/export" download>
-            <Download size={18} aria-hidden="true" /> Baixar meus dados (arquivo JSON)
-          </a>
-        </div>
-      </section>
+      <div className="grid-2">
+        <section className="card stack" aria-labelledby="exportar">
+          <h2 id="exportar" className="card-title">
+            <Download size={22} aria-hidden="true" /> Baixar meus dados
+          </h2>
+          <p style={{ margin: 0 }}>
+            Um arquivo com tudo o que o SAFE guarda sobre você. Ele é gerado na hora e não fica
+            salvo no servidor.
+          </p>
+          <div>
+            <a className="btn" href="/api/v1/me/export" download>
+              <Download size={18} aria-hidden="true" /> Baixar meus dados (arquivo JSON)
+            </a>
+          </div>
+        </section>
 
-      <section className="card stack" aria-labelledby="sair">
-        <h2 id="sair">Sair de todos os dispositivos</h2>
-        <p style={{ margin: 0 }}>
-          Encerra o acesso em todos os navegadores em que você entrou, inclusive este.
-        </p>
-        <div>
-          <button type="button" className="btn" onClick={logoutAll}>
-            <LogOut size={18} aria-hidden="true" /> Sair de todos os dispositivos
-          </button>
-        </div>
-      </section>
+        <section className="card stack" aria-labelledby="sair">
+          <h2 id="sair" className="card-title">
+            <ShieldCheck size={22} aria-hidden="true" /> Sair de todos os dispositivos
+          </h2>
+          <p style={{ margin: 0 }}>
+            Encerra o acesso em todos os navegadores em que você entrou, inclusive este.
+          </p>
+          <div>
+            <button type="button" className="btn" onClick={logoutAll}>
+              <LogOut size={18} aria-hidden="true" /> Sair de todos os dispositivos
+            </button>
+          </div>
+        </section>
+      </div>
 
-      <section
-        className="card stack"
-        aria-labelledby="excluir"
-        style={{ borderColor: 'var(--danger)' }}
-      >
-        <h2 id="excluir">Excluir minha conta</h2>
+      <section className="card stack danger-zone" aria-labelledby="excluir">
+        <h2 id="excluir" className="card-title">
+          <Trash2 size={22} aria-hidden="true" style={{ color: 'var(--danger)' }} /> Excluir minha
+          conta
+        </h2>
+        {!deleting && (
+          <p style={{ margin: 0 }} className="muted">
+            Apaga para sempre sua conta e todos os seus dados.
+          </p>
+        )}
         {!deleting ? (
           <div>
             <button type="button" className="btn" onClick={() => setDeleting(true)}>
@@ -192,11 +209,6 @@ export function Account() {
           </>
         )}
       </section>
-
-      <p className="small">
-        <Link to="/privacidade">Política de Privacidade</Link> ·{' '}
-        <Link to="/termos-de-uso">Termos de Uso</Link>
-      </p>
     </div>
   );
 }

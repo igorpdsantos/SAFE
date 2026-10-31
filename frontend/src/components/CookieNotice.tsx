@@ -1,3 +1,4 @@
+import { Cookie } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getPref, setPref } from '../lib/storage';
@@ -9,7 +10,8 @@ export function CookieNotice() {
   if (!visible) return null;
   return (
     <div className="cookie-notice card row" role="region" aria-label="Aviso de cookies">
-      <p style={{ margin: 0, flex: 1, minWidth: 220 }}>
+      <Cookie size={22} aria-hidden="true" style={{ color: 'var(--gold)', flexShrink: 0 }} />
+      <p style={{ margin: 0, flex: 1, minWidth: 200 }} className="small">
         Usamos apenas <Term id="cookie">cookies</Term> essenciais para login e segurança. Não usamos
         cookies de publicidade ou rastreamento. <Link to="/privacidade">Saiba mais</Link>
       </p>

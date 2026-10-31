@@ -235,6 +235,26 @@ test('SPEC-14 – entenda os dados: séries com fonte, filtro de período e nada
   expect(externas).toEqual([]);
 });
 
+test('glossário abre dentro do app com sessão e sozinho sem sessão', async ({ page }) => {
+  await page.goto('/glossario');
+  await expect(page.getByRole('heading', { name: 'Glossário' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Voltar' })).toBeVisible();
+  await expect(page.getByRole('navigation', { name: 'Menu principal' })).toHaveCount(0);
+  await readyUser(page, 'glossario');
+  await page.goto('/');
+  await page
+    .getByRole('navigation', { name: 'Menu principal' })
+    .getByRole('link', { name: 'Glossário' })
+    .click();
+  await expect(page.getByRole('heading', { name: 'Glossário' })).toBeVisible();
+  await expect(page.getByRole('navigation', { name: 'Menu principal' })).toBeVisible();
+  await expect(
+    page
+      .getByRole('navigation', { name: 'Menu principal' })
+      .getByRole('link', { name: 'Glossário' }),
+  ).toHaveAttribute('aria-current', 'page');
+});
+
 test.describe('10 – celular (375 px)', () => {
   test.use({ viewport: { width: 375, height: 740 }, isMobile: true, hasTouch: true });
 

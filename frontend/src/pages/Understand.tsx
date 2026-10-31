@@ -1,30 +1,19 @@
 import { Info } from 'lucide-react';
-import { useMemo, useState, type ReactNode } from 'react';
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  LabelList,
-  Legend,
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts';
+import { useMemo, useState } from 'react';
 import { useContextSeries } from '../api/hooks';
 import type { ContextSeries, RiskBand } from '../api/types';
 import { EmptyArt } from '../components/Art';
+import { LineChartCard } from '../components/charts/LineChartCard';
+import { RankBarCard } from '../components/charts/RankBarCard';
+import { StatTile } from '../components/charts/StatTile';
+import { describeChange, extremes, monthName, pct, toPoints } from '../components/charts/viz';
 import { useHelp } from '../components/HelpPanel';
 import { PageHeader } from '../components/PageHeader';
 import { BAND_LABELS, RiskBadge } from '../components/RiskBadge';
 import { LoadError, Loading } from '../components/States';
 import { Term } from '../components/Term';
 import { getGlossaryEntry, type GlossaryId } from '../content/glossary';
-import { formatDate, formatDecimal } from '../lib/format';
 
-const COLORS = ['var(--brand)', 'var(--gold)', 'var(--risk-4)'];
 const PERIODS = [
   { months: 12, label: '1 ano' },
   { months: 36, label: '3 anos' },
@@ -71,214 +60,6 @@ function minusMonths(d: string, n: number): string {
   return `${Math.floor(total / 12)}-${String((total % 12) + 1).padStart(2, '0')}`;
 }
 
-/** Gráfico de linhas de uma ou mais séries, com tabela e fonte (SPEC-14 §4). */
-function SeriesCard({
-  title,
-  help,
-  series,
-  wide,
-}: {
-  title: ReactNode;
-  help: string;
-  series: ContextSeries[];
-  /** Ocupa a linha inteira da grade. */
-  wide?: boolean;
-}) {
-  const shown = series.filter((s) => s.points.length > 0);
-  const dates = [...new Set(shown.flatMap((s) => s.points.map((p) => p.date)))].sort();
-  const data = dates.map((date) => {
-    const row: Record<string, string | number | null> = { date: monthLabel(date) };
-    shown.forEach((s) => {
-      const p = s.points.find((x) => x.date === date);
-      row[s.id] = p ? Number(p.value) : null;
-    });
-    return row;
-  });
-  const sources = [...new Map(series.map((s) => [s.source, s])).values()];
-  // Faixa estreita (ex.: 48 a 50) pede uma casa decimal no eixo para não repetir rótulos.
-  const values = shown.flatMap((s) => s.points.map((p) => Number(p.value)));
-  const axisPlaces = Math.max(...values) - Math.min(...values) < 10 ? 1 : 0;
-
-  return (
-    <section className={wide ? 'card stack chart-wide' : 'card stack'}>
-      <div className="stack-xs">
-        <h2>{title}</h2>
-        <p className="small muted">{help}</p>
-      </div>
-      {shown.length === 0 ? (
-        <p className="muted">
-          Não há dados desta fonte no período escolhido. Escolha um período maior.
-        </p>
-      ) : (
-        <div style={{ width: '100%', height: 260 }} aria-hidden="true">
-          <ResponsiveContainer>
-            <LineChart data={data} margin={{ top: 8, right: 12, bottom: 0, left: 0 }}>
-              <CartesianGrid vertical={false} stroke="var(--border)" />
-              <XAxis dataKey="date" tick={{ fontSize: 12, fill: 'var(--muted)' }} minTickGap={16} />
-              <YAxis
-                width={44}
-                tick={{ fontSize: 12, fill: 'var(--muted)' }}
-                axisLine={false}
-                tickLine={false}
-                domain={['auto', 'auto']}
-                tickFormatter={(v: number) => formatDecimal(String(v), axisPlaces)}
-              />
-              <Tooltip
-                formatter={(v, name) => [
-                  `${formatDecimal(String(v), 1)}%`,
-                  shown.find((s) => s.id === name)?.name ?? String(name),
-                ]}
-                contentStyle={{
-                  background: 'var(--surface)',
-                  border: '1px solid var(--border)',
-                  borderRadius: 12,
-                  color: 'var(--text)',
-                }}
-              />
-              {shown.length > 1 && (
-                <Legend formatter={(id) => shown.find((s) => s.id === id)?.name ?? String(id)} />
-              )}
-              {shown.map((s, i) => (
-                <Line
-                  key={s.id}
-                  dataKey={s.id}
-                  stroke={COLORS[i % COLORS.length]}
-                  strokeWidth={2.5}
-                  dot={data.length <= 14 ? { r: 3 } : false}
-                  connectNulls={false}
-                />
-              ))}
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-      )}
-      <div className="stack-xs">
-        {sources.map((s) => (
-          <p key={s.source} className="small muted">
-            <strong>Fonte:</strong> {s.source} · {s.unit} · extraído em {formatDate(s.extractedAt)}
-          </p>
-        ))}
-      </div>
-      {shown.length > 0 && (
-        <details className="more">
-          <summary>Ver tabela</summary>
-          <div className="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th scope="col">Mês</th>
-                  {shown.map((s) => (
-                    <th key={s.id} scope="col">
-                      {s.name} ({s.unit})
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {[...dates].reverse().map((date) => (
-                  <tr key={date}>
-                    <td>{monthLabel(date)}</td>
-                    {shown.map((s) => {
-                      const p = s.points.find((x) => x.date === date);
-                      return <td key={s.id}>{p ? formatDecimal(p.value, 1) : '—'}</td>;
-                    })}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </details>
-      )}
-    </section>
-  );
-}
-
-/** Tipos de dívida da PEIC no último mês do período, do mais comum ao menos comum. */
-function DebtTypesCard({ series }: { series: ContextSeries[] }) {
-  const latest = series
-    .map((s) => ({ s, p: s.points[s.points.length - 1] }))
-    .filter((x): x is { s: ContextSeries; p: { date: string; value: string } } => !!x.p);
-  const rows = latest
-    .map(({ s, p }) => ({ name: s.name, value: Number(p.value), date: p.date }))
-    .sort((a, b) => b.value - a.value);
-  const month = rows[0]?.date;
-  const first = series[0];
-
-  return (
-    <section className="card stack">
-      <div className="stack-xs">
-        <h2>Que tipo de dívida as famílias têm</h2>
-        <p className="small muted">
-          Entre as famílias com dívidas{month ? ` (${monthLabel(month)})` : ''}. A soma passa de
-          100% porque a mesma família pode ter mais de um tipo.
-        </p>
-      </div>
-      {rows.length === 0 ? (
-        <p className="muted">
-          Não há dados desta fonte no período escolhido. Escolha um período maior.
-        </p>
-      ) : (
-        <div style={{ width: '100%', height: 300 }} aria-hidden="true">
-          <ResponsiveContainer>
-            <BarChart
-              data={rows}
-              layout="vertical"
-              margin={{ top: 0, right: 48, bottom: 0, left: 0 }}
-            >
-              <XAxis type="number" hide domain={[0, 100]} />
-              <YAxis
-                type="category"
-                dataKey="name"
-                width={150}
-                tick={{ fontSize: 12, fill: 'var(--text)' }}
-                axisLine={false}
-                tickLine={false}
-              />
-              <Bar dataKey="value" fill="var(--brand)" radius={[0, 6, 6, 0]} barSize={18}>
-                <LabelList
-                  dataKey="value"
-                  position="right"
-                  formatter={(v) => `${formatDecimal(String(v), 1)}%`}
-                  style={{ fontSize: 12, fill: 'var(--muted)' }}
-                />
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      )}
-      {first && (
-        <p className="small muted">
-          <strong>Fonte:</strong> {first.source} · {first.unit} · extraído em{' '}
-          {formatDate(first.extractedAt)}
-        </p>
-      )}
-      {rows.length > 0 && (
-        <details className="more">
-          <summary>Ver tabela</summary>
-          <div className="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th scope="col">Tipo de dívida</th>
-                  <th scope="col">% das famílias endividadas</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((r) => (
-                  <tr key={r.name}>
-                    <td>{r.name}</td>
-                    <td>{formatDecimal(String(r.value), 1)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </details>
-      )}
-    </section>
-  );
-}
-
 /** "Entenda os dados": contexto público e como o SAFE calcula (SPEC-14, RF25, HU24). */
 export function Understand() {
   const q = useContextSeries();
@@ -302,6 +83,29 @@ export function Understand() {
       .map((id) => all.find((s) => s.id === id))
       .filter((s): s is ContextSeries => !!s)
       .map((s) => ({ ...s, points: s.points.filter((p) => p.date >= from && p.date <= to) }));
+  const one = (id: string) => pick(id)[0];
+  const points = (id: string) => {
+    const s = one(id);
+    return s ? toPoints(s) : [];
+  };
+  const families = pick('peic_endividadas', 'peic_em_atraso', 'peic_sem_condicao');
+  const types = pick(...TYPE_IDS);
+  const ranked = types
+    .map((s) => ({ name: s.name, p: s.points[s.points.length - 1] }))
+    .filter((x) => x.p)
+    .sort((a, b) => Number(b.p!.value) - Number(a.p!.value));
+  const typesMonth = ranked[0]?.p?.date;
+  const typesInsight =
+    ranked.length > 1
+      ? `${ranked[0]!.name} aparece em ${pct(Number(ranked[0]!.p!.value))} das famílias com dívidas, cerca de ${Math.round(Number(ranked[0]!.p!.value) / Number(ranked[1]!.p!.value))} vezes o segundo tipo (${ranked[1]!.name.toLowerCase()}, ${pct(Number(ranked[1]!.p!.value))}).`
+      : undefined;
+  const selic = points('bcb_selic');
+  const selicPeak = selic.length ? extremes(selic).max : null;
+  const selicLast = selic[selic.length - 1];
+  const rateInsight =
+    selicPeak && selicLast
+      ? `O maior valor do período foi ${pct(selicPeak.value)} em ${monthName(selicPeak.date)}; em ${monthName(selicLast.date)}, a taxa está em ${pct(selicLast.value)}.`
+      : undefined;
 
   return (
     <div className="stack-lg reveal">
@@ -389,51 +193,91 @@ export function Understand() {
         </p>
       </div>
 
-      <div className="chart-grid">
-        <SeriesCard
-          title="Quantas famílias têm dívidas"
-          help="Pesquisa mensal da Confederação Nacional do Comércio (CNC) com as famílias. Ter dívida é comum; o aperto aparece em quem está com conta atrasada."
-          series={pick('peic_endividadas', 'peic_em_atraso', 'peic_sem_condicao')}
-        />
-        <DebtTypesCard series={pick(...TYPE_IDS)} />
-        <SeriesCard
-          title={
-            <>
-              Quanto da renda vai para dívidas{' '}
-              <span className="keep">
-                (<Term id="comprometimento-renda">comprometimento</Term>)
-              </span>
-            </>
-          }
-          help="O que as famílias dizem na pesquisa da CNC e o que o Banco Central mede nos bancos. Os números diferem pelo método; compare a direção."
-          series={pick('peic_renda_comprometida', 'bcb_comprometimento')}
-        />
-        <SeriesCard
-          title={
-            <>
-              Tamanho das dívidas{' '}
-              <span className="keep">
-                (<Term id="endividamento">endividamento</Term>)
-              </span>
-            </>
-          }
-          help="Tudo o que as famílias devem aos bancos comparado com o que ganham em 12 meses."
-          series={pick('bcb_endividamento')}
-        />
-        <SeriesCard
-          title={
-            <>
-              Taxa básica de juros{' '}
-              <span className="keep">
-                (<Term id="selic">Selic</Term>)
-              </span>
-            </>
-          }
-          help="A referência para o custo do crédito no Brasil. Quando sobe, os empréstimos tendem a ficar mais caros."
-          series={pick('bcb_selic')}
-          wide
-        />
+      <div className="kpi-row" aria-label="Manchetes do período">
+        <StatTile label="Famílias com dívidas" series={one('peic_endividadas')} />
+        <StatTile label="Famílias com contas em atraso" series={one('peic_em_atraso')} />
+        <StatTile label="Renda mensal que vai para parcelas" series={one('bcb_comprometimento')} />
+        <StatTile label="Taxa básica de juros" series={one('bcb_selic')} />
       </div>
+
+      <section className="viz-section stack" aria-labelledby="sec-familias">
+        <header>
+          <p className="eyebrow">1 · As famílias</p>
+          <h2 id="sec-familias">Quantas famílias têm dívidas, e de que tipo</h2>
+        </header>
+        <div className="chart-grid">
+          <LineChartCard
+            title="Com dívidas, em atraso e sem condição de pagar"
+            subtitle="% do total de famílias, na pesquisa mensal da Confederação Nacional do Comércio (CNC). Ter dívida é comum; o aperto aparece em quem está com conta atrasada."
+            series={families}
+            insight={describeChange('Famílias com dívidas', points('peic_endividadas'))}
+          />
+          <RankBarCard
+            title="Que tipo de dívida as famílias têm"
+            subtitle={`Entre as famílias com dívidas${typesMonth ? `, em ${monthName(typesMonth)}` : ''}. A soma passa de 100% porque a mesma família pode ter mais de um tipo.`}
+            series={types}
+            insight={typesInsight}
+          />
+        </div>
+      </section>
+
+      <section className="viz-section stack" aria-labelledby="sec-renda">
+        <header>
+          <p className="eyebrow">2 · A renda e as dívidas</p>
+          <h2 id="sec-renda">Quanto da renda as dívidas ocupam</h2>
+        </header>
+        <div className="chart-grid">
+          <LineChartCard
+            title={
+              <>
+                Renda que vai para dívidas{' '}
+                <span className="keep">
+                  (<Term id="comprometimento-renda">comprometimento</Term>)
+                </span>
+              </>
+            }
+            subtitle="O que as famílias dizem (CNC) e o que o Banco Central mede nos bancos, na mesma escala. Os métodos são diferentes: compare a direção, não a altura."
+            series={pick('bcb_comprometimento', 'peic_renda_comprometida')}
+            insight={describeChange('Pelo Banco Central', points('bcb_comprometimento'))}
+          />
+          <LineChartCard
+            title={
+              <>
+                Tamanho das dívidas{' '}
+                <span className="keep">
+                  (<Term id="endividamento">endividamento</Term>)
+                </span>
+              </>
+            }
+            subtitle="Tudo o que as famílias devem aos bancos, em % do que ganham em 12 meses."
+            series={pick('bcb_endividamento')}
+            insight={describeChange('Endividamento', points('bcb_endividamento'))}
+          />
+        </div>
+      </section>
+
+      <section className="viz-section stack" aria-labelledby="sec-juros">
+        <header>
+          <p className="eyebrow">3 · Os juros</p>
+          <h2 id="sec-juros">
+            Quanto custa o dinheiro{' '}
+            <span className="keep">
+              (<Term id="selic">Selic</Term>)
+            </span>
+          </h2>
+        </header>
+        <div className="chart-grid">
+          <LineChartCard
+            title="Taxa básica de juros, em % ao ano"
+            subtitle="A referência para o custo do crédito no Brasil. Quando sobe, os empréstimos tendem a ficar mais caros."
+            series={pick('bcb_selic')}
+            insight={rateInsight}
+            markPeak
+            wide
+            height={300}
+          />
+        </div>
+      </section>
 
       <section className="card stack" aria-labelledby="como-calcula">
         <div className="stack-xs">

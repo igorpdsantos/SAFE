@@ -136,6 +136,7 @@
 - [ ] **T-11.7** `B` Verificação manual da SPEC-11 §7 (DevTools: storage, cookies, rede externa; 375 px; 4 navegadores; Lighthouse ≥ 90) · parte automatizada no E2E (armazenamento, logout entre abas, voltar, 375 px no Chromium)
 - [x] **T-11.8** `B` Redesign visual do frontend: identidade própria (tipografia no bundle, paleta, ilustrações SVG locais), layout novo e responsivo, mantendo RNF05, SPEC-15 e as regras de navegador da SPEC-11 §4 · início 2026-10-30 22:22 · Igor + IA · feito 2026-10-30 22:40
 - [x] **T-11.9** `B` Revisão fina de espaçamentos: escala única (4–64 px) para gaps, paddings e margens, sem valores soltos nas telas · início 2026-10-30 23:28 · Igor + IA · feito 2026-10-30 23:36
+- [x] **T-11.10** `B` Glossário, Termos e Política abrem dentro do app (com menu) quando há sessão e sozinhos sem sessão; E2E · feito 2026-10-31 01:11 · Igor + IA
 
 ## Fase 7 · Histórico e privacidade — [SPEC-09](specs/SPEC-09-historico.md), [SPEC-10](specs/SPEC-10-privacidade-dados.md)
 - [x] **T-09.1** `A` `GET /history` com período, limites e `trend` + testes (§2, §4) · início 2026-10-29 18:29 · Igor + IA · feito 2026-10-29 18:29
@@ -172,6 +173,7 @@
 - [x] **T-14.3** `B` Tela `/entenda` com filtro, glossário e "como o SAFE calcula" (§4) · início 2026-10-31 00:54 · Igor + IA · rota /entenda (menu "Você" e "Mais"): 4 gráficos com fonte/unidade/data e tabela, filtro 1/3/5 anos ou meses, "Como o SAFE calcula", glossário e aviso; E2E SPEC-14 · feito 2026-10-31 00:58
 - [ ] **T-14.4** `B` Acrescentar RF25/UC11/HU24 ao PRD e uma frase no artigo (§5) · PRD com HU24 e UC11 (2026-10-31, Igor + IA); falta a equipe colar no artigo (Seção 4) a frase que está no PR #18
 - [x] **T-14.5** `B` Tipos de dívida da PEIC (cartão, carnê, crédito pessoal, financiamentos…) na tela `/entenda`, a pedido do colega que montou o dashboard · início 2026-10-31 01:01 · Igor + IA · 9 tipos na `peic.csv` e na API; gráfico de barras do último mês, ao lado de "Quantas famílias têm dívidas" · feito 2026-10-31 01:03
+- [x] **T-14.6** `B` Gráficos da `/entenda` pelo método do skill dataviz: manchetes com mini-gráfico, 3 seções, componentes em `components/charts/`, paleta categórica própria validada (claro e escuro), uma escala por gráfico, valor no fim da linha, pico, tooltip e frase do que observar · feito 2026-10-31 01:11 · Igor + IA
 
 ---
 

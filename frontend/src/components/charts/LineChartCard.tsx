@@ -10,7 +10,6 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import type { ContextSeries } from '../../api/types';
 import { formatDecimal } from '../../lib/format';
 import { ChartFrame } from './ChartFrame';
 import { EmptyChart, type EmptyAction } from './EmptyChart';
@@ -24,6 +23,7 @@ import {
   toPoints,
   yScale,
   type Point,
+  type VizSeries,
 } from './viz';
 
 /**
@@ -40,10 +40,17 @@ export function LineChartCard({
   wide,
   height = 280,
   tableExtra = [],
+  format = pct,
+  tickFormat,
+  xLabel = monthShort,
+  labelFormat = monthName,
+  sourceNote,
+  tableOrder = 'desc',
+  showTable = true,
 }: {
   title: ReactNode;
   subtitle: ReactNode;
-  series: ContextSeries[];
+  series: VizSeries[];
   insight?: ReactNode;
   /** Saída oferecida quando o período não tem dados desta fonte. */
   emptyAction?: EmptyAction;
@@ -51,12 +58,25 @@ export function LineChartCard({
   wide?: boolean;
   height?: number;
   /** Séries que entram só na tabela (ex.: a versão original de uma série ajustada). */
-  tableExtra?: ContextSeries[];
+  tableExtra?: VizSeries[];
+  /** Formato dos valores (rótulos, tooltip, tabela). Padrão: percentual. */
+  format?: (v: number) => string;
+  /** Formato das marcas do eixo Y. Padrão: número com as casas da escala. */
+  tickFormat?: (v: number) => string;
+  /** Rótulo curto do eixo X e rótulo longo (tooltip e tabela). Padrão: meses "AAAA-MM". */
+  xLabel?: (key: string) => string;
+  labelFormat?: (key: string) => string;
+  sourceNote?: ReactNode;
+  /** Tabela do mais recente para o mais antigo (padrão) ou na ordem do tempo. */
+  tableOrder?: 'asc' | 'desc';
+  showTable?: boolean;
 }) {
   const shown = series.filter((s) => s.points.length > 0);
   const colors = Object.fromEntries(shown.map((s, i) => [s.id, SERIES_COLORS[i % 3]!]));
   const names = Object.fromEntries(shown.map((s) => [s.id, s.name]));
-  const dates = [...new Set(shown.flatMap((s) => s.points.map((p) => p.date)))].sort();
+  // Datas "AAAA-MM" se ordenam como texto; rótulos prontos (ex.: "nov/2026") mantêm a ordem recebida.
+  const keys = [...new Set(shown.flatMap((s) => s.points.map((p) => p.date)))];
+  const dates = keys.every((k) => /^\d{4}-\d{2}/.test(k)) ? keys.sort() : keys;
   const rows = dates.map((date) => {
     const row: Record<string, string | number | null> = { date };
     for (const s of shown) {
@@ -69,10 +89,12 @@ export function LineChartCard({
   const { domain, ticks, places } = all.length
     ? yScale(all)
     : { domain: [0, 1] as [number, number], ticks: [0, 1], places: 0 };
-  const lastPoint = (s: ContextSeries): Point | undefined => toPoints(s).at(-1);
+  // Valores em reais têm rótulos mais largos ("R$ 26.000,00", "R$ 1,5 mil").
+  const wideLabels = format !== pct;
+  const lastPoint = (s: VizSeries): Point | undefined => toPoints(s).at(-1);
   const single = shown.length === 1 ? shown[0]! : null;
   const peak = single && markPeak ? extremes(toPoints(single)).max : null;
-  const lastDate = (s: ContextSeries) => lastPoint(s)?.date;
+  const lastDate = (s: VizSeries) => lastPoint(s)?.date;
 
   const table = (
     <table>
@@ -87,15 +109,15 @@ export function LineChartCard({
         </tr>
       </thead>
       <tbody>
-        {[...rows].reverse().map((r) => (
+        {(tableOrder === 'desc' ? [...rows].reverse() : rows).map((r) => (
           <tr key={String(r.date)}>
-            <td>{monthName(String(r.date))}</td>
+            <td>{labelFormat(String(r.date))}</td>
             {shown.map((s) => (
-              <td key={s.id}>{r[s.id] == null ? '—' : pct(Number(r[s.id]))}</td>
+              <td key={s.id}>{r[s.id] == null ? '—' : format(Number(r[s.id]))}</td>
             ))}
             {tableExtra.map((s) => {
               const p = s.points.find((x) => x.date === r.date);
-              return <td key={s.id}>{p ? pct(Number(p.value)) : '—'}</td>;
+              return <td key={s.id}>{p ? format(Number(p.value)) : '—'}</td>;
             })}
           </tr>
         ))}
@@ -110,7 +132,8 @@ export function LineChartCard({
       legend={shown.map((s) => ({ name: s.name, color: colors[s.id]! }))}
       insight={insight}
       sources={[...series, ...tableExtra]}
-      table={shown.length ? table : undefined}
+      table={shown.length && showTable ? table : undefined}
+      sourceNote={sourceNote}
       wide={wide}
     >
       {shown.length === 0 ? (
@@ -120,12 +143,15 @@ export function LineChartCard({
         />
       ) : (
         <div className="chart-plot" style={{ minHeight: height }} aria-hidden="true">
-          <ResponsiveContainer width="100%" height="100%">
-            <ComposedChart data={rows} margin={{ top: 16, right: 56, bottom: 0, left: 0 }}>
+          <ResponsiveContainer width="100%" height="100%" minHeight={height}>
+            <ComposedChart
+              data={rows}
+              margin={{ top: 16, right: wideLabels ? 104 : 56, bottom: 0, left: 0 }}
+            >
               <CartesianGrid vertical={false} stroke="var(--chart-grid)" />
               <XAxis
                 dataKey="date"
-                tickFormatter={monthShort}
+                tickFormatter={xLabel}
                 tick={{ fontSize: 12, fill: 'var(--muted)' }}
                 axisLine={{ stroke: 'var(--chart-grid)' }}
                 tickLine={false}
@@ -133,16 +159,23 @@ export function LineChartCard({
               />
               <YAxis
                 domain={domain}
-                width={44}
+                width={wideLabels ? 76 : 44}
                 ticks={ticks}
                 tick={{ fontSize: 12, fill: 'var(--muted)' }}
                 axisLine={false}
                 tickLine={false}
-                tickFormatter={(v: number) => formatDecimal(String(v), places)}
+                tickFormatter={tickFormat ?? ((v: number) => formatDecimal(String(v), places))}
               />
               <Tooltip
                 cursor={{ stroke: 'var(--muted)', strokeWidth: 1 }}
-                content={<VizTooltip names={names} colors={colors} />}
+                content={
+                  <VizTooltip
+                    names={names}
+                    colors={colors}
+                    format={format}
+                    labelFormat={labelFormat}
+                  />
+                }
               />
               {single && (
                 <Area
@@ -180,7 +213,7 @@ export function LineChartCard({
                     strokeWidth={2}
                     ifOverflow="visible"
                     label={{
-                      value: pct(p.value),
+                      value: format(p.value),
                       position: 'right',
                       offset: 8,
                       fontSize: 12,
@@ -200,7 +233,7 @@ export function LineChartCard({
                   strokeWidth={2}
                   ifOverflow="visible"
                   label={{
-                    value: `pico: ${pct(peak.value)}`,
+                    value: `pico: ${format(peak.value)}`,
                     position: 'top',
                     fontSize: 12,
                     fill: 'var(--muted)',
@@ -213,8 +246,9 @@ export function LineChartCard({
       )}
       {shown.length > 0 && domain[0] > 0 && (
         <p className="chart-note">
-          O eixo começa em {formatDecimal(String(domain[0]), places)} para mostrar melhor a
-          variação.
+          O eixo começa em{' '}
+          {(tickFormat ?? ((v: number) => formatDecimal(String(v), places)))(domain[0])} para
+          mostrar melhor a variação.
         </p>
       )}
     </ChartFrame>

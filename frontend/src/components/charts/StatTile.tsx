@@ -1,6 +1,5 @@
 import { Minus, TrendingDown, TrendingUp } from 'lucide-react';
-import type { ContextSeries } from '../../api/types';
-import { monthName, pct, pp, toPoints, type Point } from './viz';
+import { monthName, pct, pp, toPoints, type Point, type VizSeries } from './viz';
 
 /** Mini-gráfico: linha em cinza, o último ponto em destaque. */
 export function Sparkline({ points }: { points: Point[] }) {
@@ -52,36 +51,46 @@ export function StatTile({
   series,
   plain,
   unit,
+  format = pct,
+  deltaFormat = pp,
+  labelFormat = monthName,
+  stableBelow = 0.05,
 }: {
   label: string;
-  series?: ContextSeries;
+  series?: VizSeries;
   /** O mesmo número dito de um jeito simples (ex.: "82 de cada 100 famílias"). */
   plain?: (value: number) => string;
   /** Unidade curta no rodapé (padrão: a da série). */
   unit?: string;
+  format?: (v: number) => string;
+  deltaFormat?: (delta: number) => string;
+  labelFormat?: (key: string) => string;
+  /** Abaixo disso a variação aparece como "estável". */
+  stableBelow?: number;
 }) {
   const points = series ? toPoints(series) : [];
   const last = points[points.length - 1];
   const first = points[0];
   if (!series || !last || !first) return null;
   const delta = last.value - first.value;
-  const Icon = Math.abs(delta) < 0.05 ? Minus : delta > 0 ? TrendingUp : TrendingDown;
+  const Icon = Math.abs(delta) < stableBelow ? Minus : delta > 0 ? TrendingUp : TrendingDown;
   return (
     <article className="card stat-tile">
       <span className="stat-label">{label}</span>
       <span className="stat-value">
-        {pct(last.value)} <small>{monthName(last.date)}</small>
+        {format(last.value)} <small>{labelFormat(last.date)}</small>
       </span>
       {plain && <span className="stat-plain">{plain(last.value)}</span>}
       {points.length > 1 && (
         <span className="stat-delta">
           <Icon size={16} aria-hidden="true" />
-          {Math.abs(delta) < 0.05 ? 'estável' : pp(delta)} desde {monthName(first.date)}
+          {Math.abs(delta) < stableBelow ? 'estável' : deltaFormat(delta)} desde{' '}
+          {labelFormat(first.date)}
         </span>
       )}
       <div className="stat-bottom stack-xs">
         <Sparkline points={points} />
-        <span className="stat-foot">{unit ?? series.unit}</span>
+        <span className="stat-foot">{unit ?? series.unit ?? ''}</span>
       </div>
     </article>
   );

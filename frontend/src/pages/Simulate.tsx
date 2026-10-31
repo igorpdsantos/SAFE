@@ -7,7 +7,8 @@ import type { Simulation, SimulationFactor } from '../api/types';
 import { FieldHelp } from '../components/FieldHelp';
 import { ScaleArt } from '../components/Art';
 import { ConfirmDialog } from '../components/ConfirmDialog';
-import { CompareChart } from '../components/FreeFlowChart';
+import { LineChartCard } from '../components/charts/LineChartCard';
+import { money, moneyAxis } from '../components/charts/viz';
 import { MoneyInput } from '../components/MoneyInput';
 import { PageHeader } from '../components/PageHeader';
 import { RiskBadge } from '../components/RiskBadge';
@@ -30,6 +31,27 @@ function noInterestInstallment(value: string, n: string): string {
   if (!cents || !count) return '';
   const each = Math.ceil(cents / count);
   return `${Math.floor(each / 100)}.${String(each % 100).padStart(2, '0')}`;
+}
+
+/** Frase simples do bloco 4: quanto a compra tira da sobra e se algum mês fica sem sobra. */
+function projectionInsight(sim: Simulation): string {
+  const withP = sim.projection.with.points;
+  const without = sim.projection.without.points;
+  const first = withP[0];
+  const before = without[0];
+  if (!first || !before) return '';
+  const cut = Number(before.free) - Number(first.free);
+  const months = withP.filter(
+    (p, i) => Number(p.free) !== Number(without[i]?.free ?? p.free),
+  ).length;
+  const empty = withP.filter((p) => Number(p.free) <= 0).length;
+  let text = `Com a compra, a sobra de ${first.label} cai de ${money(Number(before.free))} para ${money(Number(first.free))}`;
+  if (cut > 0 && months > 0)
+    text += ` (${money(cut)} a menos por mês, durante ${months} ${months === 1 ? 'mês' : 'meses'})`;
+  text += '.';
+  if (empty > 0)
+    text += ` Em ${empty} ${empty === 1 ? 'mês' : 'meses'} a sobra fica zerada ou negativa.`;
+  return text;
 }
 
 function OutcomeBanner({ sim }: { sim: Simulation }) {
@@ -188,45 +210,35 @@ function Result({ sim }: { sim: Simulation }) {
             </table>
           </div>
         </details>
-
-        <details className="more">
-          <summary id="b4">
-            Ver a sobra do mês nos próximos meses (<Term id="projecao">projeção</Term>)
-          </summary>
-          <CompareChart
-            without={sim.projection.without.points}
-            withPurchase={sim.projection.with.points}
-          />
-          <details className="more">
-            <summary>Ver a tabela com os valores</summary>
-            <div className="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th scope="col">Mês</th>
-                    <th scope="col">Sem a compra</th>
-                    <th scope="col">Com a compra</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sim.projection.with.points.map((p, i) => {
-                    const negative = Number(p.free) <= 0;
-                    return (
-                      <tr key={p.month}>
-                        <td>{p.label}</td>
-                        <td>{formatMoney(sim.projection.without.points[i]?.free ?? null)}</td>
-                        <td style={{ color: negative ? 'var(--danger)' : undefined }}>
-                          {formatMoney(p.free)} {negative && '(sem sobra)'}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </details>
-        </details>
       </section>
+
+      <LineChartCard
+        title={
+          <>
+            Quanto sobra em cada mês, com e sem a compra (<Term id="projecao">projeção</Term>)
+          </>
+        }
+        subtitle="O que fica da renda depois das despesas e das parcelas, nos próximos meses."
+        series={[
+          {
+            id: 'com',
+            name: 'Com a compra',
+            points: sim.projection.with.points.map((p) => ({ date: p.label, value: p.free })),
+          },
+          {
+            id: 'sem',
+            name: 'Sem a compra',
+            points: sim.projection.without.points.map((p) => ({ date: p.label, value: p.free })),
+          },
+        ]}
+        format={money}
+        tickFormat={moneyAxis}
+        xLabel={(label) => label.replace(/\/20(\d\d)$/, '/$1')}
+        labelFormat={(label) => label}
+        tableOrder="asc"
+        insight={projectionInsight(sim)}
+        sourceNote="Calculado pelo SAFE com o seu orçamento e os valores desta simulação."
+      />
       <p className="small muted">Simulação: nada foi salvo no seu orçamento. A decisão é sua.</p>
     </div>
   );

@@ -1,5 +1,4 @@
-import type { ContextSeries } from '../../api/types';
-import { formatDecimal } from '../../lib/format';
+import { formatDecimal, formatMoney } from '../../lib/format';
 
 /*
  * Utilitários dos gráficos (método do skill dataviz): uma escala por gráfico, rótulos só
@@ -18,12 +17,38 @@ export const pct = (v: number, places = 1) => `${formatDecimal(String(v), places
 export const pp = (v: number) =>
   `${v > 0 ? '+' : v < 0 ? '−' : ''}${formatDecimal(String(Math.abs(v)), 1)} p.p.`;
 
+/** Série de qualquer origem: pública (com fonte e data) ou calculada com os dados do usuário. */
+export interface VizSeries {
+  id: string;
+  name: string;
+  unit?: string;
+  source?: string;
+  url?: string;
+  extractedAt?: string;
+  points: { date: string; value: string }[];
+}
+
+export const money = (v: number) => formatMoney(String(v));
+/** Variação em reais com sinal: "+R$ 400,00". */
+export const moneyDelta = (v: number) =>
+  `${v > 0 ? '+' : v < 0 ? '−' : ''}${formatMoney(String(Math.abs(v)))}`;
+/** Eixo em reais, compacto: "R$ 2 mil", "R$ 1,5 mil", "R$ 800". */
+export function moneyAxis(v: number): string {
+  if (Math.abs(v) >= 1000) {
+    const k = v / 1000;
+    return `R$ ${formatDecimal(String(k), Number.isInteger(k) ? 0 : 1)} mil`;
+  }
+  return `R$ ${formatDecimal(String(v), 0)}`;
+}
+/** Índice de 0 a 1: "0,19". */
+export const index01 = (v: number) => formatDecimal(String(v), 2);
+
 export interface Point {
   date: string;
   value: number;
 }
 
-export const toPoints = (s: ContextSeries): Point[] =>
+export const toPoints = (s: VizSeries): Point[] =>
   s.points.map((p) => ({ date: p.date, value: Number(p.value) }));
 
 export function extremes(points: Point[]) {
@@ -55,7 +80,8 @@ export function yScale(values: number[], count = 5) {
   const raw = span / (count - 1);
   const mag = 10 ** Math.floor(Math.log10(raw));
   const step = [1, 2, 2.5, 5, 10].map((m) => m * mag).find((x) => x >= raw) ?? 10 * mag;
-  const start = Math.max(0, Math.floor(lo / step) * step);
+  // Começa no zero quando os dados são positivos; aceita negativos (ex.: mês sem sobra).
+  const start = lo >= 0 ? Math.max(0, Math.floor(lo / step) * step) : Math.floor(lo / step) * step;
   const end = Math.ceil(hi / step) * step;
   const ticks: number[] = [];
   for (let v = start; v <= end + step / 2; v += step) ticks.push(Number(v.toFixed(6)));

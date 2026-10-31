@@ -137,6 +137,7 @@
 - [x] **T-11.8** `B` Redesign visual do frontend: identidade própria (tipografia no bundle, paleta, ilustrações SVG locais), layout novo e responsivo, mantendo RNF05, SPEC-15 e as regras de navegador da SPEC-11 §4 · início 2026-10-30 22:22 · Igor + IA · feito 2026-10-30 22:40
 - [x] **T-11.9** `B` Revisão fina de espaçamentos: escala única (4–64 px) para gaps, paddings e margens, sem valores soltos nas telas · início 2026-10-30 23:28 · Igor + IA · feito 2026-10-30 23:36
 - [x] **T-11.10** `B` Glossário, Termos e Política abrem dentro do app (com menu) quando há sessão e sozinhos sem sessão; E2E · feito 2026-10-31 01:11 · Igor + IA
+- [x] **T-11.11** `B` Levar o padrão da `/entenda` ao resto do site: Projeção (sobra e saldo em gráficos separados, manchetes), Evolução (cabeçalho compacto, manchetes, moldura comum), Simular (gráfico sem × com a compra no padrão) e Painel (fatores com ênfase) · início 2026-10-31 01:50 · Igor + IA · feito 2026-10-31 01:58
 
 ## Fase 7 · Histórico e privacidade — [SPEC-09](specs/SPEC-09-historico.md), [SPEC-10](specs/SPEC-10-privacidade-dados.md)
 - [x] **T-09.1** `A` `GET /history` com período, limites e `trend` + testes (§2, §4) · início 2026-10-29 18:29 · Igor + IA · feito 2026-10-29 18:29

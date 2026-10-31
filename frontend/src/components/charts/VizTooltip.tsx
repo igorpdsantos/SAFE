@@ -13,24 +13,28 @@ export function VizTooltip({
   label,
   names,
   colors,
+  format = pct,
+  labelFormat = monthName,
 }: {
   active?: boolean;
   payload?: Entry[];
   label?: string;
   names: Record<string, string>;
   colors: Record<string, string>;
+  format?: (v: number) => string;
+  labelFormat?: (key: string) => string;
 }) {
   if (!active || !payload?.length) return null;
   const rows = payload.filter((p) => p.value != null && names[String(p.dataKey)]);
   if (!rows.length) return null;
   return (
     <div className="viz-tooltip">
-      {label && <div className="when">{monthName(String(label))}</div>}
+      {label && <div className="when">{labelFormat(String(label))}</div>}
       <ul>
         {rows.map((p) => (
           <li key={String(p.dataKey)}>
             <span className="line-key" style={{ color: colors[String(p.dataKey)] }} />
-            <strong>{pct(Number(p.value))}</strong>
+            <strong>{format(Number(p.value))}</strong>
             <span className="name">{names[String(p.dataKey)]}</span>
           </li>
         ))}

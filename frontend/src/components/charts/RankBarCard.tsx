@@ -72,7 +72,7 @@ export function RankBarCard({
         />
       ) : (
         <div className="chart-plot" style={{ minHeight: rows.length * 34 + 8 }} aria-hidden="true">
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height="100%" minHeight={rows.length * 34 + 8}>
             <BarChart
               data={rows}
               layout="vertical"

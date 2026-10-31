@@ -171,6 +171,7 @@
 - [x] **T-14.2** `B` `GET /context/series` (§3) · início 2026-10-31 00:53 · Igor + IA · público, from/to (AAAA-MM), 400 para período inválido; teste garante módulo = CSVs · feito 2026-10-31 00:54
 - [x] **T-14.3** `B` Tela `/entenda` com filtro, glossário e "como o SAFE calcula" (§4) · início 2026-10-31 00:54 · Igor + IA · rota /entenda (menu "Você" e "Mais"): 4 gráficos com fonte/unidade/data e tabela, filtro 1/3/5 anos ou meses, "Como o SAFE calcula", glossário e aviso; E2E SPEC-14 · feito 2026-10-31 00:58
 - [ ] **T-14.4** `B` Acrescentar RF25/UC11/HU24 ao PRD e uma frase no artigo (§5) · PRD com HU24 e UC11 (2026-10-31, Igor + IA); falta a equipe colar no artigo (Seção 4) a frase que está no PR #18
+- [x] **T-14.5** `B` Tipos de dívida da PEIC (cartão, carnê, crédito pessoal, financiamentos…) na tela `/entenda`, a pedido do colega que montou o dashboard · início 2026-10-31 01:01 · Igor + IA · 9 tipos na `peic.csv` e na API; gráfico de barras do último mês, ao lado de "Quantas famílias têm dívidas" · feito 2026-10-31 01:03
 
 ---
 

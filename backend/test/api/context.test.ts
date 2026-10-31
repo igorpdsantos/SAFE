@@ -46,11 +46,13 @@ describe('T-14.1 – dados de contexto versionados (SPEC-14 §2)', () => {
     const s = CONTEXT_SERIES.find((x) => x.id === 'bcb_selic')!;
     expect(s.points).toEqual(selic.rows.map((r) => ({ date: r.data, value: r.valor })));
     expect(s.extractedAt).toBe(selic.meta.extraido_em!.slice(0, 10));
+    const cartao = CONTEXT_SERIES.find((x) => x.id === 'peic_tipo_cartao_de_credito')!;
+    expect(cartao.points.at(-1)).toEqual({ date: '2026-07', value: '85.30' });
   });
 });
 
 describe('T-14.2 – GET /context/series (SPEC-14 §3)', () => {
-  it('é público e devolve as 7 séries com fonte, unidade, data de extração e pontos', async () => {
+  it('é público e devolve as 16 séries com fonte, unidade, data de extração e pontos', async () => {
     const { app } = buildApp();
     const res = await request(app).get(URL).expect(200);
     expect(res.body.series.map((s: { id: string }) => s.id)).toEqual([
@@ -58,6 +60,15 @@ describe('T-14.2 – GET /context/series (SPEC-14 §3)', () => {
       'peic_em_atraso',
       'peic_sem_condicao',
       'peic_renda_comprometida',
+      'peic_tipo_cartao_de_credito',
+      'peic_tipo_carne',
+      'peic_tipo_credito_pessoal',
+      'peic_tipo_financiamento_de_casa',
+      'peic_tipo_financiamento_de_carro',
+      'peic_tipo_consignado',
+      'peic_tipo_cheque_especial',
+      'peic_tipo_outras_dividas',
+      'peic_tipo_cheque_pre_datado',
       'bcb_endividamento',
       'bcb_comprometimento',
       'bcb_selic',

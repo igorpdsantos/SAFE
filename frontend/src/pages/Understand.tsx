@@ -1,7 +1,10 @@
 import { Info } from 'lucide-react';
 import { useMemo, useState, type ReactNode } from 'react';
 import {
+  Bar,
+  BarChart,
   CartesianGrid,
+  LabelList,
   Legend,
   Line,
   LineChart,
@@ -40,6 +43,17 @@ const WEIGHTS: { id: GlossaryId; label: string; weight: number }[] = [
   { id: 'liquidez', label: 'Reserva de emergência', weight: 20 },
   { id: 'nivel-endividamento', label: 'Tamanho das dívidas', weight: 10 },
 ];
+const TYPE_IDS = [
+  'peic_tipo_cartao_de_credito',
+  'peic_tipo_carne',
+  'peic_tipo_credito_pessoal',
+  'peic_tipo_financiamento_de_casa',
+  'peic_tipo_financiamento_de_carro',
+  'peic_tipo_consignado',
+  'peic_tipo_cheque_especial',
+  'peic_tipo_outras_dividas',
+  'peic_tipo_cheque_pre_datado',
+];
 const WORDS: GlossaryId[] = [
   'comprometimento-renda',
   'endividamento',
@@ -62,10 +76,13 @@ function SeriesCard({
   title,
   help,
   series,
+  wide,
 }: {
   title: ReactNode;
   help: string;
   series: ContextSeries[];
+  /** Ocupa a linha inteira da grade. */
+  wide?: boolean;
 }) {
   const shown = series.filter((s) => s.points.length > 0);
   const dates = [...new Set(shown.flatMap((s) => s.points.map((p) => p.date)))].sort();
@@ -83,7 +100,7 @@ function SeriesCard({
   const axisPlaces = Math.max(...values) - Math.min(...values) < 10 ? 1 : 0;
 
   return (
-    <section className="card stack">
+    <section className={wide ? 'card stack chart-wide' : 'card stack'}>
       <div className="stack-xs">
         <h2>{title}</h2>
         <p className="small muted">{help}</p>
@@ -165,6 +182,92 @@ function SeriesCard({
                       const p = s.points.find((x) => x.date === date);
                       return <td key={s.id}>{p ? formatDecimal(p.value, 1) : '—'}</td>;
                     })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </details>
+      )}
+    </section>
+  );
+}
+
+/** Tipos de dívida da PEIC no último mês do período, do mais comum ao menos comum. */
+function DebtTypesCard({ series }: { series: ContextSeries[] }) {
+  const latest = series
+    .map((s) => ({ s, p: s.points[s.points.length - 1] }))
+    .filter((x): x is { s: ContextSeries; p: { date: string; value: string } } => !!x.p);
+  const rows = latest
+    .map(({ s, p }) => ({ name: s.name, value: Number(p.value), date: p.date }))
+    .sort((a, b) => b.value - a.value);
+  const month = rows[0]?.date;
+  const first = series[0];
+
+  return (
+    <section className="card stack">
+      <div className="stack-xs">
+        <h2>Que tipo de dívida as famílias têm</h2>
+        <p className="small muted">
+          Entre as famílias com dívidas{month ? ` (${monthLabel(month)})` : ''}. A soma passa de
+          100% porque a mesma família pode ter mais de um tipo.
+        </p>
+      </div>
+      {rows.length === 0 ? (
+        <p className="muted">
+          Não há dados desta fonte no período escolhido. Escolha um período maior.
+        </p>
+      ) : (
+        <div style={{ width: '100%', height: 300 }} aria-hidden="true">
+          <ResponsiveContainer>
+            <BarChart
+              data={rows}
+              layout="vertical"
+              margin={{ top: 0, right: 48, bottom: 0, left: 0 }}
+            >
+              <XAxis type="number" hide domain={[0, 100]} />
+              <YAxis
+                type="category"
+                dataKey="name"
+                width={150}
+                tick={{ fontSize: 12, fill: 'var(--text)' }}
+                axisLine={false}
+                tickLine={false}
+              />
+              <Bar dataKey="value" fill="var(--brand)" radius={[0, 6, 6, 0]} barSize={18}>
+                <LabelList
+                  dataKey="value"
+                  position="right"
+                  formatter={(v) => `${formatDecimal(String(v), 1)}%`}
+                  style={{ fontSize: 12, fill: 'var(--muted)' }}
+                />
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      )}
+      {first && (
+        <p className="small muted">
+          <strong>Fonte:</strong> {first.source} · {first.unit} · extraído em{' '}
+          {formatDate(first.extractedAt)}
+        </p>
+      )}
+      {rows.length > 0 && (
+        <details className="more">
+          <summary>Ver tabela</summary>
+          <div className="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Tipo de dívida</th>
+                  <th scope="col">% das famílias endividadas</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((r) => (
+                  <tr key={r.name}>
+                    <td>{r.name}</td>
+                    <td>{formatDecimal(String(r.value), 1)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -292,6 +395,7 @@ export function Understand() {
           help="Pesquisa mensal da Confederação Nacional do Comércio (CNC) com as famílias. Ter dívida é comum; o aperto aparece em quem está com conta atrasada."
           series={pick('peic_endividadas', 'peic_em_atraso', 'peic_sem_condicao')}
         />
+        <DebtTypesCard series={pick(...TYPE_IDS)} />
         <SeriesCard
           title={
             <>
@@ -327,6 +431,7 @@ export function Understand() {
           }
           help="A referência para o custo do crédito no Brasil. Quando sobe, os empréstimos tendem a ficar mais caros."
           series={pick('bcb_selic')}
+          wide
         />
       </div>
 

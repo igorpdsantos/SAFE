@@ -251,6 +251,564 @@ export const CONTEXT_SERIES: ContextSeries[] = [
     ]
   },
   {
+    "id": "peic_tipo_cartao_de_credito",
+    "name": "Cartão de crédito",
+    "source": "CNC – Pesquisa de Endividamento e Inadimplência do Consumidor (PEIC)",
+    "url": "https://www.portaldocomercio.org.br",
+    "extractedAt": "2026-10-31",
+    "unit": "% das famílias endividadas",
+    "points": [
+      {
+        "date": "2025-07",
+        "value": "84.50"
+      },
+      {
+        "date": "2025-08",
+        "value": "84.50"
+      },
+      {
+        "date": "2025-09",
+        "value": "84.20"
+      },
+      {
+        "date": "2025-10",
+        "value": "84.40"
+      },
+      {
+        "date": "2025-11",
+        "value": "84.60"
+      },
+      {
+        "date": "2025-12",
+        "value": "85.10"
+      },
+      {
+        "date": "2026-01",
+        "value": "85.40"
+      },
+      {
+        "date": "2026-02",
+        "value": "85.00"
+      },
+      {
+        "date": "2026-03",
+        "value": "84.90"
+      },
+      {
+        "date": "2026-04",
+        "value": "85.00"
+      },
+      {
+        "date": "2026-05",
+        "value": "84.60"
+      },
+      {
+        "date": "2026-06",
+        "value": "84.70"
+      },
+      {
+        "date": "2026-07",
+        "value": "85.30"
+      }
+    ]
+  },
+  {
+    "id": "peic_tipo_carne",
+    "name": "Carnê",
+    "source": "CNC – Pesquisa de Endividamento e Inadimplência do Consumidor (PEIC)",
+    "url": "https://www.portaldocomercio.org.br",
+    "extractedAt": "2026-10-31",
+    "unit": "% das famílias endividadas",
+    "points": [
+      {
+        "date": "2025-07",
+        "value": "16.80"
+      },
+      {
+        "date": "2025-08",
+        "value": "16.60"
+      },
+      {
+        "date": "2025-09",
+        "value": "16.60"
+      },
+      {
+        "date": "2025-10",
+        "value": "16.70"
+      },
+      {
+        "date": "2025-11",
+        "value": "16.60"
+      },
+      {
+        "date": "2025-12",
+        "value": "16.20"
+      },
+      {
+        "date": "2026-01",
+        "value": "15.90"
+      },
+      {
+        "date": "2026-02",
+        "value": "16.00"
+      },
+      {
+        "date": "2026-03",
+        "value": "16.00"
+      },
+      {
+        "date": "2026-04",
+        "value": "16.10"
+      },
+      {
+        "date": "2026-05",
+        "value": "16.10"
+      },
+      {
+        "date": "2026-06",
+        "value": "16.10"
+      },
+      {
+        "date": "2026-07",
+        "value": "16.10"
+      }
+    ]
+  },
+  {
+    "id": "peic_tipo_credito_pessoal",
+    "name": "Crédito pessoal",
+    "source": "CNC – Pesquisa de Endividamento e Inadimplência do Consumidor (PEIC)",
+    "url": "https://www.portaldocomercio.org.br",
+    "extractedAt": "2026-10-31",
+    "unit": "% das famílias endividadas",
+    "points": [
+      {
+        "date": "2025-07",
+        "value": "10.60"
+      },
+      {
+        "date": "2025-08",
+        "value": "11.00"
+      },
+      {
+        "date": "2025-09",
+        "value": "11.40"
+      },
+      {
+        "date": "2025-10",
+        "value": "11.60"
+      },
+      {
+        "date": "2025-11",
+        "value": "11.80"
+      },
+      {
+        "date": "2025-12",
+        "value": "12.10"
+      },
+      {
+        "date": "2026-01",
+        "value": "12.20"
+      },
+      {
+        "date": "2026-02",
+        "value": "12.30"
+      },
+      {
+        "date": "2026-03",
+        "value": "12.60"
+      },
+      {
+        "date": "2026-04",
+        "value": "12.90"
+      },
+      {
+        "date": "2026-05",
+        "value": "13.10"
+      },
+      {
+        "date": "2026-06",
+        "value": "13.20"
+      },
+      {
+        "date": "2026-07",
+        "value": "13.00"
+      }
+    ]
+  },
+  {
+    "id": "peic_tipo_financiamento_de_casa",
+    "name": "Financiamento de casa",
+    "source": "CNC – Pesquisa de Endividamento e Inadimplência do Consumidor (PEIC)",
+    "url": "https://www.portaldocomercio.org.br",
+    "extractedAt": "2026-10-31",
+    "unit": "% das famílias endividadas",
+    "points": [
+      {
+        "date": "2025-07",
+        "value": "9.30"
+      },
+      {
+        "date": "2025-08",
+        "value": "9.20"
+      },
+      {
+        "date": "2025-09",
+        "value": "9.20"
+      },
+      {
+        "date": "2025-10",
+        "value": "9.40"
+      },
+      {
+        "date": "2025-11",
+        "value": "9.70"
+      },
+      {
+        "date": "2025-12",
+        "value": "9.60"
+      },
+      {
+        "date": "2026-01",
+        "value": "9.60"
+      },
+      {
+        "date": "2026-02",
+        "value": "9.80"
+      },
+      {
+        "date": "2026-03",
+        "value": "9.70"
+      },
+      {
+        "date": "2026-04",
+        "value": "9.70"
+      },
+      {
+        "date": "2026-05",
+        "value": "10.00"
+      },
+      {
+        "date": "2026-06",
+        "value": "9.90"
+      },
+      {
+        "date": "2026-07",
+        "value": "9.60"
+      }
+    ]
+  },
+  {
+    "id": "peic_tipo_financiamento_de_carro",
+    "name": "Financiamento de carro",
+    "source": "CNC – Pesquisa de Endividamento e Inadimplência do Consumidor (PEIC)",
+    "url": "https://www.portaldocomercio.org.br",
+    "extractedAt": "2026-10-31",
+    "unit": "% das famílias endividadas",
+    "points": [
+      {
+        "date": "2025-07",
+        "value": "9.20"
+      },
+      {
+        "date": "2025-08",
+        "value": "9.00"
+      },
+      {
+        "date": "2025-09",
+        "value": "8.80"
+      },
+      {
+        "date": "2025-10",
+        "value": "8.70"
+      },
+      {
+        "date": "2025-11",
+        "value": "8.60"
+      },
+      {
+        "date": "2025-12",
+        "value": "8.60"
+      },
+      {
+        "date": "2026-01",
+        "value": "8.70"
+      },
+      {
+        "date": "2026-02",
+        "value": "8.90"
+      },
+      {
+        "date": "2026-03",
+        "value": "9.10"
+      },
+      {
+        "date": "2026-04",
+        "value": "9.10"
+      },
+      {
+        "date": "2026-05",
+        "value": "9.10"
+      },
+      {
+        "date": "2026-06",
+        "value": "9.00"
+      },
+      {
+        "date": "2026-07",
+        "value": "9.00"
+      }
+    ]
+  },
+  {
+    "id": "peic_tipo_consignado",
+    "name": "Consignado",
+    "source": "CNC – Pesquisa de Endividamento e Inadimplência do Consumidor (PEIC)",
+    "url": "https://www.portaldocomercio.org.br",
+    "extractedAt": "2026-10-31",
+    "unit": "% das famílias endividadas",
+    "points": [
+      {
+        "date": "2025-07",
+        "value": "4.90"
+      },
+      {
+        "date": "2025-08",
+        "value": "5.10"
+      },
+      {
+        "date": "2025-09",
+        "value": "5.30"
+      },
+      {
+        "date": "2025-10",
+        "value": "5.50"
+      },
+      {
+        "date": "2025-11",
+        "value": "5.70"
+      },
+      {
+        "date": "2025-12",
+        "value": "5.80"
+      },
+      {
+        "date": "2026-01",
+        "value": "6.00"
+      },
+      {
+        "date": "2026-02",
+        "value": "6.30"
+      },
+      {
+        "date": "2026-03",
+        "value": "6.60"
+      },
+      {
+        "date": "2026-04",
+        "value": "6.70"
+      },
+      {
+        "date": "2026-05",
+        "value": "6.90"
+      },
+      {
+        "date": "2026-06",
+        "value": "7.00"
+      },
+      {
+        "date": "2026-07",
+        "value": "7.10"
+      }
+    ]
+  },
+  {
+    "id": "peic_tipo_cheque_especial",
+    "name": "Cheque especial",
+    "source": "CNC – Pesquisa de Endividamento e Inadimplência do Consumidor (PEIC)",
+    "url": "https://www.portaldocomercio.org.br",
+    "extractedAt": "2026-10-31",
+    "unit": "% das famílias endividadas",
+    "points": [
+      {
+        "date": "2025-07",
+        "value": "3.30"
+      },
+      {
+        "date": "2025-08",
+        "value": "3.30"
+      },
+      {
+        "date": "2025-09",
+        "value": "3.20"
+      },
+      {
+        "date": "2025-10",
+        "value": "3.10"
+      },
+      {
+        "date": "2025-11",
+        "value": "3.10"
+      },
+      {
+        "date": "2025-12",
+        "value": "3.30"
+      },
+      {
+        "date": "2026-01",
+        "value": "3.40"
+      },
+      {
+        "date": "2026-02",
+        "value": "3.50"
+      },
+      {
+        "date": "2026-03",
+        "value": "3.60"
+      },
+      {
+        "date": "2026-04",
+        "value": "3.60"
+      },
+      {
+        "date": "2026-05",
+        "value": "3.50"
+      },
+      {
+        "date": "2026-06",
+        "value": "3.40"
+      },
+      {
+        "date": "2026-07",
+        "value": "3.40"
+      }
+    ]
+  },
+  {
+    "id": "peic_tipo_outras_dividas",
+    "name": "Outras dívidas",
+    "source": "CNC – Pesquisa de Endividamento e Inadimplência do Consumidor (PEIC)",
+    "url": "https://www.portaldocomercio.org.br",
+    "extractedAt": "2026-10-31",
+    "unit": "% das famílias endividadas",
+    "points": [
+      {
+        "date": "2025-07",
+        "value": "2.80"
+      },
+      {
+        "date": "2025-08",
+        "value": "2.80"
+      },
+      {
+        "date": "2025-09",
+        "value": "2.80"
+      },
+      {
+        "date": "2025-10",
+        "value": "2.80"
+      },
+      {
+        "date": "2025-11",
+        "value": "2.70"
+      },
+      {
+        "date": "2025-12",
+        "value": "2.60"
+      },
+      {
+        "date": "2026-01",
+        "value": "2.50"
+      },
+      {
+        "date": "2026-02",
+        "value": "2.60"
+      },
+      {
+        "date": "2026-03",
+        "value": "2.60"
+      },
+      {
+        "date": "2026-04",
+        "value": "2.60"
+      },
+      {
+        "date": "2026-05",
+        "value": "2.70"
+      },
+      {
+        "date": "2026-06",
+        "value": "2.60"
+      },
+      {
+        "date": "2026-07",
+        "value": "2.50"
+      }
+    ]
+  },
+  {
+    "id": "peic_tipo_cheque_pre_datado",
+    "name": "Cheque pré-datado",
+    "source": "CNC – Pesquisa de Endividamento e Inadimplência do Consumidor (PEIC)",
+    "url": "https://www.portaldocomercio.org.br",
+    "extractedAt": "2026-10-31",
+    "unit": "% das famílias endividadas",
+    "points": [
+      {
+        "date": "2025-07",
+        "value": "0.30"
+      },
+      {
+        "date": "2025-08",
+        "value": "0.30"
+      },
+      {
+        "date": "2025-09",
+        "value": "0.30"
+      },
+      {
+        "date": "2025-10",
+        "value": "0.30"
+      },
+      {
+        "date": "2025-11",
+        "value": "0.30"
+      },
+      {
+        "date": "2025-12",
+        "value": "0.30"
+      },
+      {
+        "date": "2026-01",
+        "value": "0.30"
+      },
+      {
+        "date": "2026-02",
+        "value": "0.30"
+      },
+      {
+        "date": "2026-03",
+        "value": "0.30"
+      },
+      {
+        "date": "2026-04",
+        "value": "0.30"
+      },
+      {
+        "date": "2026-05",
+        "value": "0.20"
+      },
+      {
+        "date": "2026-06",
+        "value": "0.20"
+      },
+      {
+        "date": "2026-07",
+        "value": "0.20"
+      }
+    ]
+  },
+  {
     "id": "bcb_endividamento",
     "name": "Dívidas das famílias em relação à renda de 12 meses",
     "source": "Banco Central do Brasil – SGS, série 29037 (Endividamento das famílias com o Sistema Financeiro Nacional)",

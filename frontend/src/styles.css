@@ -1969,3 +1969,6 @@ form .more-body > * + * {
 .keep {
   white-space: nowrap;
 }
+.chart-wide {
+  grid-column: 1 / -1;
+}

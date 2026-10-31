@@ -80,8 +80,11 @@ O SAFE **descreve** o impacto de uma decisão. Ele **não autoriza, não bloquei
 - Recomendação de produtos ou investimentos.
 - Mínimo existencial personalizado (o valor é um parâmetro fixo).
 
-### Opcional, se der tempo: Módulo "Entenda os dados"
+### Módulo "Entenda os dados" (opcional; implementado em 31/10/2026, SPEC-14)
 Proposto no áudio de 28/10. É uma aba com gráficos de séries públicas (Peic/CNC e BCB/SGS, últimos 5 anos), com filtro por período e glossário (Selic, inadimplência, comprometimento de renda), explicando o contexto e o que o IRE avalia. **Regras:** dados estáticos versionados no repositório (JSON/CSV com fonte e data de extração), sem orientação de investimento e sem impacto no cálculo do IRE. Recebe a identificação **RF25 / UC11 / HU24**. O módulo de cálculo do IRE e a simulação vêm antes dele.
+
+- **HU24:** "Como usuário, quero ver dados públicos sobre endividamento e entender os termos usados, para interpretar melhor meu próprio resultado."
+- **UC11 – Consultar o contexto do endividamento.** Ator: usuário logado. Fluxo principal: (1) abre "Entenda os dados"; (2) o sistema mostra as séries da Peic/CNC (famílias endividadas, em atraso, sem condição de pagar e renda comprometida) e do BCB/SGS (29037 endividamento, 29265 comprometimento da renda e 4189 Selic), cada uma com fonte, unidade e data de extração; (3) o usuário escolhe o período (1, 3 ou 5 anos, ou os meses); (4) lê "Como o SAFE calcula seu risco" (pesos, faixas e limitações) e o glossário. Regra: os dados vêm de CSVs versionados (`backend/data/context/`, atualizados pela equipe com `npm run context:update`); o navegador nunca acessa sites de terceiros e nada disso altera o IRE.
 
 ---
 

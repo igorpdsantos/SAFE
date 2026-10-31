@@ -134,6 +134,7 @@
 - [x] **T-15.7** `B` Alinhar o glossário com a D-16 (renda e consignado) e precisar o texto do rotativo pelas fontes consultadas · início 2026-10-29 17:49 · Igor + IA · feito 2026-10-29 17:49
 - [ ] **T-11.7** `B` Verificação manual da SPEC-11 §7 (DevTools: storage, cookies, rede externa; 375 px; 4 navegadores; Lighthouse ≥ 90) · parte automatizada no E2E (armazenamento, logout entre abas, voltar, 375 px no Chromium)
 - [x] **T-11.8** `B` Redesign visual do frontend: identidade própria (tipografia no bundle, paleta, ilustrações SVG locais), layout novo e responsivo, mantendo RNF05, SPEC-15 e as regras de navegador da SPEC-11 §4 · início 2026-10-30 22:22 · Igor + IA · feito 2026-10-30 22:40
+- [~] **T-11.9** `B` Revisão fina de espaçamentos: escala única (4–64 px) para gaps, paddings e margens, sem valores soltos nas telas · início 2026-10-30 23:28 · Igor + IA
 
 ## Fase 7 · Histórico e privacidade — [SPEC-09](specs/SPEC-09-historico.md), [SPEC-10](specs/SPEC-10-privacidade-dados.md)
 - [x] **T-09.1** `A` `GET /history` com período, limites e `trend` + testes (§2, §4) · início 2026-10-29 18:29 · Igor + IA · feito 2026-10-29 18:29

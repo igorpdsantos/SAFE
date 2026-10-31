@@ -6,7 +6,7 @@ O usuário cadastra renda, despesas, dívidas e reserva. O SAFE calcula o **índ
 
 Projeto de TCC do curso de Engenharia de Software da Universidade São Judas Tadeu (2026), orientado pelo Prof. Nelson Aguiar. O artigo correspondente é *"Prevenção do superendividamento por meio da tecnologia: a abordagem de simulação financeira do SAFE"*.
 
-> **Status (29/10/2026):** backend, frontend, avaliação e testes (unidade, integração, segurança e E2E) implementados e na `main`. Faltam itens que dependem da equipe: projeto OAuth no Google (T-00.2), e-mail de contato e revisão dos textos legais (T-00.3, T-03.5), revisão de linguagem (T-15.6), verificação manual nos navegadores (T-11.7), respostas dos especialistas (T-12.4) e homologação (T-13.4, T-13.5). Veja o `TASKS.md`. Entrega do software: **02/11/2026**. O progresso fica no [`TASKS.md`](TASKS.md); rode `node scripts/tasks-status.mjs` para ver o painel.
+> **Status (30/10/2026):** backend, frontend, avaliação e testes (unidade, integração, segurança e E2E) implementados e na `main`. Faltam itens que dependem da equipe: URI de redirecionamento no projeto OAuth do Google (T-00.2), responsável pelo e-mail de contato (T-00.3), revisão dos textos legais (T-03.5), revisão de linguagem (T-15.6), verificação manual nos navegadores (T-11.7), respostas dos especialistas (T-12.4) e homologação (T-13.5). Veja o `TASKS.md`. Entrega do software: **02/11/2026**. O progresso fica no [`TASKS.md`](TASKS.md); rode `node scripts/tasks-status.mjs` para ver o painel.
 
 ---
 

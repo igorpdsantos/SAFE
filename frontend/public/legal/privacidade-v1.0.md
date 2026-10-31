@@ -12,7 +12,7 @@
 ## 1. Quem somos
 O SAFE é um projeto de Trabalho de Conclusão de Curso de Engenharia de Software da Universidade São Judas Tadeu (2026). A equipe do projeto é a **controladora** dos dados enquanto o sistema funciona no âmbito do trabalho.
 
-Contato de privacidade: **[e-mail de privacidade do projeto — definir na tarefa T-00.3]**.
+Contato de privacidade: **safe.tcc.usjt@gmail.com**.
 
 ## 2. Quais dados usamos e por quê
 | Dado | Para que usamos | Base legal (LGPD) |
@@ -50,7 +50,7 @@ Você pode, a qualquer momento:
 - **exportar** tudo num arquivo (portabilidade), em "Minha conta";
 - **excluir** sua conta e todos os dados, em "Minha conta". A exclusão é imediata; as cópias de segurança são apagadas em até 30 dias;
 - **retirar** o consentimento da pesquisa, em "Minha conta";
-- pedir informações pelo e-mail de contato. Respondemos em até 15 dias;
+- pedir informações pelo e-mail safe.tcc.usjt@gmail.com. Respondemos em até 15 dias;
 - reclamar à **Autoridade Nacional de Proteção de Dados (ANPD)**.
 
 ## 6. Cookies

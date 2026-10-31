@@ -42,8 +42,8 @@
 
 ## Fase 0 · Preparação (equipe, sem código)
 - [ ] **T-00.1** `A+B` Validar com o grupo as decisões D-01…D-16 (PRD §12) e S-01…S-09 (SEGURANCA_LGPD §1) → pronto quando: decisões aprovadas ou ajustadas nos documentos
-- [ ] **T-00.2** `B` Criar projeto no Google Cloud com tela de consentimento OAuth, escopo `openid email` e redirect URIs de dev e produção (SPEC-02 §2) → pronto quando: `GOOGLE_CLIENT_ID`/`SECRET` no `.env` local de quem vai codar
-- [ ] **T-00.3** `A+B` Criar o e-mail de contato de privacidade do projeto e definir o responsável (SEGURANCA_LGPD §2.2)
+- [x] **T-00.2** `B` Criar projeto no Google Cloud com tela de consentimento OAuth, escopo `openid email` e redirect URIs de dev e produção (SPEC-02 §2) → pronto quando: `GOOGLE_CLIENT_ID`/`SECRET` no `.env` local de quem vai codar · credenciais no `.env` (2026-10-30, Igor); o Google responde `redirect_uri_mismatch`: falta cadastrar `http://localhost:5173/api/v1/auth/google/callback` nas URIs de redirecionamento do cliente OAuth · login real testado: usuário criado, termos aceitos e nenhum token do Google no banco ou no Redis · feito 2026-10-30 22:25
+- [x] **T-00.3** `A+B` Criar o e-mail de contato de privacidade do projeto e definir o responsável (SEGURANCA_LGPD §2.2) · e-mail criado: `safe.tcc.usjt@gmail.com`, já nos Termos e na Política (2026-10-30, Igor + IA); responde qualquer integrante do grupo · feito 2026-10-30 22:25
 - [ ] **T-00.4** `A` Criar o repositório no GitHub, convidar a equipe e proteger a branch `main` (PR + CI verde) · repositório criado; proteção da `main` indisponível no plano grátis (CONTRIBUTING §9)
 - [ ] **T-00.5** `B` Converter o dashboard do colega (Peic/BCB) para CSV com fonte e data de extração (insumo da SPEC-14; só se a SPEC-14 for entrar)
 
@@ -175,8 +175,7 @@
 ## Bloqueios
 | Tarefa | Motivo | Desde | Quem destrava |
 |---|---|---|---|
-| T-00.2 | Falta criar o projeto OAuth no Google Cloud; até lá, usar `npm run dev:demo` | 2026-10-29 | Equipe (trilha B) |
-| T-03.5 | Falta o e-mail de contato de privacidade (T-00.3) e a revisão da equipe nos rascunhos em `frontend/public/legal/` | 2026-10-29 | Equipe |
+| T-03.5 | E-mail de contato já nos textos (30/10); falta a revisão da equipe nos rascunhos em `frontend/public/legal/` | 2026-10-29 | Equipe |
 | T-12.4 | Falta `evaluation/especialistas-respostas.csv` com as respostas dos especialistas | 2026-10-29 | Equipe |
 
 ## Fora do código (lembrete)

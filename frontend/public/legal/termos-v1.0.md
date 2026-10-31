@@ -44,4 +44,4 @@ O tratamento dos seus dados está descrito na **Política de Privacidade**, que 
 Se estes termos mudarem, a versão muda e você precisa aceitar de novo no próximo acesso. Versões anteriores ficam guardadas no projeto.
 
 ## 9. Contato
-Dúvidas: **[e-mail de contato do projeto — definir na tarefa T-00.3]**.
+Dúvidas: **safe.tcc.usjt@gmail.com**.

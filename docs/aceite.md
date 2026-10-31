@@ -1,4 +1,4 @@
-# Critérios de aceite — situação em 30/10/2026
+# Critérios de aceite — situação em 30/10/2026 (atualizado após o login real com o Google)
 
 Duas visões da mesma verificação:
 
@@ -11,7 +11,7 @@ Duas visões da mesma verificação:
 
 | HU | RF | Critérios | Atendidos | Situação |
 |---|---|---|---|---|
-| HU01 Login com Google | RF01 | 5 | 4 | falta o projeto OAuth real (T-00.2) |
+| HU01 Login com Google | RF01 | 5 | 5 | ok |
 | HU02 Aceite dos termos | RF02 | 5 | 5 | ok |
 | HU03 Aceite registrado em cookie | RF03 | 3 | 3 | ok |
 | HU04 Renda | RF04, RF21 | 5 | 5 | ok |
@@ -34,7 +34,7 @@ Duas visões da mesma verificação:
 | HU21 Abertura dos indicadores | RF14 | 4 | 4 | ok |
 | HU22 Fatores que mais pesaram | RF16 | 4 | 4 | ok |
 | HU23 Linha do tempo do saldo | RF22, RF23 | 5 | 5 | ok |
-| **Total** | | **105** | **101** | **96,2%** |
+| **Total** | | **105** | **102** | **97,1%** |
 
 HU24 (RF25, aba "Entenda os dados") é opcional e não foi implementada (SPEC-14).
 
@@ -47,7 +47,7 @@ HU24 (RF25, aba "Entenda os dados") é opcional e não foi implementada (SPEC-14
 - [x] Erros do login (cancelar, `state` adulterado, Google fora do ar, e-mail não verificado) levam a `/login` com mensagem — `auth.test.ts` "state adulterado…", "Google indisponível…"
 - [x] Sessão opaca segura: cookie HttpOnly, sem tokens do Google guardados, expiração de 30 min ociosa e 8 h absoluta — `auth.test.ts` "sessão e cookies", "banco e Redis não guardam tokens"
 - [x] Sair encerra a sessão em todas as abas e o "voltar" não mostra dados — `auth.test.ts` "logout…", E2E 7
-- [ ] Login real com o Google em produção — *pendente: projeto no Google Cloud (T-00.2); hoje validado com o OIDC falso dos testes e o modo demonstração*
+- [x] Login real com o Google — *testado em 30/10/2026 com conta real em `localhost:5173` (T-00.2); a URI de produção entra no cliente OAuth quando houver domínio*
 
 ### HU02 — Ler e aceitar os termos antes do primeiro uso (RF02)
 *Como usuário, quero ser notificado para ler e aceitar os termos de uso antes do primeiro acesso, para estar ciente das políticas de privacidade da plataforma.*

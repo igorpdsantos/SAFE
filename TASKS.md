@@ -45,7 +45,7 @@
 - [x] **T-00.2** `B` Criar projeto no Google Cloud com tela de consentimento OAuth, escopo `openid email` e redirect URIs de dev e produção (SPEC-02 §2) → pronto quando: `GOOGLE_CLIENT_ID`/`SECRET` no `.env` local de quem vai codar · credenciais no `.env` (2026-10-30, Igor); o Google responde `redirect_uri_mismatch`: falta cadastrar `http://localhost:5173/api/v1/auth/google/callback` nas URIs de redirecionamento do cliente OAuth · login real testado: usuário criado, termos aceitos e nenhum token do Google no banco ou no Redis · feito 2026-10-30 22:25
 - [x] **T-00.3** `A+B` Criar o e-mail de contato de privacidade do projeto e definir o responsável (SEGURANCA_LGPD §2.2) · e-mail criado: `safe.tcc.usjt@gmail.com`, já nos Termos e na Política (2026-10-30, Igor + IA); responde qualquer integrante do grupo · feito 2026-10-30 22:25
 - [ ] **T-00.4** `A` Criar o repositório no GitHub, convidar a equipe e proteger a branch `main` (PR + CI verde) · repositório criado; proteção da `main` indisponível no plano grátis (CONTRIBUTING §9)
-- [ ] **T-00.5** `B` Converter o dashboard do colega (Peic/BCB) para CSV com fonte e data de extração (insumo da SPEC-14; só se a SPEC-14 for entrar)
+- [~] **T-00.5** `B` Converter o dashboard do colega (Peic/BCB) para CSV com fonte e data de extração (insumo da SPEC-14; só se a SPEC-14 for entrar) · início 2026-10-31 00:51 · Igor + IA
 
 ## Fase 1 · Fundação — [SPEC-01](specs/SPEC-01-fundacao.md)
 - [x] **T-01.1** `A` Monorepo com workspaces `backend`/`frontend`, TypeScript strict, ESLint + Prettier, Vitest (§3) · início 2026-10-29 17:53 · Igor + IA · feito 2026-10-29 17:57

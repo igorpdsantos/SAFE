@@ -10,3 +10,4 @@ backend/src/generated
 frontend/playwright-report
 frontend/test-results
 .vercel
+backend/src/modules/context/series.generated.ts

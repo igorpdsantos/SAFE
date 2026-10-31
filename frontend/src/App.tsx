@@ -1,5 +1,6 @@
+import { ArrowLeft } from 'lucide-react';
 import { lazy, Suspense, type ReactNode } from 'react';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { Link, Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom';
 import { ApiError } from './api/client';
 import { useMe } from './api/hooks';
 import { Layout } from './components/Layout';
@@ -18,6 +19,9 @@ const Account = lazy(() => import('./pages/Account').then((m) => ({ default: m.A
 const AccountDeleted = lazy(() =>
   import('./pages/AccountDeleted').then((m) => ({ default: m.AccountDeleted })),
 );
+const Understand = lazy(() =>
+  import('./pages/Understand').then((m) => ({ default: m.Understand })),
+);
 const Glossary = lazy(() => import('./pages/Glossary').then((m) => ({ default: m.Glossary })));
 const LegalPage = lazy(() => import('./pages/Legal').then((m) => ({ default: m.LegalPage })));
 
@@ -35,13 +39,34 @@ function Guard({ children, needsTerms }: { children: ReactNode; needsTerms: bool
   return <>{children}</>;
 }
 
+/**
+ * Páginas abertas a todos (glossário, termos, política): dentro do app, com o menu, quando há
+ * sessão; sozinhas, com "Voltar" para o login, quando não há.
+ */
+function PublicPage() {
+  const me = useMe();
+  if (me.isLoading) return <Loading />;
+  if (me.data) return <Layout />;
+  return (
+    <div className="doc-page stack">
+      <Link className="back-link" to="/login">
+        <ArrowLeft size={18} aria-hidden="true" /> Voltar
+      </Link>
+      <Outlet />
+    </div>
+  );
+}
+
 export function App() {
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/privacidade" element={<LegalPage doc="privacidade" />} />
-        <Route path="/termos-de-uso" element={<LegalPage doc="termos" />} />
+        <Route element={<PublicPage />}>
+          <Route path="/glossario" element={<Glossary />} />
+          <Route path="/privacidade" element={<LegalPage doc="privacidade" />} />
+          <Route path="/termos-de-uso" element={<LegalPage doc="termos" />} />
+        </Route>
         <Route path="/conta-excluida" element={<AccountDeleted />} />
         <Route
           path="/termos"
@@ -51,7 +76,6 @@ export function App() {
             </Guard>
           }
         />
-        <Route path="/glossario" element={<Glossary />} />
         <Route
           element={
             <Guard needsTerms={false}>
@@ -60,6 +84,7 @@ export function App() {
           }
         >
           <Route path="/conta" element={<Account />} />
+          <Route path="/entenda" element={<Understand />} />
         </Route>
         <Route
           element={

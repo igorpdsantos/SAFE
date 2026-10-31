@@ -197,7 +197,7 @@ const entries = [
     term: 'Mínimo existencial',
     short:
       'Parte da renda que deve sobrar para viver (comida, moradia, luz). O SAFE usa R$ 600 como referência.',
-    long: 'É o valor mínimo que deve sobrar da sua renda, depois de pagar as parcelas, para cobrir o básico da vida. A lei brasileira prevê esse cuidado para evitar o superendividamento. O SAFE usa R$ 600 como referência, mas esse valor não é uma conta exata para o seu caso.',
+    long: 'É o valor mínimo que deve sobrar da sua renda, depois de pagar as parcelas, para cobrir o básico da vida. A Lei do Superendividamento (Lei 14.181/2021) prevê esse cuidado para evitar que as dívidas tomem o necessário para viver. O SAFE usa R$ 600 como referência, mas esse valor não é uma conta exata para o seu caso.',
     example:
       'Renda de R$ 2.000 e parcelas de R$ 1.500: sobram R$ 500, menos que R$ 600. O SAFE mostra um alerta.',
     whyItMatters:

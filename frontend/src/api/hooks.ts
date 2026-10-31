@@ -4,6 +4,7 @@ import type {
   Analysis,
   BudgetItems,
   BudgetKind,
+  ContextSeries,
   History,
   Me,
   MyData,
@@ -31,6 +32,13 @@ export const useProjection = () =>
   useQuery({ queryKey: keys.projection, queryFn: () => api<Projection>('/projection') });
 export const useTerms = () =>
   useQuery({ queryKey: keys.terms, queryFn: () => api<TermsCurrent>('/terms/current') });
+/** Séries públicas (SPEC-14); mudam só quando a equipe atualiza os CSVs. */
+export const useContextSeries = () =>
+  useQuery({
+    queryKey: ['context'],
+    queryFn: async () => (await api<{ series: ContextSeries[] }>('/context/series')).series,
+    staleTime: Infinity,
+  });
 export const useMyData = () =>
   useQuery({ queryKey: keys.myData, queryFn: () => api<MyData>('/me') });
 export const useConsent = () =>

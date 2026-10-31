@@ -1,6 +1,5 @@
-import { ArrowLeft, Search } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { PageHeader } from '../components/PageHeader';
 import { glossary } from '../content/glossary';
 
@@ -21,10 +20,7 @@ export function Glossary() {
   }, [q]);
 
   return (
-    <div className="doc-page stack reveal">
-      <Link className="back-link" to="/">
-        <ArrowLeft size={18} aria-hidden="true" /> Voltar
-      </Link>
+    <div className="stack reveal">
       <PageHeader
         eyebrow="Ajuda"
         title="Glossário"

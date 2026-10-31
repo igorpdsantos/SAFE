@@ -17,6 +17,7 @@ Dar contexto educativo: mostrar como o endividamento das famílias brasileiras e
   - `peic.csv` (CNC: % de famílias endividadas, com contas em atraso e sem condições de pagar; comprometimento médio);
   - `bcb-29037.csv` (endividamento das famílias / renda 12 meses);
   - `bcb-29265.csv` (comprometimento de renda com o serviço da dívida);
+  - `bcb-29034.csv` (a mesma medida **com ajuste sazonal** do BCB; é a que o gráfico e a manchete mostram, porque a 29265 sobe e desce com o 13º e as festas e inverte a leitura da direção; a 29265 continua na tabela — T-14.7, 31/10/2026);
   - `selic.csv` (BCB SGS 432 ou 4189, a confirmar nos metadados).
 - Cada arquivo tem cabeçalho com: fonte, URL, data de extração e unidade.
 - Script `npm run context:update` baixa as séries do SGS (`api.bcb.gov.br/dados/serie/bcdata.sgs.<n>/dados?formato=json`) e grava o CSV. **Rodado manualmente pela equipe**, nunca pelo navegador do usuário (evita requisição a terceiros; SEGURANCA_LGPD §6.2).

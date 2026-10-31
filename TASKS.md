@@ -45,7 +45,7 @@
 - [x] **T-00.2** `B` Criar projeto no Google Cloud com tela de consentimento OAuth, escopo `openid email` e redirect URIs de dev e produção (SPEC-02 §2) → pronto quando: `GOOGLE_CLIENT_ID`/`SECRET` no `.env` local de quem vai codar · credenciais no `.env` (2026-10-30, Igor); o Google responde `redirect_uri_mismatch`: falta cadastrar `http://localhost:5173/api/v1/auth/google/callback` nas URIs de redirecionamento do cliente OAuth · login real testado: usuário criado, termos aceitos e nenhum token do Google no banco ou no Redis · feito 2026-10-30 22:25
 - [x] **T-00.3** `A+B` Criar o e-mail de contato de privacidade do projeto e definir o responsável (SEGURANCA_LGPD §2.2) · e-mail criado: `safe.tcc.usjt@gmail.com`, já nos Termos e na Política (2026-10-30, Igor + IA); responde qualquer integrante do grupo · feito 2026-10-30 22:25
 - [ ] **T-00.4** `A` Criar o repositório no GitHub, convidar a equipe e proteger a branch `main` (PR + CI verde) · repositório criado; proteção da `main` indisponível no plano grátis (CONTRIBUTING §9)
-- [ ] **T-00.5** `B` Converter o dashboard do colega (Peic/BCB) para CSV com fonte e data de extração (insumo da SPEC-14; só se a SPEC-14 for entrar)
+- [x] **T-00.5** `B` Converter o dashboard do colega (Peic/BCB) para CSV com fonte e data de extração (insumo da SPEC-14; só se a SPEC-14 for entrar) · início 2026-10-31 00:51 · Igor + IA · `backend/data/context/peic.csv` (13 meses, jul/2025–jul/2026); script do colega em `docs/referencias/dashboard-peic-bcb.py` · feito 2026-10-31 00:52
 
 ## Fase 1 · Fundação — [SPEC-01](specs/SPEC-01-fundacao.md)
 - [x] **T-01.1** `A` Monorepo com workspaces `backend`/`frontend`, TypeScript strict, ESLint + Prettier, Vitest (§3) · início 2026-10-29 17:53 · Igor + IA · feito 2026-10-29 17:57
@@ -136,6 +136,8 @@
 - [ ] **T-11.7** `B` Verificação manual da SPEC-11 §7 (DevTools: storage, cookies, rede externa; 375 px; 4 navegadores; Lighthouse ≥ 90) · parte automatizada no E2E (armazenamento, logout entre abas, voltar, 375 px no Chromium)
 - [x] **T-11.8** `B` Redesign visual do frontend: identidade própria (tipografia no bundle, paleta, ilustrações SVG locais), layout novo e responsivo, mantendo RNF05, SPEC-15 e as regras de navegador da SPEC-11 §4 · início 2026-10-30 22:22 · Igor + IA · feito 2026-10-30 22:40
 - [x] **T-11.9** `B` Revisão fina de espaçamentos: escala única (4–64 px) para gaps, paddings e margens, sem valores soltos nas telas · início 2026-10-30 23:28 · Igor + IA · feito 2026-10-30 23:36
+- [x] **T-11.10** `B` Glossário, Termos e Política abrem dentro do app (com menu) quando há sessão e sozinhos sem sessão; E2E · feito 2026-10-31 01:11 · Igor + IA
+- [x] **T-11.11** `B` Levar o padrão da `/entenda` ao resto do site: Projeção (sobra e saldo em gráficos separados, manchetes), Evolução (cabeçalho compacto, manchetes, moldura comum), Simular (gráfico sem × com a compra no padrão) e Painel (fatores com ênfase) · início 2026-10-31 01:50 · Igor + IA · feito 2026-10-31 01:58
 
 ## Fase 7 · Histórico e privacidade — [SPEC-09](specs/SPEC-09-historico.md), [SPEC-10](specs/SPEC-10-privacidade-dados.md)
 - [x] **T-09.1** `A` `GET /history` com período, limites e `trend` + testes (§2, §4) · início 2026-10-29 18:29 · Igor + IA · feito 2026-10-29 18:29
@@ -167,10 +169,13 @@
 
 ## Fase 10 · Opcional (só com tudo acima pronto)
 - [x] **T-08.9** `A` (D-12) `POST /simulations/:id/register` + botão "Registrar como dívida" (SPEC-08 §3) · início 2026-10-30 22:00 · Igor + IA · feito 2026-10-30 22:03
-- [ ] **T-14.1** `B` CSVs de contexto em `backend/data/context/` + `npm run context:update` (SPEC-14 §2)
-- [ ] **T-14.2** `B` `GET /context/series` (§3)
-- [ ] **T-14.3** `B` Tela `/entenda` com filtro, glossário e "como o SAFE calcula" (§4)
-- [ ] **T-14.4** `B` Acrescentar RF25/UC11/HU24 ao PRD e uma frase no artigo (§5)
+- [x] **T-14.1** `B` CSVs de contexto em `backend/data/context/` + `npm run context:update` (SPEC-14 §2) · início 2026-10-31 00:52 · Igor + IA · PEIC (13 meses) + BCB 29037, 29265 e Selic 4189 (5 anos), gerando `series.generated.ts` · feito 2026-10-31 00:53
+- [x] **T-14.2** `B` `GET /context/series` (§3) · início 2026-10-31 00:53 · Igor + IA · público, from/to (AAAA-MM), 400 para período inválido; teste garante módulo = CSVs · feito 2026-10-31 00:54
+- [x] **T-14.3** `B` Tela `/entenda` com filtro, glossário e "como o SAFE calcula" (§4) · início 2026-10-31 00:54 · Igor + IA · rota /entenda (menu "Você" e "Mais"): 4 gráficos com fonte/unidade/data e tabela, filtro 1/3/5 anos ou meses, "Como o SAFE calcula", glossário e aviso; E2E SPEC-14 · feito 2026-10-31 00:58
+- [ ] **T-14.4** `B` Acrescentar RF25/UC11/HU24 ao PRD e uma frase no artigo (§5) · PRD com HU24 e UC11 (2026-10-31, Igor + IA); falta a equipe colar no artigo (Seção 4) a frase que está no PR #18
+- [x] **T-14.5** `B` Tipos de dívida da PEIC (cartão, carnê, crédito pessoal, financiamentos…) na tela `/entenda`, a pedido do colega que montou o dashboard · início 2026-10-31 01:01 · Igor + IA · 9 tipos na `peic.csv` e na API; gráfico de barras do último mês, ao lado de "Quantas famílias têm dívidas" · feito 2026-10-31 01:03
+- [x] **T-14.6** `B` Gráficos da `/entenda` pelo método do skill dataviz: manchetes com mini-gráfico, 3 seções, componentes em `components/charts/`, paleta categórica própria validada (claro e escuro), uma escala por gráfico, valor no fim da linha, pico, tooltip e frase do que observar · feito 2026-10-31 01:11 · Igor + IA
+- [x] **T-14.7** `B` Gráficos mais fáceis de entender sem alterar os dados: comprometimento com ajuste sazonal (BCB 29034, a 29265 continua na tabela), "de cada 100 famílias", tradução de unidades e aviso de eixo ampliado · início 2026-10-31 01:37 · Igor + IA · SPEC-14 §2 e UC11 atualizados · feito 2026-10-31 01:41
 
 ---
 

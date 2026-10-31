@@ -30,7 +30,8 @@
     "eval:simulation-check": "npm run eval:simulation-check -w evaluation --",
     "eval:latency": "npm run eval:latency -w evaluation --",
     "generate-personas": "npm run generate-personas -w evaluation",
-    "build:vercel": "node scripts/build-vercel.mjs"
+    "build:vercel": "node scripts/build-vercel.mjs",
+    "context:update": "node scripts/context-update.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

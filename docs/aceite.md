@@ -36,7 +36,7 @@ Duas visões da mesma verificação:
 | HU23 Linha do tempo do saldo | RF22, RF23 | 5 | 5 | ok |
 | **Total** | | **105** | **102** | **97,1%** |
 
-HU24 (RF25, aba "Entenda os dados") é opcional e não foi implementada (SPEC-14).
+HU24 (RF25, aba "Entenda os dados", opcional) foi implementada em 31/10/2026; os critérios estão na seção SPEC-14, abaixo.
 
 ## Por história de usuário
 
@@ -415,13 +415,13 @@ Verificação: `backend/test/security/suite.test.ts`, `frontend/e2e/`
 
 ## SPEC-14 — (Opcional) Aba "Entenda os dados"
 
-Verificação: —
+Verificação: `backend/test/api/context.test.ts`, E2E "SPEC-14 – entenda os dados"
 
-- [ ] Séries com fonte, unidade e data de extração exibidas — *opcional, não implementado*
-- [ ] Filtro de período funciona — *opcional, não implementado*
-- [ ] Nenhuma requisição do navegador a domínios externos — *opcional, não implementado*
-- [ ] Nenhum texto sugere investimento ou produto financeiro — *opcional, não implementado*
-- [ ] RF25, UC11 e HU24 acrescentados ao PRD e citados em uma frase na Seção 4 do artigo (ou em Trabalhos futuros, se não entrar) — *opcional, não implementado*
+- [x] Séries com fonte, unidade e data de extração exibidas
+- [x] Filtro de período funciona (1, 3 ou 5 anos, ou os meses escolhidos)
+- [x] Nenhuma requisição do navegador a domínios externos — *o E2E registra todas as requisições da página e exige zero fora do SAFE*
+- [x] Nenhum texto sugere investimento ou produto financeiro — *aviso fixo no topo; teste de linguagem L12*
+- [ ] RF25, UC11 e HU24 acrescentados ao PRD e citados em uma frase na Seção 4 do artigo — *PRD atualizado em 31/10/2026; falta a equipe colar a frase no artigo (texto pronto no PR #18)*
 
 ## SPEC-15 — Linguagem simples, glossário e ajuda contextual
 

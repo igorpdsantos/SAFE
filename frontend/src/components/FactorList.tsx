@@ -20,7 +20,13 @@ export function FactorList({ factors }: { factors: Factor[] }) {
             <span>{formatPercent(f.share)} do risco</span>
           </div>
           <div className="bar" aria-hidden="true">
-            <span style={{ width: `${Number(f.share) * 100}%` }} />
+            <span
+              style={{
+                width: `${Number(f.share) * 100}%`,
+                // Ênfase: os fatores principais em destaque, o resto em cinza.
+                background: f.isMain ? 'var(--series-1)' : 'var(--series-muted)',
+              }}
+            />
           </div>
         </li>
       ))}

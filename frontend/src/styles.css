@@ -2176,9 +2176,23 @@ form .more-body > * + * {
   flex-direction: column;
   align-items: flex-start;
   gap: var(--s-2);
-  padding: var(--s-3);
-  border-radius: var(--radius-sm);
-  background: var(--surface-2);
+  padding: var(--s-3) var(--s-1) 0;
+  border-top: 3px solid var(--band-color, var(--border));
+}
+.band-scale li:nth-child(1) {
+  --band-color: var(--dial-1);
+}
+.band-scale li:nth-child(2) {
+  --band-color: var(--dial-2);
+}
+.band-scale li:nth-child(3) {
+  --band-color: var(--dial-3);
+}
+.band-scale li:nth-child(4) {
+  --band-color: var(--dial-4);
+}
+.band-scale li:nth-child(5) {
+  --band-color: var(--dial-5);
 }
 @media (max-width: 900px) {
   .band-scale {
@@ -2310,4 +2324,123 @@ form .more-body > * + * {
 .chart-card > .chart-plot {
   flex: 1 1 auto;
   width: 100%;
+}
+
+/* Cabeçalho compacto da Entenda os dados: título à esquerda, filtros à direita, aviso em uma linha. */
+.ctx-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s-4) var(--s-6);
+}
+.ctx-filters {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+.seg {
+  display: inline-flex;
+  padding: var(--s-1);
+  gap: var(--s-1);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.seg button,
+.ctx-custom > summary {
+  min-height: 36px;
+  padding: 0 var(--s-3);
+  border: 0;
+  border-radius: 9px;
+  background: none;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 650;
+  color: var(--muted);
+  cursor: pointer;
+}
+.seg button:hover {
+  color: var(--text);
+}
+.seg button[aria-pressed='true'] {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-sm);
+}
+.ctx-custom {
+  position: relative;
+}
+.ctx-custom > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  list-style: none;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  min-height: 44px;
+}
+.ctx-custom > summary::-webkit-details-marker {
+  display: none;
+}
+.ctx-custom > summary[aria-pressed='true'],
+.ctx-custom[open] > summary {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+.ctx-custom-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + var(--s-2));
+  z-index: 25;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-3);
+  width: 280px;
+  box-shadow: var(--shadow-lg);
+}
+.ctx-note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-2);
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.ctx-note svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+  color: var(--gold);
+}
+.ctx-note [role='status'] {
+  font-weight: 650;
+  color: var(--text);
+}
+@media (max-width: 640px) {
+  .ctx-filters {
+    width: 100%;
+  }
+  .ctx-custom-panel {
+    left: auto;
+    right: 0;
+  }
+}
+
+/* O painel de meses precisa ficar acima dos cartões (cada bloco animado cria sua própria camada). */
+.ctx-top {
+  position: relative;
+  z-index: 10;
+}
+.seg button,
+.ctx-custom > summary {
+  white-space: nowrap;
+}
+@media (max-width: 640px) {
+  .seg {
+    flex: 1;
+  }
+  .seg button {
+    flex: 1;
+    padding: 0 var(--s-2);
+  }
 }

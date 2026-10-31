@@ -228,7 +228,7 @@ test('SPEC-14 – entenda os dados: séries com fonte, filtro de período e nada
   await expect(page.getByText(/extraído em 31\/10\/2026/).first()).toBeVisible();
   await page.getByRole('button', { name: '1 ano' }).click();
   await expect(page.getByText(/^Mostrando de /)).toContainText('a 10/26');
-  await page.getByText('Escolher os meses').click();
+  await page.getByText('Escolher meses').click();
   await page.getByLabel('De', { exact: true }).selectOption('2026-01');
   await page.getByLabel('Até', { exact: true }).selectOption('2026-03');
   await expect(page.getByText('Mostrando de 01/26 a 03/26.')).toBeVisible();

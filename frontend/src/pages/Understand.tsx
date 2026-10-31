@@ -1,15 +1,13 @@
-import { Info } from 'lucide-react';
+import { CalendarRange, Info } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useContextSeries } from '../api/hooks';
 import type { ContextSeries, RiskBand } from '../api/types';
-import { EmptyArt } from '../components/Art';
 import { LineChartCard } from '../components/charts/LineChartCard';
 import { RankBarCard } from '../components/charts/RankBarCard';
 import { PerHundred } from '../components/charts/PerHundred';
 import { StatTile } from '../components/charts/StatTile';
 import { describeChange, extremes, monthName, pct, toPoints } from '../components/charts/viz';
 import { useHelp } from '../components/HelpPanel';
-import { PageHeader } from '../components/PageHeader';
 import { BAND_LABELS, RiskBadge } from '../components/RiskBadge';
 import { LoadError, Loading } from '../components/States';
 import { Term } from '../components/Term';
@@ -141,87 +139,90 @@ export function Understand() {
 
   return (
     <div className="stack-lg reveal">
-      <PageHeader
-        eyebrow="Contexto"
-        title="Entenda os dados"
-        lead="Como estão as dívidas das famílias brasileiras e como o SAFE calcula o seu risco."
-        art={<EmptyArt kind="chart" />}
-      />
-
-      <p className="alert risk-2" role="note">
-        <Info size={20} aria-hidden="true" />
-        <span style={{ color: 'var(--text)' }}>
-          Dados públicos agregados da população brasileira. Não representam a sua situação
-          individual nem são recomendação de investimento.
-        </span>
-      </p>
-
-      <div className="stack-sm">
-        <div
-          className="tabs"
-          role="group"
-          aria-label="Período"
-          style={{ maxWidth: 420, gridTemplateColumns: 'repeat(3, 1fr)', marginBottom: 0 }}
-        >
-          {PERIODS.map((p) => (
-            <button
-              key={p.months}
-              type="button"
-              className="tab"
-              aria-pressed={!custom && months === p.months}
-              onClick={() => {
-                setCustom(null);
-                setMonths(p.months);
-              }}
-            >
-              {p.label}
-            </button>
-          ))}
-        </div>
-        <details className="more" style={{ borderTop: 0, paddingTop: 0 }}>
-          <summary>Escolher os meses</summary>
-          <div className="row">
-            <div className="field">
-              <label htmlFor="ctx-from">De</label>
-              <select
-                id="ctx-from"
-                className="input"
-                value={from}
-                onChange={(e) =>
-                  setCustom({ from: e.target.value, to: e.target.value > to ? e.target.value : to })
-                }
-              >
-                {dates.map((d) => (
-                  <option key={d} value={d}>
-                    {monthLabel(d)}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="field">
-              <label htmlFor="ctx-to">Até</label>
-              <select
-                id="ctx-to"
-                className="input"
-                value={to}
-                onChange={(e) =>
-                  setCustom({
-                    from: e.target.value < from ? e.target.value : from,
-                    to: e.target.value,
-                  })
-                }
-              >
-                {dates.map((d) => (
-                  <option key={d} value={d}>
-                    {monthLabel(d)}
-                  </option>
-                ))}
-              </select>
-            </div>
+      <div className="stack-sm ctx-top">
+        <header className="ctx-head">
+          <div className="stack-xs">
+            <p className="eyebrow">Contexto</p>
+            <h1>Entenda os dados</h1>
+            <p className="muted">
+              Como estão as dívidas das famílias brasileiras e como o SAFE calcula o seu risco.
+            </p>
           </div>
-        </details>
-        <p className="small muted" role="status">
-          Mostrando de {monthLabel(from)} a {monthLabel(to)}.
+          <div className="ctx-filters">
+            <div className="seg" role="group" aria-label="Período">
+              {PERIODS.map((p) => (
+                <button
+                  key={p.months}
+                  type="button"
+                  aria-pressed={!custom && months === p.months}
+                  onClick={() => {
+                    setCustom(null);
+                    setMonths(p.months);
+                  }}
+                >
+                  {p.label}
+                </button>
+              ))}
+            </div>
+            <details className="ctx-custom">
+              <summary aria-pressed={!!custom}>
+                <CalendarRange size={16} aria-hidden="true" /> Escolher meses
+              </summary>
+              <div className="ctx-custom-panel card">
+                <div className="field">
+                  <label htmlFor="ctx-from">De</label>
+                  <select
+                    id="ctx-from"
+                    className="input"
+                    value={from}
+                    onChange={(e) =>
+                      setCustom({
+                        from: e.target.value,
+                        to: e.target.value > to ? e.target.value : to,
+                      })
+                    }
+                  >
+                    {dates.map((d) => (
+                      <option key={d} value={d}>
+                        {monthLabel(d)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="field">
+                  <label htmlFor="ctx-to">Até</label>
+                  <select
+                    id="ctx-to"
+                    className="input"
+                    value={to}
+                    onChange={(e) =>
+                      setCustom({
+                        from: e.target.value < from ? e.target.value : from,
+                        to: e.target.value,
+                      })
+                    }
+                  >
+                    {dates.map((d) => (
+                      <option key={d} value={d}>
+                        {monthLabel(d)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </details>
+          </div>
+        </header>
+
+        <p className="ctx-note" role="note">
+          <Info size={16} aria-hidden="true" />
+          <span>
+            <span role="status">
+              Mostrando de {monthLabel(from)} a {monthLabel(to)}.
+            </span>{' '}
+            Dados públicos agregados da população brasileira. Não representam a sua situação
+            individual nem são recomendação de investimento.
+          </span>
         </p>
       </div>
 

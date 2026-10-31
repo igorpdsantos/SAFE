@@ -66,8 +66,10 @@ export function StatTile({ label, series }: { label: string; series?: ContextSer
           {Math.abs(delta) < 0.05 ? 'estável' : pp(delta)} desde {monthName(first.date)}
         </span>
       )}
-      <Sparkline points={points} />
-      <span className="stat-foot">{series.unit}</span>
+      <div className="stat-bottom stack-xs">
+        <Sparkline points={points} />
+        <span className="stat-foot">{series.unit}</span>
+      </div>
     </article>
   );
 }

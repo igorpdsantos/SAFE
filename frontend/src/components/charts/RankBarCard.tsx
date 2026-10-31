@@ -11,6 +11,7 @@ import {
 } from 'recharts';
 import type { ContextSeries } from '../../api/types';
 import { ChartFrame } from './ChartFrame';
+import { EmptyChart, type EmptyAction } from './EmptyChart';
 import { pct } from './viz';
 
 /**
@@ -22,11 +23,14 @@ export function RankBarCard({
   subtitle,
   series,
   insight,
+  emptyAction,
 }: {
   title: ReactNode;
   subtitle: ReactNode;
   series: ContextSeries[];
   insight?: ReactNode;
+  /** Saída oferecida quando o período não tem dados desta fonte. */
+  emptyAction?: EmptyAction;
 }) {
   const rows = series
     .map((s) => ({ s, p: s.points[s.points.length - 1] }))
@@ -62,9 +66,10 @@ export function RankBarCard({
       }
     >
       {rows.length === 0 ? (
-        <p className="muted">
-          Não há dados desta fonte no período escolhido. Escolha um período maior.
-        </p>
+        <EmptyChart
+          message="Não há dados desta pesquisa nos meses escolhidos."
+          action={emptyAction}
+        />
       ) : (
         <div style={{ width: '100%', height: rows.length * 34 + 8 }} aria-hidden="true">
           <ResponsiveContainer>

@@ -28,7 +28,7 @@ export function ChartFrame({
 }) {
   const unique = [...new Map(sources.map((s) => [s.source, s])).values()];
   return (
-    <section className={wide ? 'card stack chart-wide' : 'card stack'}>
+    <section className={wide ? 'card stack chart-card chart-wide' : 'card stack chart-card'}>
       <div className="chart-head">
         <h3>{title}</h3>
         <p className="small muted">{subtitle}</p>
@@ -54,19 +54,21 @@ export function ChartFrame({
           <span>{insight}</span>
         </p>
       )}
-      <div className="stack-xs">
-        {unique.map((s) => (
-          <p key={s.source} className="chart-source">
-            Fonte: {s.source} · {s.unit} · extraído em {formatDate(s.extractedAt)}
-          </p>
-        ))}
+      <div className="chart-foot stack-sm">
+        <div className="stack-xs">
+          {unique.map((s) => (
+            <p key={s.source} className="chart-source">
+              Fonte: {s.source} · {s.unit} · extraído em {formatDate(s.extractedAt)}
+            </p>
+          ))}
+        </div>
+        {table && (
+          <details className="more">
+            <summary>Ver tabela</summary>
+            <div className="table-wrap">{table}</div>
+          </details>
+        )}
       </div>
-      {table && (
-        <details className="more">
-          <summary>Ver tabela</summary>
-          <div className="table-wrap">{table}</div>
-        </details>
-      )}
     </section>
   );
 }

@@ -89,7 +89,18 @@ export function Understand() {
     return s ? toPoints(s) : [];
   };
   const families = pick('peic_endividadas', 'peic_em_atraso', 'peic_sem_condicao');
-  const types = pick(...TYPE_IDS);
+  // O ranking é a foto de um mês: o mais recente da pesquisa até o fim do período escolhido.
+  const types = TYPE_IDS.map((id) => all.find((s) => s.id === id))
+    .filter((s): s is ContextSeries => !!s)
+    .map((s) => ({ ...s, points: s.points.filter((p) => p.date <= to).slice(-1) }));
+  const survey = all.find((s) => s.id === 'peic_endividadas')?.points ?? [];
+  const showSurvey =
+    survey.length > 0
+      ? {
+          label: 'Mostrar os meses da pesquisa',
+          onClick: () => setCustom({ from: survey[0]!.date, to: survey[survey.length - 1]!.date }),
+        }
+      : undefined;
   const ranked = types
     .map((s) => ({ name: s.name, p: s.points[s.points.length - 1] }))
     .filter((x) => x.p)
@@ -196,7 +207,7 @@ export function Understand() {
       <div className="kpi-row" aria-label="Manchetes do período">
         <StatTile label="Famílias com dívidas" series={one('peic_endividadas')} />
         <StatTile label="Famílias com contas em atraso" series={one('peic_em_atraso')} />
-        <StatTile label="Renda mensal que vai para parcelas" series={one('bcb_comprometimento')} />
+        <StatTile label="Renda que vai para parcelas" series={one('bcb_comprometimento')} />
         <StatTile label="Taxa básica de juros" series={one('bcb_selic')} />
       </div>
 
@@ -210,12 +221,14 @@ export function Understand() {
             title="Com dívidas, em atraso e sem condição de pagar"
             subtitle="% do total de famílias, na pesquisa mensal da Confederação Nacional do Comércio (CNC). Ter dívida é comum; o aperto aparece em quem está com conta atrasada."
             series={families}
+            emptyAction={showSurvey}
             insight={describeChange('Famílias com dívidas', points('peic_endividadas'))}
           />
           <RankBarCard
             title="Que tipo de dívida as famílias têm"
             subtitle={`Entre as famílias com dívidas${typesMonth ? `, em ${monthName(typesMonth)}` : ''}. A soma passa de 100% porque a mesma família pode ter mais de um tipo.`}
             series={types}
+            emptyAction={showSurvey}
             insight={typesInsight}
           />
         </div>
@@ -279,7 +292,7 @@ export function Understand() {
         </div>
       </section>
 
-      <section className="card stack" aria-labelledby="como-calcula">
+      <section className="card stack-md" aria-labelledby="como-calcula">
         <div className="stack-xs">
           <h2 id="como-calcula">Como o SAFE calcula seu risco</h2>
           <p className="muted">
@@ -287,31 +300,32 @@ export function Understand() {
             orçamento, cada um com um peso.
           </p>
         </div>
-        <ul className="factor-bars">
-          {WEIGHTS.map((w) => (
-            <li key={w.id} className="factor">
-              <div className="row spread row-tight">
-                <span style={{ fontWeight: 650 }}>
+        <div className="stack-sm">
+          <h3>Os quatro sinais e seus pesos</h3>
+          <ul className="weights">
+            {WEIGHTS.map((w) => (
+              <li key={w.id}>
+                <span className="weight-name">
                   <Term id={w.id}>{w.label}</Term>
                 </span>
-                <span>{w.weight}% do índice</span>
-              </div>
-              <div className="bar" aria-hidden="true">
-                <span style={{ width: `${w.weight * 2.5}%` }} />
-              </div>
-            </li>
-          ))}
-        </ul>
+                <span className="bar" aria-hidden="true">
+                  <span style={{ width: `${w.weight * 2.5}%` }} />
+                </span>
+                <span className="weight-value">{w.weight}%</span>
+              </li>
+            ))}
+          </ul>
+        </div>
         <div className="stack-sm">
           <h3>As cinco faixas</h3>
-          <ul className="row row-tight" style={{ listStyle: 'none', padding: 0 }}>
+          <ol className="band-scale">
             {BANDS.map((b) => (
-              <li key={b.band} className="stack-xs">
+              <li key={b.band}>
                 <RiskBadge band={b.band} label={BAND_LABELS[b.band]} />
                 <span className="small muted">{b.range}</span>
               </li>
             ))}
-          </ul>
+          </ol>
         </div>
         <div className="stack-sm">
           <h3>Limitações</h3>

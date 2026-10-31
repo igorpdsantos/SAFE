@@ -239,6 +239,9 @@ strong {
 .stack-xs > * + * {
   margin-top: var(--s-1);
 }
+.stack-md > * + * {
+  margin-top: var(--s-5);
+}
 .stack-lg > * + * {
   margin-top: var(--s-6);
 }
@@ -2123,4 +2126,101 @@ form .more-body > * + * {
 .legal-card {
   max-width: 820px;
   padding: clamp(var(--s-5), 3vw, var(--s-7));
+}
+
+.empty-chart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--s-3);
+  padding: var(--s-6) var(--s-4);
+  border: 1.5px dashed var(--border-strong);
+  border-radius: var(--radius);
+  color: var(--muted);
+}
+.empty-chart p {
+  max-width: 32ch;
+}
+
+/* Como o SAFE calcula: pesos em linha (nome · barra · valor) e régua das faixas. */
+.weights {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: var(--s-3);
+}
+.weights li {
+  display: grid;
+  grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) 3rem;
+  align-items: center;
+  gap: var(--s-4);
+}
+.weight-name {
+  font-weight: 600;
+}
+.weight-value {
+  font-weight: 650;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.band-scale {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--s-2);
+}
+.band-scale li {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s-2);
+  padding: var(--s-3);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+@media (max-width: 900px) {
+  .band-scale {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+  }
+}
+@media (max-width: 560px) {
+  .weights li {
+    grid-template-columns: minmax(0, 1fr) 3rem;
+    row-gap: var(--s-2);
+  }
+  .weights .bar {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+.weights .bar {
+  display: block;
+}
+
+/* Cartões lado a lado com a mesma altura: fonte e "Ver tabela" presos no rodapé. */
+.chart-card {
+  display: flex;
+  flex-direction: column;
+}
+.chart-card > .chart-foot {
+  margin-top: auto;
+  padding-top: var(--s-4);
+}
+.stat-tile > .stat-bottom {
+  margin-top: auto;
+}
+.risk {
+  white-space: nowrap;
+}
+@media (max-width: 560px) {
+  .band-scale {
+    grid-template-columns: 1fr;
+  }
+  .band-scale li {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
 }

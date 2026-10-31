@@ -13,6 +13,7 @@ import {
 import type { ContextSeries } from '../../api/types';
 import { formatDecimal } from '../../lib/format';
 import { ChartFrame } from './ChartFrame';
+import { EmptyChart, type EmptyAction } from './EmptyChart';
 import { VizTooltip } from './VizTooltip';
 import {
   SERIES_COLORS,
@@ -34,6 +35,7 @@ export function LineChartCard({
   subtitle,
   series,
   insight,
+  emptyAction,
   markPeak,
   wide,
   height = 280,
@@ -42,6 +44,8 @@ export function LineChartCard({
   subtitle: ReactNode;
   series: ContextSeries[];
   insight?: ReactNode;
+  /** Saída oferecida quando o período não tem dados desta fonte. */
+  emptyAction?: EmptyAction;
   markPeak?: boolean;
   wide?: boolean;
   height?: number;
@@ -103,9 +107,10 @@ export function LineChartCard({
       wide={wide}
     >
       {shown.length === 0 ? (
-        <p className="muted">
-          Não há dados desta fonte no período escolhido. Escolha um período maior.
-        </p>
+        <EmptyChart
+          message="Não há dados desta pesquisa nos meses escolhidos."
+          action={emptyAction}
+        />
       ) : (
         <div style={{ width: '100%', height }} aria-hidden="true">
           <ResponsiveContainer>

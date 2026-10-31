@@ -904,7 +904,6 @@ tbody tr:last-child th {
 .list {
   list-style: none;
   padding: 0;
-  margin: 0;
 }
 .list > li {
   display: flex;
@@ -920,7 +919,6 @@ tbody tr:last-child th {
 }
 .item-list {
   list-style: none;
-  margin: 0;
   padding: 0;
   display: grid;
   gap: var(--s-3);
@@ -1146,13 +1144,6 @@ details.more[open] > summary::before {
   line-height: 1.25;
   color: var(--on-pine);
 }
-.dash-hero .todo {
-  background: rgb(255 255 255 / 7%);
-  border: 1px solid rgb(255 255 255 / 12%);
-  border-radius: 14px;
-  padding: var(--s-3) var(--s-4);
-  margin: 0 0 var(--s-4);
-}
 .hero .risk {
   box-shadow: 0 0 0 1px rgb(255 255 255 / 25%);
 }
@@ -1185,7 +1176,6 @@ details.more[open] > summary::before {
   letter-spacing: -0.02em;
 }
 .tile-meaning {
-  margin: 0;
   font-size: 0.93rem;
 }
 .tile-foot {
@@ -1227,7 +1217,6 @@ details.more[open] > summary::before {
 /* Primeiro acesso: um passo de cada vez. */
 .steps {
   list-style: none;
-  margin: 0;
   padding: 0;
   display: grid;
   gap: var(--s-3);
@@ -1291,7 +1280,6 @@ details.more[open] > summary::before {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   counter-reset: how;
   list-style: none;
-  margin: 0;
   padding: 0;
 }
 .how li {
@@ -1380,7 +1368,6 @@ details.more[open] > summary::before {
 }
 .factor-bars {
   list-style: none;
-  margin: 0;
   padding: 0;
   display: grid;
   gap: var(--s-4);
@@ -1403,9 +1390,6 @@ details.more[open] > summary::before {
 .empty .art {
   width: 120px;
   color: var(--brand);
-}
-.empty p {
-  margin: 0;
 }
 @media (max-width: 560px) {
   .empty {
@@ -1573,7 +1557,6 @@ details.more[open] > summary::before {
 }
 .promises {
   list-style: none;
-  margin: 0;
   padding: 0;
   display: grid;
   gap: var(--s-3);
@@ -1702,7 +1685,6 @@ details.more[open] > summary::before {
 .glossary-list {
   display: grid;
   gap: var(--s-3);
-  margin: 0;
 }
 .glossary-list dt h2 {
   font-size: 1.2rem;
@@ -1785,7 +1767,6 @@ details.more[open] > summary::before {
 
 /* Números do mês no painel */
 .numbers {
-  margin: 0;
   display: grid;
   gap: 0;
 }

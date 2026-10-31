@@ -2224,3 +2224,90 @@ form .more-body > * + * {
     justify-content: space-between;
   }
 }
+
+/* "De cada 100 famílias" e frases simples (T-14.7). */
+.per-hundred {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s-4);
+}
+.per-hundred li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+.waffle {
+  display: block;
+  width: 100%;
+  max-width: 132px;
+}
+.per-hundred-n {
+  font-size: 1.6rem;
+  font-weight: 650;
+  font-variant-numeric: proportional-nums;
+}
+.change-rows {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: var(--s-2);
+}
+.change-rows li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 96px 7.5rem;
+  align-items: center;
+  gap: var(--s-3);
+  font-size: 0.875rem;
+}
+.change-rows .sparkline {
+  height: 24px;
+}
+.change-name {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+}
+.change-delta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--s-1);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.stat-plain {
+  font-size: 0.875rem;
+  color: var(--text);
+}
+.chart-note {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+@media (max-width: 560px) {
+  .per-hundred {
+    grid-template-columns: 1fr;
+  }
+  .per-hundred li {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--s-4);
+  }
+  .per-hundred .waffle {
+    width: 88px;
+    flex-shrink: 0;
+  }
+  .change-rows li {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .change-rows .sparkline {
+    display: none;
+  }
+}
+
+/* Num cartão mais baixo que o vizinho, o gráfico cresce em vez de sobrar espaço vazio. */
+.chart-card > .chart-plot {
+  flex: 1 1 auto;
+  width: 100%;
+}

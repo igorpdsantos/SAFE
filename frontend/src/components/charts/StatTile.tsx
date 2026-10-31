@@ -3,7 +3,7 @@ import type { ContextSeries } from '../../api/types';
 import { monthName, pct, pp, toPoints, type Point } from './viz';
 
 /** Mini-gráfico: linha em cinza, o último ponto em destaque. */
-function Sparkline({ points }: { points: Point[] }) {
+export function Sparkline({ points }: { points: Point[] }) {
   if (points.length < 2) return null;
   const w = 200;
   const h = 36;
@@ -47,7 +47,19 @@ function Sparkline({ points }: { points: Point[] }) {
  * Manchete de um indicador: rótulo, valor do último mês, variação no período (neutra: a seta diz
  * a direção, não se é bom ou ruim) e mini-gráfico.
  */
-export function StatTile({ label, series }: { label: string; series?: ContextSeries }) {
+export function StatTile({
+  label,
+  series,
+  plain,
+  unit,
+}: {
+  label: string;
+  series?: ContextSeries;
+  /** O mesmo número dito de um jeito simples (ex.: "82 de cada 100 famílias"). */
+  plain?: (value: number) => string;
+  /** Unidade curta no rodapé (padrão: a da série). */
+  unit?: string;
+}) {
   const points = series ? toPoints(series) : [];
   const last = points[points.length - 1];
   const first = points[0];
@@ -60,6 +72,7 @@ export function StatTile({ label, series }: { label: string; series?: ContextSer
       <span className="stat-value">
         {pct(last.value)} <small>{monthName(last.date)}</small>
       </span>
+      {plain && <span className="stat-plain">{plain(last.value)}</span>}
       {points.length > 1 && (
         <span className="stat-delta">
           <Icon size={16} aria-hidden="true" />
@@ -68,7 +81,7 @@ export function StatTile({ label, series }: { label: string; series?: ContextSer
       )}
       <div className="stat-bottom stack-xs">
         <Sparkline points={points} />
-        <span className="stat-foot">{series.unit}</span>
+        <span className="stat-foot">{unit ?? series.unit}</span>
       </div>
     </article>
   );

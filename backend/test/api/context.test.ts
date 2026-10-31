@@ -29,7 +29,7 @@ function readCsv(file: string) {
 
 describe('T-14.1 – dados de contexto versionados (SPEC-14 §2)', () => {
   it('cada CSV tem fonte, url, data de extração e unidade no cabeçalho', () => {
-    for (const f of ['peic.csv', 'bcb-29037.csv', 'bcb-29265.csv', 'selic.csv']) {
+    for (const f of ['peic.csv', 'bcb-29037.csv', 'bcb-29265.csv', 'bcb-29034.csv', 'selic.csv']) {
       const { meta, rows } = readCsv(f);
       expect(Object.keys(meta).sort(), f).toEqual(['extraido_em', 'fonte', 'unidade', 'url']);
       expect(rows.length, f).toBeGreaterThan(0);
@@ -52,7 +52,7 @@ describe('T-14.1 – dados de contexto versionados (SPEC-14 §2)', () => {
 });
 
 describe('T-14.2 – GET /context/series (SPEC-14 §3)', () => {
-  it('é público e devolve as 16 séries com fonte, unidade, data de extração e pontos', async () => {
+  it('é público e devolve as 17 séries com fonte, unidade, data de extração e pontos', async () => {
     const { app } = buildApp();
     const res = await request(app).get(URL).expect(200);
     expect(res.body.series.map((s: { id: string }) => s.id)).toEqual([
@@ -71,6 +71,7 @@ describe('T-14.2 – GET /context/series (SPEC-14 §3)', () => {
       'peic_tipo_cheque_pre_datado',
       'bcb_endividamento',
       'bcb_comprometimento',
+      'bcb_comprometimento_sa',
       'bcb_selic',
     ]);
     const peic = res.body.series[0];

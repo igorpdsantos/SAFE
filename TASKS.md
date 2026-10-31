@@ -174,6 +174,7 @@
 - [ ] **T-14.4** `B` Acrescentar RF25/UC11/HU24 ao PRD e uma frase no artigo (§5) · PRD com HU24 e UC11 (2026-10-31, Igor + IA); falta a equipe colar no artigo (Seção 4) a frase que está no PR #18
 - [x] **T-14.5** `B` Tipos de dívida da PEIC (cartão, carnê, crédito pessoal, financiamentos…) na tela `/entenda`, a pedido do colega que montou o dashboard · início 2026-10-31 01:01 · Igor + IA · 9 tipos na `peic.csv` e na API; gráfico de barras do último mês, ao lado de "Quantas famílias têm dívidas" · feito 2026-10-31 01:03
 - [x] **T-14.6** `B` Gráficos da `/entenda` pelo método do skill dataviz: manchetes com mini-gráfico, 3 seções, componentes em `components/charts/`, paleta categórica própria validada (claro e escuro), uma escala por gráfico, valor no fim da linha, pico, tooltip e frase do que observar · feito 2026-10-31 01:11 · Igor + IA
+- [x] **T-14.7** `B` Gráficos mais fáceis de entender sem alterar os dados: comprometimento com ajuste sazonal (BCB 29034, a 29265 continua na tabela), "de cada 100 famílias", tradução de unidades e aviso de eixo ampliado · início 2026-10-31 01:37 · Igor + IA · SPEC-14 §2 e UC11 atualizados · feito 2026-10-31 01:41
 
 ---
 

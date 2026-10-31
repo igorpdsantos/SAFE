@@ -5,6 +5,7 @@ import type { ContextSeries, RiskBand } from '../api/types';
 import { EmptyArt } from '../components/Art';
 import { LineChartCard } from '../components/charts/LineChartCard';
 import { RankBarCard } from '../components/charts/RankBarCard';
+import { PerHundred } from '../components/charts/PerHundred';
 import { StatTile } from '../components/charts/StatTile';
 import { describeChange, extremes, monthName, pct, toPoints } from '../components/charts/viz';
 import { useHelp } from '../components/HelpPanel';
@@ -13,6 +14,7 @@ import { BAND_LABELS, RiskBadge } from '../components/RiskBadge';
 import { LoadError, Loading } from '../components/States';
 import { Term } from '../components/Term';
 import { getGlossaryEntry, type GlossaryId } from '../content/glossary';
+import { formatDecimal } from '../lib/format';
 
 const PERIODS = [
   { months: 12, label: '1 ano' },
@@ -88,7 +90,6 @@ export function Understand() {
     const s = one(id);
     return s ? toPoints(s) : [];
   };
-  const families = pick('peic_endividadas', 'peic_em_atraso', 'peic_sem_condicao');
   // O ranking é a foto de um mês: o mais recente da pesquisa até o fim do período escolhido.
   const types = TYPE_IDS.map((id) => all.find((s) => s.id === id))
     .filter((s): s is ContextSeries => !!s)
@@ -110,6 +111,26 @@ export function Understand() {
     ranked.length > 1
       ? `${ranked[0]!.name} aparece em ${pct(Number(ranked[0]!.p!.value))} das famílias com dívidas, cerca de ${Math.round(Number(ranked[0]!.p!.value) / Number(ranked[1]!.p!.value))} vezes o segundo tipo (${ranked[1]!.name.toLowerCase()}, ${pct(Number(ranked[1]!.p!.value))}).`
       : undefined;
+  const income = points('bcb_comprometimento_sa');
+  const incomeLast = income[income.length - 1];
+  const incomeInsight = incomeLast ? (
+    <>
+      Em {monthName(incomeLast.date)}, de cada R$ 100 de renda, cerca de R${' '}
+      {Math.round(incomeLast.value)} iam para parcelas de dívidas.{' '}
+      {describeChange('Pelo Banco Central', income)} A linha verde já vem sem o efeito do 13º e das
+      festas (ajuste sazonal do Banco Central); a série original está na tabela.
+    </>
+  ) : undefined;
+  const debt = points('bcb_endividamento');
+  const debtLast = debt[debt.length - 1];
+  const debtInsight = debtLast ? (
+    <>
+      Em {monthName(debtLast.date)}, tudo o que as famílias deviam aos bancos equivalia a{' '}
+      {pct(debtLast.value)} da renda de um ano, ou seja, cerca de{' '}
+      {formatDecimal(String(Math.round((debtLast.value * 12) / 10) / 10), 1).replace(/,0$/, '')}{' '}
+      meses de renda. {describeChange('Endividamento', debt)}
+    </>
+  ) : undefined;
   const selic = points('bcb_selic');
   const selicPeak = selic.length ? extremes(selic).max : null;
   const selicLast = selic[selic.length - 1];
@@ -205,10 +226,27 @@ export function Understand() {
       </div>
 
       <div className="kpi-row" aria-label="Manchetes do período">
-        <StatTile label="Famílias com dívidas" series={one('peic_endividadas')} />
-        <StatTile label="Famílias com contas em atraso" series={one('peic_em_atraso')} />
-        <StatTile label="Renda que vai para parcelas" series={one('bcb_comprometimento')} />
-        <StatTile label="Taxa básica de juros" series={one('bcb_selic')} />
+        <StatTile
+          label="Famílias com dívidas"
+          series={one('peic_endividadas')}
+          plain={(v) => `${Math.round(v)} de cada 100 famílias`}
+        />
+        <StatTile
+          label="Famílias com contas em atraso"
+          series={one('peic_em_atraso')}
+          plain={(v) => `${Math.round(v)} de cada 100 famílias`}
+        />
+        <StatTile
+          label="Renda que vai para parcelas"
+          series={one('bcb_comprometimento_sa')}
+          plain={(v) => `R$ ${Math.round(v)} de cada R$ 100 de renda`}
+          unit="% da renda mensal"
+        />
+        <StatTile
+          label="Taxa básica de juros"
+          series={one('bcb_selic')}
+          plain={() => 'Referência para os juros do país'}
+        />
       </div>
 
       <section className="viz-section stack" aria-labelledby="sec-familias">
@@ -217,12 +255,24 @@ export function Understand() {
           <h2 id="sec-familias">Quantas famílias têm dívidas, e de que tipo</h2>
         </header>
         <div className="chart-grid">
-          <LineChartCard
-            title="Com dívidas, em atraso e sem condição de pagar"
-            subtitle="% do total de famílias, na pesquisa mensal da Confederação Nacional do Comércio (CNC). Ter dívida é comum; o aperto aparece em quem está com conta atrasada."
-            series={families}
-            emptyAction={showSurvey}
+          <PerHundred
+            title="De cada 100 famílias"
+            subtitle="Pesquisa mensal da Confederação Nacional do Comércio (CNC). Ter dívida é comum; o aperto aparece em quem está com conta atrasada."
+            items={[
+              { series: one('peic_endividadas'), phrase: 'têm dívidas', short: 'Têm dívidas' },
+              {
+                series: one('peic_em_atraso'),
+                phrase: 'estão com contas ou dívidas atrasadas',
+                short: 'Com contas atrasadas',
+              },
+              {
+                series: one('peic_sem_condicao'),
+                phrase: 'dizem que não vão conseguir pagar o atraso',
+                short: 'Não vão conseguir pagar',
+              },
+            ]}
             insight={describeChange('Famílias com dívidas', points('peic_endividadas'))}
+            emptyAction={showSurvey}
           />
           <RankBarCard
             title="Que tipo de dívida as famílias têm"
@@ -249,9 +299,10 @@ export function Understand() {
                 </span>
               </>
             }
-            subtitle="O que as famílias dizem (CNC) e o que o Banco Central mede nos bancos, na mesma escala. Os métodos são diferentes: compare a direção, não a altura."
-            series={pick('bcb_comprometimento', 'peic_renda_comprometida')}
-            insight={describeChange('Pelo Banco Central', points('bcb_comprometimento'))}
+            subtitle="O que o Banco Central mede nos bancos e o que as famílias dizem (CNC), na mesma escala. Os métodos são diferentes: compare a direção, não a altura."
+            series={pick('bcb_comprometimento_sa', 'peic_renda_comprometida')}
+            tableExtra={pick('bcb_comprometimento')}
+            insight={incomeInsight}
           />
           <LineChartCard
             title={
@@ -264,7 +315,7 @@ export function Understand() {
             }
             subtitle="Tudo o que as famílias devem aos bancos, em % do que ganham em 12 meses."
             series={pick('bcb_endividamento')}
-            insight={describeChange('Endividamento', points('bcb_endividamento'))}
+            insight={debtInsight}
           />
         </div>
       </section>

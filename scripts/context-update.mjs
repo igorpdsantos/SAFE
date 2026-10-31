@@ -30,6 +30,14 @@ const BCB = [
     unit: '% da renda mensal (média móvel de 3 meses)',
     name: 'Comprometimento da renda das famílias com o serviço da dívida',
   },
+  // Mesma medida da 29265, com ajuste sazonal do próprio BCB: tira o efeito do 13º e das festas,
+  // que na série original parece queda ou alta sem ser (T-14.7).
+  {
+    file: 'bcb-29034.csv',
+    code: 29034,
+    unit: '% da renda mensal, com ajuste sazonal',
+    name: 'Comprometimento da renda das famílias com o serviço da dívida, com ajuste sazonal',
+  },
   // SPEC-14 deixava 432 ou 4189 em aberto: 4189 é mensal, como as demais (e é a do dashboard da equipe).
   {
     file: 'selic.csv',
@@ -146,6 +154,13 @@ const SERIES = [
     column: 'valor',
     name: 'Parte da renda mensal que vai para parcelas',
     unit: '% da renda mensal',
+  },
+  {
+    id: 'bcb_comprometimento_sa',
+    file: 'bcb-29034.csv',
+    column: 'valor',
+    name: 'Parte da renda mensal que vai para parcelas, sem o efeito do 13º e das festas',
+    unit: '% da renda mensal, com ajuste sazonal',
   },
   {
     id: 'bcb_selic',

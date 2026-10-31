@@ -39,6 +39,7 @@ export function LineChartCard({
   markPeak,
   wide,
   height = 280,
+  tableExtra = [],
 }: {
   title: ReactNode;
   subtitle: ReactNode;
@@ -49,6 +50,8 @@ export function LineChartCard({
   markPeak?: boolean;
   wide?: boolean;
   height?: number;
+  /** Séries que entram só na tabela (ex.: a versão original de uma série ajustada). */
+  tableExtra?: ContextSeries[];
 }) {
   const shown = series.filter((s) => s.points.length > 0);
   const colors = Object.fromEntries(shown.map((s, i) => [s.id, SERIES_COLORS[i % 3]!]));
@@ -76,7 +79,7 @@ export function LineChartCard({
       <thead>
         <tr>
           <th scope="col">Mês</th>
-          {shown.map((s) => (
+          {[...shown, ...tableExtra].map((s) => (
             <th key={s.id} scope="col">
               {s.name}
             </th>
@@ -90,6 +93,10 @@ export function LineChartCard({
             {shown.map((s) => (
               <td key={s.id}>{r[s.id] == null ? '—' : pct(Number(r[s.id]))}</td>
             ))}
+            {tableExtra.map((s) => {
+              const p = s.points.find((x) => x.date === r.date);
+              return <td key={s.id}>{p ? pct(Number(p.value)) : '—'}</td>;
+            })}
           </tr>
         ))}
       </tbody>
@@ -102,7 +109,7 @@ export function LineChartCard({
       subtitle={subtitle}
       legend={shown.map((s) => ({ name: s.name, color: colors[s.id]! }))}
       insight={insight}
-      sources={series}
+      sources={[...series, ...tableExtra]}
       table={shown.length ? table : undefined}
       wide={wide}
     >
@@ -112,8 +119,8 @@ export function LineChartCard({
           action={emptyAction}
         />
       ) : (
-        <div style={{ width: '100%', height }} aria-hidden="true">
-          <ResponsiveContainer>
+        <div className="chart-plot" style={{ minHeight: height }} aria-hidden="true">
+          <ResponsiveContainer width="100%" height="100%">
             <ComposedChart data={rows} margin={{ top: 16, right: 56, bottom: 0, left: 0 }}>
               <CartesianGrid vertical={false} stroke="var(--chart-grid)" />
               <XAxis
@@ -203,6 +210,12 @@ export function LineChartCard({
             </ComposedChart>
           </ResponsiveContainer>
         </div>
+      )}
+      {shown.length > 0 && domain[0] > 0 && (
+        <p className="chart-note">
+          O eixo começa em {formatDecimal(String(domain[0]), places)} para mostrar melhor a
+          variação.
+        </p>
       )}
     </ChartFrame>
   );

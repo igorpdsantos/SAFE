@@ -1301,6 +1301,252 @@ export const CONTEXT_SERIES: ContextSeries[] = [
     ]
   },
   {
+    "id": "bcb_comprometimento_sa",
+    "name": "Parte da renda mensal que vai para parcelas, sem o efeito do 13º e das festas",
+    "source": "Banco Central do Brasil – SGS, série 29034 (Comprometimento da renda das famílias com o serviço da dívida, com ajuste sazonal)",
+    "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.29034/dados?formato=json",
+    "extractedAt": "2026-10-31",
+    "unit": "% da renda mensal, com ajuste sazonal",
+    "points": [
+      {
+        "date": "2021-10",
+        "value": "25.15"
+      },
+      {
+        "date": "2021-11",
+        "value": "25.45"
+      },
+      {
+        "date": "2021-12",
+        "value": "25.58"
+      },
+      {
+        "date": "2022-01",
+        "value": "26.02"
+      },
+      {
+        "date": "2022-02",
+        "value": "25.65"
+      },
+      {
+        "date": "2022-03",
+        "value": "25.40"
+      },
+      {
+        "date": "2022-04",
+        "value": "25.60"
+      },
+      {
+        "date": "2022-05",
+        "value": "25.45"
+      },
+      {
+        "date": "2022-06",
+        "value": "25.96"
+      },
+      {
+        "date": "2022-07",
+        "value": "26.50"
+      },
+      {
+        "date": "2022-08",
+        "value": "26.91"
+      },
+      {
+        "date": "2022-09",
+        "value": "27.17"
+      },
+      {
+        "date": "2022-10",
+        "value": "27.21"
+      },
+      {
+        "date": "2022-11",
+        "value": "27.32"
+      },
+      {
+        "date": "2022-12",
+        "value": "27.57"
+      },
+      {
+        "date": "2023-01",
+        "value": "27.67"
+      },
+      {
+        "date": "2023-02",
+        "value": "27.69"
+      },
+      {
+        "date": "2023-03",
+        "value": "27.71"
+      },
+      {
+        "date": "2023-04",
+        "value": "27.81"
+      },
+      {
+        "date": "2023-05",
+        "value": "27.96"
+      },
+      {
+        "date": "2023-06",
+        "value": "27.78"
+      },
+      {
+        "date": "2023-07",
+        "value": "27.33"
+      },
+      {
+        "date": "2023-08",
+        "value": "26.89"
+      },
+      {
+        "date": "2023-09",
+        "value": "26.78"
+      },
+      {
+        "date": "2023-10",
+        "value": "26.79"
+      },
+      {
+        "date": "2023-11",
+        "value": "26.49"
+      },
+      {
+        "date": "2023-12",
+        "value": "25.84"
+      },
+      {
+        "date": "2024-01",
+        "value": "25.72"
+      },
+      {
+        "date": "2024-02",
+        "value": "25.83"
+      },
+      {
+        "date": "2024-03",
+        "value": "26.13"
+      },
+      {
+        "date": "2024-04",
+        "value": "26.13"
+      },
+      {
+        "date": "2024-05",
+        "value": "26.02"
+      },
+      {
+        "date": "2024-06",
+        "value": "26.38"
+      },
+      {
+        "date": "2024-07",
+        "value": "26.53"
+      },
+      {
+        "date": "2024-08",
+        "value": "26.73"
+      },
+      {
+        "date": "2024-09",
+        "value": "26.49"
+      },
+      {
+        "date": "2024-10",
+        "value": "26.39"
+      },
+      {
+        "date": "2024-11",
+        "value": "26.39"
+      },
+      {
+        "date": "2024-12",
+        "value": "26.80"
+      },
+      {
+        "date": "2025-01",
+        "value": "26.71"
+      },
+      {
+        "date": "2025-02",
+        "value": "26.85"
+      },
+      {
+        "date": "2025-03",
+        "value": "26.96"
+      },
+      {
+        "date": "2025-04",
+        "value": "27.12"
+      },
+      {
+        "date": "2025-05",
+        "value": "27.19"
+      },
+      {
+        "date": "2025-06",
+        "value": "27.17"
+      },
+      {
+        "date": "2025-07",
+        "value": "27.32"
+      },
+      {
+        "date": "2025-08",
+        "value": "27.55"
+      },
+      {
+        "date": "2025-09",
+        "value": "27.77"
+      },
+      {
+        "date": "2025-10",
+        "value": "27.92"
+      },
+      {
+        "date": "2025-11",
+        "value": "27.89"
+      },
+      {
+        "date": "2025-12",
+        "value": "28.09"
+      },
+      {
+        "date": "2026-01",
+        "value": "28.23"
+      },
+      {
+        "date": "2026-02",
+        "value": "28.27"
+      },
+      {
+        "date": "2026-03",
+        "value": "28.24"
+      },
+      {
+        "date": "2026-04",
+        "value": "28.38"
+      },
+      {
+        "date": "2026-05",
+        "value": "28.47"
+      },
+      {
+        "date": "2026-06",
+        "value": "28.68"
+      },
+      {
+        "date": "2026-07",
+        "value": "28.83"
+      },
+      {
+        "date": "2026-08",
+        "value": "28.99"
+      }
+    ]
+  },
+  {
     "id": "bcb_selic",
     "name": "Taxa básica de juros (Selic)",
     "source": "Banco Central do Brasil – SGS, série 4189 (Taxa Selic efetiva acumulada no mês, anualizada (base 252))",

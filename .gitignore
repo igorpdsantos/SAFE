@@ -41,3 +41,4 @@ backend/src/generated/
 
 # Deploy (gerado por npm run build:vercel)
 .vercel
+.env.local

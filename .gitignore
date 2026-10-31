@@ -38,3 +38,7 @@ backend/src/generated/
 # Cópias de conflito criadas pela sincronização do iCloud (ex.: "arquivo 2.ts")
 * 2.*
 * 2
+
+# Deploy (gerado por npm run build:vercel)
+.vercel
+.env.local

@@ -9,3 +9,4 @@ scripts/tasks-status.mjs
 backend/src/generated
 frontend/playwright-report
 frontend/test-results
+.vercel

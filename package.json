@@ -29,12 +29,14 @@
     "eval:baseline": "npm run eval:baseline -w evaluation --",
     "eval:simulation-check": "npm run eval:simulation-check -w evaluation --",
     "eval:latency": "npm run eval:latency -w evaluation --",
-    "generate-personas": "npm run generate-personas -w evaluation"
+    "generate-personas": "npm run generate-personas -w evaluation",
+    "build:vercel": "node scripts/build-vercel.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
     "@vitest/coverage-v8": "^5.0.5",
     "concurrently": "^10.0.6",
+    "esbuild": "^0.28.2",
     "eslint": "^9.39.5",
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.13.0",

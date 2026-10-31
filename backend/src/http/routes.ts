@@ -14,6 +14,7 @@ import { alertsRouter, analysisRouter } from '../modules/analysis/router.js';
 import { projectionRouter } from '../modules/projection/router.js';
 import { simulationsRouter } from '../modules/simulations/router.js';
 import { historyRouter } from '../modules/history/router.js';
+import { retentionCronRouter } from '../modules/privacy/cron.js';
 import { registerPrivacy } from '../modules/privacy/router.js';
 
 /** Registro dos routers: UMA linha por módulo, cada um no seu prefixo (evita conflito entre as trilhas). */
@@ -31,6 +32,8 @@ export function apiRouter(deps: AppDeps): Router {
   router.use('/simulations', simulationsRouter(deps));
   router.use('/history', historyRouter(deps));
   if (deps.env.NODE_ENV === 'test') router.use('/test', testLoginRouter(deps));
+  if (deps.env.CRON_SECRET)
+    router.use('/internal', retentionCronRouter(deps, deps.env.CRON_SECRET));
   return router;
 }
 

@@ -1,9 +1,11 @@
 import { Siren } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { ApiError } from '../api/client';
-import { useSimulate } from '../api/hooks';
+import { useRegisterSimulation, useSimulate } from '../api/hooks';
 import type { Simulation, SimulationFactor } from '../api/types';
 import { FieldHelp } from '../components/FieldHelp';
+import { ConfirmDialog } from '../components/ConfirmDialog';
 import { CompareChart } from '../components/FreeFlowChart';
 import { MoneyInput } from '../components/MoneyInput';
 import { RiskBadge } from '../components/RiskBadge';
@@ -191,6 +193,58 @@ function Result({ sim }: { sim: Simulation }) {
   );
 }
 
+interface SimulationInput {
+  value: string;
+  installments: number;
+  installmentValue: string;
+}
+
+/** D-12: depois de fazer a compra de verdade, a pessoa pode levá-la para o orçamento. */
+function RegisterDebt({ sim, input }: { sim: Simulation; input: SimulationInput }) {
+  const [asking, setAsking] = useState(false);
+  const register = useRegisterSimulation();
+
+  if (register.isSuccess)
+    return (
+      <p className="notice" role="status">
+        Pronto: a dívida de {formatMoney(input.installmentValue)} por mês, em {input.installments}{' '}
+        parcelas, entrou no seu orçamento e o seu índice foi recalculado.{' '}
+        <Link to="/orcamento?aba=debts">Ver ou editar em Dívidas</Link>
+      </p>
+    );
+
+  return (
+    <section className="card stack" aria-labelledby="register-title">
+      <h2 id="register-title">Já fez esta compra?</h2>
+      <p className="small" style={{ margin: 0 }}>
+        Se você fechou a compra, pode registrá-la como dívida no seu orçamento. Assim o seu índice
+        de risco passa a contar com ela.
+      </p>
+      {register.isError && <LoadError error={register.error} />}
+      <div>
+        <button type="button" className="btn" onClick={() => setAsking(true)}>
+          Registrar como dívida
+        </button>
+      </div>
+      {asking && (
+        <ConfirmDialog
+          title="Registrar esta compra como dívida?"
+          confirmLabel={register.isPending ? 'Registrando…' : 'Registrar dívida'}
+          confirmDisabled={register.isPending}
+          onCancel={() => setAsking(false)}
+          onConfirm={() => register.mutate(sim.id, { onSettled: () => setAsking(false) })}
+        >
+          <p style={{ margin: 0 }}>
+            Vamos adicionar ao seu orçamento uma dívida de {formatMoney(input.installmentValue)} por
+            mês, em {input.installments} parcelas, na categoria crediário. Você pode editar ou
+            excluir depois em Orçamento, na aba Dívidas.
+          </p>
+        </ConfirmDialog>
+      )}
+    </section>
+  );
+}
+
 /** "E se eu comprar?" (SPEC-08 §4). */
 export function Simulate() {
   const [value, setValue] = useState('');
@@ -320,6 +374,9 @@ export function Simulate() {
 
       {general !== null && <LoadError error={general} />}
       {simulate.data && <Result sim={simulate.data} />}
+      {simulate.data && simulate.variables && (
+        <RegisterDebt key={simulate.data.id} sim={simulate.data} input={simulate.variables} />
+      )}
     </div>
   );
 }

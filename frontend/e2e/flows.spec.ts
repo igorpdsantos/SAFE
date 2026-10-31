@@ -89,6 +89,28 @@ test('3 – simulação 6000 / 12 / 600 → 0,38 "Risco moderado", CR e CP princ
   expect(await (await page.request.get('/api/v1/budget/summary')).json()).toEqual(before);
 });
 
+test('D-12 – registrar a simulação como dívida → orçamento ganha a dívida e o painel mostra 0,38', async ({
+  page,
+}) => {
+  await readyUser(page, 'registra', { seed: true });
+  await page.goto('/simular');
+  await typeMoney(page, 'Valor da compra à vista', '6000,00');
+  await page.getByLabel('Número de parcelas').fill('12');
+  await typeMoney(page, /Valor de cada/, '600,00');
+  await page.getByRole('button', { name: 'Simular compra' }).click();
+  await page.getByRole('button', { name: 'Registrar como dívida' }).click();
+  const dialog = page.getByRole('alertdialog');
+  await expect(dialog).toContainText('R$ 600,00 por mês, em 12 parcelas');
+  await dialog.getByRole('button', { name: 'Registrar dívida' }).click();
+  await expect(
+    page.getByRole('status').filter({ hasText: 'entrou no seu orçamento' }),
+  ).toBeVisible();
+  await page.getByRole('link', { name: 'Ver ou editar em Dívidas' }).click();
+  await expect(page.getByText(/faltam 12 parcela/)).toBeVisible();
+  await page.getByRole('link', { name: 'Início' }).click();
+  await expect(page.locator('.big').first()).toHaveText('0,38');
+});
+
 test('4 – simulação que zera a folga → banner crítico', async ({ page }) => {
   await readyUser(page, 'critico', { seed: true });
   await page.goto('/simular');

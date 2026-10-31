@@ -97,6 +97,15 @@ export function useSimulate() {
   });
 }
 
+/** D-12: a simulação vira uma dívida real; o orçamento e tudo que deriva dele é recarregado. */
+export function useRegisterSimulation() {
+  const invalidate = useInvalidateBudget();
+  return useMutation({
+    mutationFn: (id: number) => api(`/simulations/${id}/register`, { method: 'POST' }),
+    onSuccess: () => invalidate('debts'),
+  });
+}
+
 export function useMarkAlertRead() {
   const qc = useQueryClient();
   return useMutation({

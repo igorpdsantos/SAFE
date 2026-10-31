@@ -45,7 +45,7 @@
 - [x] **T-00.2** `B` Criar projeto no Google Cloud com tela de consentimento OAuth, escopo `openid email` e redirect URIs de dev e produção (SPEC-02 §2) → pronto quando: `GOOGLE_CLIENT_ID`/`SECRET` no `.env` local de quem vai codar · credenciais no `.env` (2026-10-30, Igor); o Google responde `redirect_uri_mismatch`: falta cadastrar `http://localhost:5173/api/v1/auth/google/callback` nas URIs de redirecionamento do cliente OAuth · login real testado: usuário criado, termos aceitos e nenhum token do Google no banco ou no Redis · feito 2026-10-30 22:25
 - [x] **T-00.3** `A+B` Criar o e-mail de contato de privacidade do projeto e definir o responsável (SEGURANCA_LGPD §2.2) · e-mail criado: `safe.tcc.usjt@gmail.com`, já nos Termos e na Política (2026-10-30, Igor + IA); responde qualquer integrante do grupo · feito 2026-10-30 22:25
 - [ ] **T-00.4** `A` Criar o repositório no GitHub, convidar a equipe e proteger a branch `main` (PR + CI verde) · repositório criado; proteção da `main` indisponível no plano grátis (CONTRIBUTING §9)
-- [~] **T-00.5** `B` Converter o dashboard do colega (Peic/BCB) para CSV com fonte e data de extração (insumo da SPEC-14; só se a SPEC-14 for entrar) · início 2026-10-31 00:51 · Igor + IA
+- [x] **T-00.5** `B` Converter o dashboard do colega (Peic/BCB) para CSV com fonte e data de extração (insumo da SPEC-14; só se a SPEC-14 for entrar) · início 2026-10-31 00:51 · Igor + IA · `backend/data/context/peic.csv` (13 meses, jul/2025–jul/2026); script do colega em `docs/referencias/dashboard-peic-bcb.py` · feito 2026-10-31 00:52
 
 ## Fase 1 · Fundação — [SPEC-01](specs/SPEC-01-fundacao.md)
 - [x] **T-01.1** `A` Monorepo com workspaces `backend`/`frontend`, TypeScript strict, ESLint + Prettier, Vitest (§3) · início 2026-10-29 17:53 · Igor + IA · feito 2026-10-29 17:57
@@ -167,7 +167,7 @@
 
 ## Fase 10 · Opcional (só com tudo acima pronto)
 - [x] **T-08.9** `A` (D-12) `POST /simulations/:id/register` + botão "Registrar como dívida" (SPEC-08 §3) · início 2026-10-30 22:00 · Igor + IA · feito 2026-10-30 22:03
-- [ ] **T-14.1** `B` CSVs de contexto em `backend/data/context/` + `npm run context:update` (SPEC-14 §2)
+- [~] **T-14.1** `B` CSVs de contexto em `backend/data/context/` + `npm run context:update` (SPEC-14 §2) · início 2026-10-31 00:52 · Igor + IA
 - [ ] **T-14.2** `B` `GET /context/series` (§3)
 - [ ] **T-14.3** `B` Tela `/entenda` com filtro, glossário e "como o SAFE calcula" (§4)
 - [ ] **T-14.4** `B` Acrescentar RF25/UC11/HU24 ao PRD e uma frase no artigo (§5)

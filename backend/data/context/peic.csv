@@ -1,0 +1,18 @@
+# fonte: CNC – Pesquisa de Endividamento e Inadimplência do Consumidor (PEIC)
+# url: https://www.portaldocomercio.org.br
+# extraido_em: 2026-10-31 (valores digitados pela equipe das publicações mensais da CNC; convertidos do dashboard da equipe, docs/referencias/dashboard-peic-bcb.py)
+# unidade: % do total de famílias; renda_comprometida em % da renda
+data,endividadas,em_atraso,sem_condicao_de_pagar,renda_comprometida
+2025-07,78.5,30.0,12.7,29.4
+2025-08,78.8,30.4,12.8,29.3
+2025-09,79.2,30.5,13.0,29.3
+2025-10,79.5,30.5,13.2,29.6
+2025-11,79.2,30.0,12.9,29.5
+2025-12,78.9,29.4,12.6,29.5
+2026-01,79.5,29.3,12.7,29.7
+2026-02,80.2,29.6,12.6,29.7
+2026-03,80.4,29.6,12.3,29.6
+2026-04,80.9,29.7,12.3,29.4
+2026-05,81.6,29.9,12.3,29.3
+2026-06,81.6,29.9,12.2,29.3
+2026-07,82.0,29.8,12.3,29.5

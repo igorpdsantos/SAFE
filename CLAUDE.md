@@ -57,7 +57,7 @@ SAFE/
 ├── docker-compose.yml  .env.example  package.json (workspaces)
 ├── backend/
 │   ├── prisma/                    schema.prisma + migrations
-│   ├── data/context/              (opcional, SPEC-14) séries Peic/BCB
+│   ├── data/context/              (SPEC-14) séries PEIC/BCB em CSV; npm run context:update
 │   ├── test/                      api/, security/
 │   └── src/
 │       ├── config/env.ts          variáveis validadas com zod
@@ -74,9 +74,10 @@ SAFE/
 │   └── src/
 │       ├── api/                   cliente HTTP (CSRF, erros)
 │       ├── content/glossary.ts    glossário central (SPEC-15)
-│       ├── components/            RiskBadge, IreGauge, IndicatorCard, FactorList, MoneyInput, Term, FieldHelp, HelpPanel, …
+│       ├── components/            RiskBadge, IreGauge, IndicatorCard, FactorList, MoneyInput, Term, FieldHelp, HelpPanel, Art, PageHeader, …
+│       │   └── charts/            StatTile, LineChartCard, ColumnChartCard, RankBarCard, PerHundred, ChartFrame (padrão de todos os gráficos)
 │       ├── lib/                   storage.ts (lista fechada), format.ts, session.ts
-│       └── pages/                 Login, Termos, Dashboard, Orcamento, Simular, Projecao, Evolucao, Conta, Glossario
+│       └── pages/                 Login, Termos, Dashboard, Orcamento, Simular, Projecao, Evolucao, Conta, Glossario, Entenda (Understand)
 └── evaluation/                    personas.csv, scripts, stats.ts, results/
 ```
 

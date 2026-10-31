@@ -6,7 +6,7 @@ O usuário cadastra renda, despesas, dívidas e reserva. O SAFE calcula o **índ
 
 Projeto de TCC do curso de Engenharia de Software da Universidade São Judas Tadeu (2026), orientado pelo Prof. Nelson Aguiar. O artigo correspondente é *"Prevenção do superendividamento por meio da tecnologia: a abordagem de simulação financeira do SAFE"*.
 
-> **Status (30/10/2026):** backend, frontend, avaliação e testes (unidade, integração, segurança e E2E) implementados e na `main`. Faltam itens que dependem da equipe: revisão dos textos legais (T-03.5), revisão de linguagem (T-15.6), verificação manual nos navegadores (T-11.7), respostas dos especialistas (T-12.4) e homologação (T-13.5). Veja o `TASKS.md`. Entrega do software: **02/11/2026**. O progresso fica no [`TASKS.md`](TASKS.md); rode `node scripts/tasks-status.mjs` para ver o painel.
+> **Status (31/10/2026):** backend, frontend (com a aba opcional "Entenda os dados"), avaliação e testes (unidade, integração, segurança e E2E) implementados, na `main` e no ar em **https://safe-tcc.vercel.app** (deploy automático a cada merge). Faltam itens que dependem da equipe: revisão dos textos legais (T-03.5), revisão de linguagem (T-15.6), verificação manual nos navegadores (T-11.7), respostas dos especialistas (T-12.4) e homologação (T-13.5). Veja o `TASKS.md`. Entrega do software: **02/11/2026**. O progresso fica no [`TASKS.md`](TASKS.md); rode `node scripts/tasks-status.mjs` para ver o painel.
 
 ---
 
@@ -83,6 +83,7 @@ Entrar com Google → aceitar termos (18+) → cadastrar renda, despesas, dívid
       → ver o painel (índice de risco + o que mais pesa)
       → simular uma compra parcelada antes de contratar (nada é salvo no orçamento)
       → acompanhar a projeção dos próximos meses e a evolução do risco
+      → (opcional) ver dados públicos sobre dívidas das famílias em "Entenda os dados"
       → exportar ou excluir seus dados quando quiser
 ```
 
@@ -123,7 +124,17 @@ Exemplo do artigo:
 
 Detalhes completos: [`PRD.md`](PRD.md) §5–§7, [`SPEC-05`](specs/SPEC-05-motor-ire.md), [`SPEC-06`](specs/SPEC-06-projecao.md) e [`SPEC-08`](specs/SPEC-08-simulacao.md).
 
-### 3.4 O que o SAFE não faz
+### 3.4 Entenda os dados (opcional, SPEC-14)
+Aba `/entenda` com séries públicas agregadas, só para contexto (não entram no cálculo do IRE): Pesquisa de Endividamento e Inadimplência do Consumidor (PEIC/CNC: famílias com dívidas, em atraso, sem condição de pagar, renda comprometida e tipos de dívida) e Banco Central/SGS (29037 endividamento, **29034** comprometimento da renda com ajuste sazonal — a 29265 sem ajuste fica na tabela — e 4189 Selic). Os dados ficam em CSVs versionados em `backend/data/context/`, cada um com fonte, URL, data de extração e unidade; o navegador nunca acessa sites de terceiros.
+
+- **Atualizar o Banco Central:** `npm run context:update` (baixa os últimos 5 anos e regenera `backend/src/modules/context/series.generated.ts`).
+- **Novo mês da PEIC:** acrescente uma linha em `backend/data/context/peic.csv` com os números da publicação da CNC e rode `npm run context:update -- --offline`.
+- O script de onde vieram os dados da PEIC (dashboard da equipe) está em `docs/referencias/dashboard-peic-bcb.py`.
+
+### 3.5 Como os gráficos são feitos
+Todos os gráficos usam os componentes de `frontend/src/components/charts/` (`StatTile`, `LineChartCard`, `ColumnChartCard`, `RankBarCard`, `PerHundred`, `ChartFrame`): uma escala por gráfico, valor no fim da linha, frase do que observar, fonte e tabela ("Ver tabela"), aviso quando o eixo não começa em zero. As cores das séries (`--series-1..3` em `styles.css`) foram validadas para daltonismo nos temas claro e escuro; as cores de status ficam só para as faixas de risco. A apresentação pode traduzir unidades ("R$ 29 de cada R$ 100"), mas nunca altera o dado da fonte.
+
+### 3.6 O que o SAFE não faz
 Não recomenda produtos nem investimentos, não compara bancos, não bloqueia decisões, não prevê probabilidade de calote, não calcula juros nem CET e não se conecta a bancos. O índice **não foi calibrado** com dados reais de inadimplência: ele é um apoio para entender a situação, não um diagnóstico.
 
 ---
@@ -240,6 +251,7 @@ Para aplicar as migrations no banco de testes: `DATABASE_URL=$TEST_DATABASE_URL 
 | `npm run db:migrate` | `prisma migrate dev` (cria e aplica migrations) |
 | `npm run build` | Compila a API (`backend/dist`) e o site (`frontend/dist`) |
 | `npm run build:vercel` | Monta o deploy da Vercel em `.vercel/output` (site + API como função) |
+| `npm run context:update` | Atualiza as séries do Banco Central da aba "Entenda os dados" (`-- --offline` só regenera a partir dos CSVs) |
 | `npm run eval:<script>` | Avaliação do modelo: `personas`, `agreement`, `sensitivity`, `baseline`, `simulation-check`, `latency` (SPEC-12) |
 | `npm run privacy:reapply-deletions` | Depois de restaurar um backup, reaplica as exclusões de conta (SPEC-10 §4) |
 | `npm run test:e2e` | Os 10 fluxos E2E com Playwright |

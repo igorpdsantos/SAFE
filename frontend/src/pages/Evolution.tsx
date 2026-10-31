@@ -80,15 +80,18 @@ export function Evolution() {
       {q.data && q.data.points.length > 0 && (
         <>
           <section className="card stack">
-            <p style={{ margin: 0, fontSize: '1.15rem' }}>
-              {q.data.trend === 'INSUFICIENTE'
-                ? 'Ainda não há dados suficientes para mostrar uma tendência.'
-                : `Seu risco está ${TREND[q.data.trend]} nos últimos ${months} meses.`}
-            </p>
-            <p className="small muted" style={{ margin: 0 }}>
-              A linha mostra seu índice em cada dia em que algo mudou. As faixas coloridas do fundo
-              são as <Term id="faixa-risco">faixas de risco</Term>, com o nome escrito à esquerda.
-            </p>
+            <div className="stack-xs">
+              <p className="lede">
+                {q.data.trend === 'INSUFICIENTE'
+                  ? 'Ainda não há dados suficientes para mostrar uma tendência.'
+                  : `Seu risco está ${TREND[q.data.trend]} nos últimos ${months} meses.`}
+              </p>
+              <p className="small muted">
+                A linha mostra seu índice em cada dia em que algo mudou. As faixas coloridas do
+                fundo são as <Term id="faixa-risco">faixas de risco</Term>, com o nome escrito à
+                esquerda.
+              </p>
+            </div>
             <div style={{ width: '100%', height: 300 }} aria-hidden="true">
               <ResponsiveContainer>
                 <LineChart

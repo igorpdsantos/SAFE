@@ -5,7 +5,7 @@ import { EmptyArt } from './Art';
 
 export function Loading({ label = 'Carregando…' }: { label?: string }) {
   return (
-    <p className="muted" role="status" style={{ padding: '2rem 0' }}>
+    <p className="muted loading" role="status">
       {label}
     </p>
   );
@@ -20,7 +20,7 @@ export function LoadError({ error }: { error: unknown }) {
           <EmptyArt kind="incomes" />
         </div>
         <div className="stack">
-          <h2 style={{ margin: 0 }}>Falta a sua renda</h2>
+          <h2>Falta a sua renda</h2>
           <p>
             Para calcular, precisamos saber quanto você recebe por mês. Leva menos de um minuto.
           </p>
@@ -36,7 +36,7 @@ export function LoadError({ error }: { error: unknown }) {
   return (
     <div className="alert risk-4" role="alert">
       <CircleAlert size={22} aria-hidden="true" />
-      <p style={{ margin: 0, color: 'var(--text)' }}>{userMessage(error)}</p>
+      <p style={{ color: 'var(--text)' }}>{userMessage(error)}</p>
     </div>
   );
 }

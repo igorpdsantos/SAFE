@@ -54,18 +54,18 @@ function EmptyChecklist() {
   const next = steps.find((s) => !s.done);
   return (
     <section className="card stack" aria-labelledby="start-title">
-      <div className="row spread">
-        <h2 id="start-title" style={{ margin: 0 }}>
-          Vamos começar
-        </h2>
-        <span className="small muted">
-          {doneCount} de {steps.length} feitos
-        </span>
+      <div className="stack-sm">
+        <div className="row spread">
+          <h2 id="start-title">Vamos começar</h2>
+          <span className="small muted">
+            {doneCount} de {steps.length} feitos
+          </span>
+        </div>
+        <div className="progress" aria-hidden="true">
+          <span style={{ width: `${(doneCount / steps.length) * 100}%` }} />
+        </div>
       </div>
-      <div className="progress" aria-hidden="true">
-        <span style={{ width: `${(doneCount / steps.length) * 100}%` }} />
-      </div>
-      <p style={{ margin: 0 }}>
+      <p>
         Para calcular seu <Term id="ire">índice de risco</Term> (IRE), precisamos conhecer seu
         orçamento. Leva poucos minutos.
       </p>
@@ -110,12 +110,7 @@ export function Dashboard() {
 
   const header = (
     <PageHeader eyebrow="Painel" title="Seu orçamento hoje">
-      <button
-        type="button"
-        className="btn btn-link"
-        style={{ paddingLeft: 0, marginTop: '0.35rem' }}
-        onClick={() => setOnboarding(true)}
-      >
+      <button type="button" className="btn btn-link flush" onClick={() => setOnboarding(true)}>
         Como funciona
       </button>
     </PageHeader>
@@ -159,11 +154,13 @@ export function Dashboard() {
             <span className="of">de 1</span>
           </div>
         </div>
-        <div>
-          <h2 id="ire-title" className="eyebrow" style={{ color: 'var(--mint)' }}>
-            Seu <Term id="ire">índice de risco</Term> (IRE)
-          </h2>
-          <RiskBadge band={a.ire.band} label={a.ire.label} />
+        <div className="stack">
+          <div className="stack-sm">
+            <h2 id="ire-title" className="eyebrow" style={{ color: 'var(--mint)' }}>
+              Seu <Term id="ire">índice de risco</Term> (IRE)
+            </h2>
+            <RiskBadge band={a.ire.band} label={a.ire.label} />
+          </div>
           <p className="verdict">{a.ire.recommendation}</p>
           <div className="row">
             <Link className="btn btn-light btn-lg" to="/simular">
@@ -193,27 +190,25 @@ export function Dashboard() {
 
       <div className="grid-2">
         <section className="card stack" aria-labelledby="why-title">
-          <h2 id="why-title" style={{ margin: 0 }}>
-            Por que meu risco é este?
-          </h2>
-          {a.factors ? (
-            <>
-              <p className="small muted" style={{ margin: 0 }}>
+          <div className="stack-xs">
+            <h2 id="why-title">Por que meu risco é este?</h2>
+            {a.factors && (
+              <p className="small muted">
                 Quanto cada sinal pesa no seu índice. Os principais explicam pelo menos 75% do
                 resultado.
               </p>
-              <FactorList factors={a.factors} />
-            </>
+            )}
+          </div>
+          {a.factors ? (
+            <FactorList factors={a.factors} />
           ) : (
-            <p style={{ margin: 0 }}>Não há fatores de risco no momento.</p>
+            <p>Não há fatores de risco no momento.</p>
           )}
         </section>
 
         <section className="card stack" aria-labelledby="totals-title">
           <div className="row spread">
-            <h2 id="totals-title" style={{ margin: 0 }}>
-              Seus números
-            </h2>
+            <h2 id="totals-title">Seus números</h2>
             <Link className="btn btn-link" to="/orcamento">
               <Wallet size={16} aria-hidden="true" /> Editar orçamento
             </Link>

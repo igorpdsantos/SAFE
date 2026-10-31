@@ -7,8 +7,8 @@ export function FactorList({ factors }: { factors: Factor[] }) {
   return (
     <ul className="list">
       {factors.map((f) => (
-        <li key={f.key} style={{ display: 'block' }}>
-          <div className="row" style={{ justifyContent: 'space-between' }}>
+        <li key={f.key} className="factor">
+          <div className="row spread row-tight">
             <span style={{ fontWeight: f.isMain ? 700 : 400 }}>
               {f.name}{' '}
               {f.isMain && (
@@ -19,7 +19,7 @@ export function FactorList({ factors }: { factors: Factor[] }) {
             </span>
             <span>{formatPercent(f.share)} do risco</span>
           </div>
-          <div className="bar" aria-hidden="true" style={{ marginTop: 6 }}>
+          <div className="bar" aria-hidden="true">
             <span style={{ width: `${Number(f.share) * 100}%` }} />
           </div>
         </li>

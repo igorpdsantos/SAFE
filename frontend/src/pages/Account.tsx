@@ -83,19 +83,25 @@ export function Account() {
         <h2 id="dados" className="card-title">
           <UserRound size={22} aria-hidden="true" /> Meus dados
         </h2>
-        <p style={{ margin: 0 }}>
-          <strong>E-mail:</strong> {me.email}
-        </p>
-        <p style={{ margin: 0 }}>
-          <strong>Conta criada em:</strong> {formatDate(me.createdAt)}
-        </p>
-        <p style={{ margin: 0 }}>
-          <strong>Termos aceitos:</strong>{' '}
-          {me.termsAcceptedAt
-            ? `versão ${me.termsVersion} dos Termos e ${me.privacyVersion} da Política, em ${formatDate(me.termsAcceptedAt)}`
-            : 'ainda não'}
-        </p>
-        <p className="small muted" style={{ margin: 0 }}>
+        <dl className="numbers facts">
+          <div>
+            <dt className="small muted">E-mail</dt>
+            <dd>{me.email}</dd>
+          </div>
+          <div>
+            <dt className="small muted">Conta criada em</dt>
+            <dd>{formatDate(me.createdAt)}</dd>
+          </div>
+          <div>
+            <dt className="small muted">Termos aceitos</dt>
+            <dd>
+              {me.termsAcceptedAt
+                ? `versão ${me.termsVersion} dos Termos e ${me.privacyVersion} da Política, em ${formatDate(me.termsAcceptedAt)}`
+                : 'ainda não'}
+            </dd>
+          </div>
+        </dl>
+        <p className="small muted">
           Guardamos:{' '}
           {Object.entries(me.counts)
             .map(([k, n]) => `${n} ${COUNT_LABELS[k] ?? k}`)
@@ -105,13 +111,16 @@ export function Account() {
       </section>
 
       <section className="card stack" aria-labelledby="pesquisa">
-        <h2 id="pesquisa" className="card-title">
-          <FlaskConical size={22} aria-hidden="true" /> Pesquisa do trabalho de conclusão de curso
-        </h2>
-        <p style={{ margin: 0 }}>
-          Se você quiser, seus <Term id="anonimizado">dados anonimizados</Term> ajudam no estudo do
-          SAFE. É opcional e você pode mudar quando quiser. Isso não muda nada no uso do sistema.
-        </p>
+        <div className="stack-sm">
+          <h2 id="pesquisa" className="card-title">
+            <FlaskConical size={22} aria-hidden="true" /> Pesquisa do trabalho de conclusão de curso
+          </h2>
+          <p className="muted">
+            Se você quiser, seus <Term id="anonimizado">dados anonimizados</Term> ajudam no estudo
+            do SAFE. É opcional e você pode mudar quando quiser. Isso não muda nada no uso do
+            sistema.
+          </p>
+        </div>
         <label className="check">
           <input
             type="checkbox"
@@ -124,29 +133,33 @@ export function Account() {
 
       <div className="grid-2">
         <section className="card stack" aria-labelledby="exportar">
-          <h2 id="exportar" className="card-title">
-            <Download size={22} aria-hidden="true" /> Baixar meus dados
-          </h2>
-          <p style={{ margin: 0 }}>
-            Um arquivo com tudo o que o SAFE guarda sobre você. Ele é gerado na hora e não fica
-            salvo no servidor.
-          </p>
+          <div className="stack-sm">
+            <h2 id="exportar" className="card-title">
+              <Download size={22} aria-hidden="true" /> Baixar meus dados
+            </h2>
+            <p className="muted">
+              Um arquivo com tudo o que o SAFE guarda sobre você. Ele é gerado na hora e não fica
+              salvo no servidor.
+            </p>
+          </div>
           <div>
-            <a className="btn" href="/api/v1/me/export" download>
+            <a className="btn btn-block-mobile" href="/api/v1/me/export" download>
               <Download size={18} aria-hidden="true" /> Baixar meus dados (arquivo JSON)
             </a>
           </div>
         </section>
 
         <section className="card stack" aria-labelledby="sair">
-          <h2 id="sair" className="card-title">
-            <ShieldCheck size={22} aria-hidden="true" /> Sair de todos os dispositivos
-          </h2>
-          <p style={{ margin: 0 }}>
-            Encerra o acesso em todos os navegadores em que você entrou, inclusive este.
-          </p>
+          <div className="stack-sm">
+            <h2 id="sair" className="card-title">
+              <ShieldCheck size={22} aria-hidden="true" /> Sair de todos os dispositivos
+            </h2>
+            <p className="muted">
+              Encerra o acesso em todos os navegadores em que você entrou, inclusive este.
+            </p>
+          </div>
           <div>
-            <button type="button" className="btn" onClick={logoutAll}>
+            <button type="button" className="btn btn-block-mobile" onClick={logoutAll}>
               <LogOut size={18} aria-hidden="true" /> Sair de todos os dispositivos
             </button>
           </div>
@@ -154,31 +167,33 @@ export function Account() {
       </div>
 
       <section className="card stack danger-zone" aria-labelledby="excluir">
-        <h2 id="excluir" className="card-title">
-          <Trash2 size={22} aria-hidden="true" style={{ color: 'var(--danger)' }} /> Excluir minha
-          conta
-        </h2>
-        {!deleting && (
-          <p style={{ margin: 0 }} className="muted">
-            Apaga para sempre sua conta e todos os seus dados.
-          </p>
-        )}
+        <div className="stack-sm">
+          <h2 id="excluir" className="card-title">
+            <Trash2 size={22} aria-hidden="true" style={{ color: 'var(--danger)' }} /> Excluir minha
+            conta
+          </h2>
+          {!deleting && <p className="muted">Apaga para sempre sua conta e todos os seus dados.</p>}
+        </div>
         {!deleting ? (
           <div>
-            <button type="button" className="btn" onClick={() => setDeleting(true)}>
+            <button
+              type="button"
+              className="btn btn-block-mobile"
+              onClick={() => setDeleting(true)}
+            >
               <Trash2 size={18} aria-hidden="true" /> Quero excluir minha conta
             </button>
           </div>
         ) : (
           <>
-            <p style={{ margin: 0 }}>Vamos apagar para sempre:</p>
-            <ul style={{ margin: 0 }}>
+            <p>Vamos apagar para sempre:</p>
+            <ul className="bullets">
               <li>sua conta e seu e-mail;</li>
               <li>sua renda, despesas, dívidas e reserva;</li>
               <li>seu índice, seu histórico, suas simulações e seus alertas;</li>
               <li>sua participação na pesquisa.</li>
             </ul>
-            <p style={{ margin: 0 }}>
+            <p>
               <strong>Esta ação não pode ser desfeita.</strong> Se quiser guardar uma cópia, baixe
               seus dados antes.
             </p>

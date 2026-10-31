@@ -38,7 +38,7 @@ function OutcomeBanner({ sim }: { sim: Simulation }) {
     return (
       <div className="alert risk-5" role="alert">
         <Siren size={22} aria-hidden="true" />
-        <p style={{ margin: 0, color: 'var(--text)' }}>
+        <p style={{ color: 'var(--text)' }}>
           <strong>Atenção:</strong>{' '}
           {belowMinimum ? (
             <>
@@ -92,18 +92,16 @@ function Result({ sim }: { sim: Simulation }) {
             <RiskBadge band={sim.projected.ire.band} label={sim.projected.ire.label} />
           </div>
         </div>
-        <p className="small" style={{ margin: 0 }}>
+        <p className="small">
           Variação do <Term id="ire">índice de risco</Term> (IRE):{' '}
           <span className="delta">+{formatDecimal(sim.deltaIre, 2)}</span> numa escala de 0 a 1.
         </p>
       </section>
 
       <section className="card stack" aria-labelledby="b3">
-        <h2 id="b3" style={{ margin: 0 }}>
-          O que muda, em palavras
-        </h2>
-        <p style={{ fontSize: '1.12rem', margin: 0 }}>{sim.explanation}</p>
-        <div className="grid-2" style={{ gap: '0.75rem' }}>
+        <h2 id="b3">O que muda, em palavras</h2>
+        <p className="lede">{sim.explanation}</p>
+        <div className="grid-2 grid-tight">
           <div className="notice">
             {Number(sim.financialCost) > 0 ? (
               <>
@@ -119,16 +117,16 @@ function Result({ sim }: { sim: Simulation }) {
             sua renda por mês.
           </div>
         </div>
-        {delta === 0 && <p style={{ margin: 0 }}>Esta decisão não altera o índice.</p>}
+        {delta === 0 && <p>Esta decisão não altera o índice.</p>}
         {sim.factors.some((f) => f.isMain) && (
-          <div className="stack" style={{ gap: 0 }}>
-            <h3 style={{ margin: '0 0 0.6rem' }}>O que mais pesou</h3>
+          <div className="stack-sm">
+            <h3>O que mais pesou</h3>
             <ul className="factor-bars">
               {sim.factors
                 .filter((f) => f.isMain)
                 .map((f) => (
-                  <li key={f.key}>
-                    <div className="row">
+                  <li key={f.key} className="factor">
+                    <div className="row spread row-tight">
                       <span style={{ fontWeight: 650 }}>
                         <Term id={FACTOR_TERM[f.key]}>{f.name}</Term>
                       </span>
@@ -139,7 +137,7 @@ function Result({ sim }: { sim: Simulation }) {
                         )}
                       </span>
                     </div>
-                    <div className="bar" aria-hidden="true" style={{ marginTop: 6 }}>
+                    <div className="bar" aria-hidden="true">
                       <span style={{ width: `${Number(f.share ?? 0) * 100}%` }} />
                     </div>
                   </li>
@@ -256,14 +254,16 @@ function RegisterDebt({ sim, input }: { sim: Simulation; input: SimulationInput 
 
   return (
     <section className="card stack" aria-labelledby="register-title">
-      <h2 id="register-title">Já fez esta compra?</h2>
-      <p className="small" style={{ margin: 0 }}>
-        Se você fechou a compra, pode registrá-la como dívida no seu orçamento. Assim o seu índice
-        de risco passa a contar com ela.
-      </p>
+      <div className="stack-xs">
+        <h2 id="register-title">Já fez esta compra?</h2>
+        <p className="small muted">
+          Se você fechou a compra, pode registrá-la como dívida no seu orçamento. Assim o seu índice
+          de risco passa a contar com ela.
+        </p>
+      </div>
       {register.isError && <LoadError error={register.error} />}
       <div>
-        <button type="button" className="btn" onClick={() => setAsking(true)}>
+        <button type="button" className="btn btn-block-mobile" onClick={() => setAsking(true)}>
           Registrar como dívida
         </button>
       </div>
@@ -275,7 +275,7 @@ function RegisterDebt({ sim, input }: { sim: Simulation; input: SimulationInput 
           onCancel={() => setAsking(false)}
           onConfirm={() => register.mutate(sim.id, { onSettled: () => setAsking(false) })}
         >
-          <p style={{ margin: 0 }}>
+          <p>
             Vamos adicionar ao seu orçamento uma dívida de {formatMoney(input.installmentValue)} por
             mês, em {input.installments} parcelas, na categoria crediário. Você pode editar ou
             excluir depois em Orçamento, na aba Dívidas.
@@ -394,7 +394,7 @@ export function Simulate() {
             <div>
               <button
                 type="button"
-                className="btn btn-link"
+                className="btn btn-link flush"
                 onClick={() => setInstallmentValue(noInterestInstallment(value, installments))}
                 disabled={!value || !installments}
               >
@@ -402,7 +402,7 @@ export function Simulate() {
               </button>
             </div>
           </div>
-          <p className="small muted" style={{ margin: 0 }}>
+          <p className="small muted">
             A simulação considera que a compra não usa sua reserva e não muda suas despesas. O risco
             com a compra considera o mês em que todas as parcelas estão ativas ao mesmo tempo.
           </p>
@@ -432,9 +432,9 @@ export function Simulate() {
                 <div className="art">
                   <ScaleArt />
                 </div>
-                <div>
-                  <h2 style={{ marginBottom: '0.35rem' }}>O resultado aparece aqui</h2>
-                  <p className="muted" style={{ margin: 0, maxWidth: '38ch' }}>
+                <div className="stack-sm">
+                  <h2>O resultado aparece aqui</h2>
+                  <p className="muted" style={{ maxWidth: '38ch' }}>
                     Preencha os três campos e toque em "Simular compra". Você vê seu risco hoje e
                     com a compra, lado a lado.
                   </p>

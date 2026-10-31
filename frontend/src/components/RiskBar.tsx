@@ -4,13 +4,11 @@ import { formatDecimal } from '../lib/format';
 export function RiskBar({ risk }: { risk: string }) {
   const pct = Math.min(Number(risk), 1) * 100;
   return (
-    <div>
+    <div className="stack-sm">
       <div className="bar" aria-hidden="true">
         <span style={{ width: `${pct}%` }} />
       </div>
-      <p className="small muted" style={{ margin: '0.35rem 0 0' }}>
-        Risco {formatDecimal(risk)} de 1
-      </p>
+      <p className="small muted">Risco {formatDecimal(risk)} de 1</p>
     </div>
   );
 }

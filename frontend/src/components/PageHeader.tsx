@@ -20,7 +20,7 @@ export function PageHeader({
         {eyebrow && <p className="eyebrow">{eyebrow}</p>}
         <h1>{title}</h1>
         {lead && <p className="lead">{lead}</p>}
-        {children}
+        {children && <div className="page-head-extra">{children}</div>}
       </div>
       {art && <div className="art">{art}</div>}
     </header>

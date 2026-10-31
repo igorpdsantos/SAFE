@@ -97,9 +97,9 @@ export function Login() {
 
       <main className="auth-panel">
         <div className="auth-card stack">
-          <div>
+          <div className="stack-xs">
             <p className="eyebrow">Olá</p>
-            <h2 style={{ margin: 0 }}>Entrar no SAFE</h2>
+            <h2>Entrar no SAFE</h2>
           </div>
           {error && (
             <p className="notice" role="alert">

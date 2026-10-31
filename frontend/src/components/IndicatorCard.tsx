@@ -115,7 +115,7 @@ export function IndicatorCard({
         interpretation={interpretation}
       />
       {(pill || view.saturated) && (
-        <div className="row" style={{ gap: '0.4rem' }}>
+        <div className="row row-tight">
           {pill && (
             <span className={`risk ${pill.cls}`}>
               <pill.Icon size={18} aria-hidden="true" />

@@ -381,7 +381,7 @@ function ItemForm({
         open={hasOptional(kind, initial) || !!errors.description || !!errors.totalInstallments}
       >
         <summary>Mais detalhes (opcional)</summary>
-        <div className="stack" style={{ marginTop: '0.75rem' }}>
+        <div className="stack more-body">
           {kind === 'debts' && (
             <>
               {number(
@@ -405,7 +405,7 @@ function ItemForm({
           >
             {({ id, describedBy }) => (
               <>
-                <p className="notice small" style={{ margin: 0 }}>
+                <p className="notice small">
                   Não escreva nomes de pessoas, dados de saúde, número de conta ou de cartão.
                 </p>
                 <input
@@ -566,7 +566,7 @@ function KindPanel({ kind }: { kind: BudgetKind }) {
       <div className="row spread">
         {/* Com um item só, o total repetiria o valor do próprio item. */}
         {items.length > 1 ? (
-          <p style={{ margin: 0 }}>
+          <p>
             <span className="muted">Total: </span>
             <span className="tile-value" style={{ fontSize: '1.5rem' }}>
               {formatMoney(String(kindTotal(kind, items)))}
@@ -586,7 +586,7 @@ function KindPanel({ kind }: { kind: BudgetKind }) {
               <span className="item-icon" aria-hidden="true">
                 <Icon size={22} />
               </span>
-              <div className="item-body">
+              <div className="item-body stack-xs">
                 <strong>{info.title}</strong>
                 <p className="small muted">{info.detail}</p>
               </div>

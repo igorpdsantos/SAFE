@@ -50,14 +50,14 @@ export function Glossary() {
       </p>
       <dl className="glossary-list">
         {items.map((e) => (
-          <div key={e.id} id={e.id} className="card">
+          <div key={e.id} id={e.id} className="card stack-sm">
             <dt>
-              <h2 style={{ margin: 0 }}>
+              <h2>
                 {e.term}
                 {e.acronym && e.acronym !== e.term ? ` (${e.acronym})` : ''}
               </h2>
             </dt>
-            <dd style={{ margin: '0.5rem 0 0' }}>
+            <dd className="prose">
               <p>{e.long || e.short}</p>
               {e.example && (
                 <p className="small">
@@ -65,7 +65,7 @@ export function Glossary() {
                 </p>
               )}
               {e.whyItMatters && (
-                <p className="small muted" style={{ margin: 0 }}>
+                <p className="small muted">
                   <strong>Por que importa:</strong> {e.whyItMatters}
                 </p>
               )}

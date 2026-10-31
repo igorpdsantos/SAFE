@@ -4,11 +4,11 @@ import { LogoMark } from '../components/Art';
 export function AccountDeleted() {
   return (
     <div className="center-page">
-      <div className="card stack" style={{ padding: '2rem' }}>
+      <div className="card card-lg stack">
         <div style={{ color: 'var(--brand-strong)' }}>
           <LogoMark size={40} />
         </div>
-        <h1 style={{ margin: 0 }}>Conta excluída</h1>
+        <h1>Conta excluída</h1>
         <p>
           Sua conta e seus dados foram excluídos. Cópias de segurança são apagadas automaticamente
           em até 30 dias.

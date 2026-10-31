@@ -69,12 +69,12 @@ export function Terms() {
 
   return (
     <div className="center-page">
-      <div className="card stack reveal" style={{ width: 'min(640px, 100%)', padding: '2rem' }}>
-        <div className="row" style={{ color: 'var(--brand-strong)', gap: '0.6rem' }}>
+      <div className="card card-lg stack reveal" style={{ width: 'min(640px, 100%)' }}>
+        <div className="row row-tight" style={{ color: 'var(--brand-strong)' }}>
           <LogoMark size={36} />
           <span className="brand-name">SAFE</span>
         </div>
-        <h1 style={{ margin: 0 }}>Antes de começar</h1>
+        <h1>Antes de começar</h1>
         <p>
           Para usar o SAFE, você precisa aceitar os Termos de Uso, ler a Política de Privacidade e
           confirmar que tem 18 anos ou mais. Seus dados ficam protegidos pela{' '}
@@ -85,52 +85,54 @@ export function Terms() {
           parceladas. Ele não recomenda produtos nem decide por você. Usamos só o necessário e você
           pode exportar ou excluir seus dados quando quiser.
         </div>
-        {box(
-          'terms',
-          <>
-            Li e aceito os{' '}
-            <button
-              type="button"
-              className="btn-link btn"
-              onClick={() => setShow(show === 'termos' ? null : 'termos')}
-            >
-              Termos de Uso
-            </button>
-          </>,
-        )}
-        {show === 'termos' && (
-          <div className="card card-flat legal" style={{ maxHeight: 320, overflowY: 'auto' }}>
-            <LegalText url={terms.data.termsUrl} />
-          </div>
-        )}
-        {box(
-          'privacy',
-          <>
-            Li a{' '}
-            <button
-              type="button"
-              className="btn-link btn"
-              onClick={() => setShow(show === 'privacidade' ? null : 'privacidade')}
-            >
-              Política de Privacidade
-            </button>
-          </>,
-        )}
-        {show === 'privacidade' && (
-          <div className="card card-flat legal" style={{ maxHeight: 320, overflowY: 'auto' }}>
-            <LegalText url={terms.data.privacyUrl} />
-          </div>
-        )}
-        {box('age', 'Declaro ter 18 anos ou mais')}
-        {box(
-          'research',
-          <>
-            <strong>(opcional)</strong> Aceito participar da pesquisa do nosso trabalho de conclusão
-            de curso com meus <Term id="anonimizado">dados anonimizados</Term>. É o meu{' '}
-            <Term id="consentimento">consentimento</Term>, e posso retirar quando quiser em "Minha
-            conta". Não marcar não muda nada no uso do SAFE.
-          </>,
-        )}
+        <div className="stack-sm">
+          {box(
+            'terms',
+            <>
+              Li e aceito os{' '}
+              <button
+                type="button"
+                className="btn btn-link flush"
+                onClick={() => setShow(show === 'termos' ? null : 'termos')}
+              >
+                Termos de Uso
+              </button>
+            </>,
+          )}
+          {show === 'termos' && (
+            <div className="card card-flat legal" style={{ maxHeight: 320, overflowY: 'auto' }}>
+              <LegalText url={terms.data.termsUrl} />
+            </div>
+          )}
+          {box(
+            'privacy',
+            <>
+              Li a{' '}
+              <button
+                type="button"
+                className="btn btn-link flush"
+                onClick={() => setShow(show === 'privacidade' ? null : 'privacidade')}
+              >
+                Política de Privacidade
+              </button>
+            </>,
+          )}
+          {show === 'privacidade' && (
+            <div className="card card-flat legal" style={{ maxHeight: 320, overflowY: 'auto' }}>
+              <LegalText url={terms.data.privacyUrl} />
+            </div>
+          )}
+          {box('age', 'Declaro ter 18 anos ou mais')}
+          {box(
+            'research',
+            <>
+              <strong>(opcional)</strong> Aceito participar da pesquisa do nosso trabalho de
+              conclusão de curso com meus <Term id="anonimizado">dados anonimizados</Term>. É o meu{' '}
+              <Term id="consentimento">consentimento</Term>, e posso retirar quando quiser em "Minha
+              conta". Não marcar não muda nada no uso do SAFE.
+            </>,
+          )}
+        </div>
         {error && (
           <p className="field-error" role="alert">
             {error}
@@ -138,7 +140,7 @@ export function Terms() {
         )}
         {declined ? (
           <div className="notice stack">
-            <p style={{ margin: 0 }}>Sem aceitar os termos não é possível usar o SAFE.</p>
+            <p>Sem aceitar os termos não é possível usar o SAFE.</p>
             <div className="row">
               <button type="button" className="btn" onClick={() => setDeclined(false)}>
                 Voltar

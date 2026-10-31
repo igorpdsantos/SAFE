@@ -36,32 +36,37 @@ export function ProjectionPage() {
         art={<EmptyArt kind="chart" />}
       />
       <section className="card stack">
-        <p style={{ margin: 0, fontSize: '1.15rem' }}>
-          Nos próximos {p.horizon} meses, sua sobra mensal fica entre{' '}
-          <strong>{formatMoney(String(min))}</strong> e <strong>{formatMoney(String(max))}</strong>.
-        </p>
-        {firstNegative && (
-          <p className="alert risk-4" style={{ margin: 0 }}>
-            <CircleAlert size={20} aria-hidden="true" />
-            <span style={{ color: 'var(--text)', fontWeight: 600 }}>
-              Em {firstNegative.label} sua sobra fica negativa ou zerada.
-            </span>
+        <div className="stack-sm">
+          <p className="lede">
+            Nos próximos {p.horizon} meses, sua sobra mensal fica entre{' '}
+            <strong>{formatMoney(String(min))}</strong> e{' '}
+            <strong>{formatMoney(String(max))}</strong>.
           </p>
-        )}
-        {firstBalance && (
-          <p className="alert risk-5" style={{ margin: 0 }}>
-            <CircleAlert size={20} aria-hidden="true" />
-            <span style={{ color: 'var(--text)', fontWeight: 600 }}>
-              Em {firstBalance.label} o dinheiro guardado acabaria, se tudo continuar igual.
-            </span>
+          {firstNegative && (
+            <p className="alert risk-4">
+              <CircleAlert size={20} aria-hidden="true" />
+              <span style={{ color: 'var(--text)', fontWeight: 600 }}>
+                Em {firstNegative.label} sua sobra fica negativa ou zerada.
+              </span>
+            </p>
+          )}
+          {firstBalance && (
+            <p className="alert risk-5">
+              <CircleAlert size={20} aria-hidden="true" />
+              <span style={{ color: 'var(--text)', fontWeight: 600 }}>
+                Em {firstBalance.label} o dinheiro guardado acabaria, se tudo continuar igual.
+              </span>
+            </p>
+          )}
+        </div>
+        <div className="stack-sm">
+          <ProjectionChart points={p.points} />
+          <p className="small muted">
+            <strong>Sobra do mês:</strong> o que fica depois das despesas e parcelas.{' '}
+            <strong>Saldo acumulado:</strong> sua <Term id="reserva">reserva</Term> mais as sobras
+            somadas mês a mês.
           </p>
-        )}
-        <ProjectionChart points={p.points} />
-        <p className="small muted" style={{ margin: 0 }}>
-          <strong>Sobra do mês:</strong> o que fica depois das despesas e parcelas.{' '}
-          <strong>Saldo acumulado:</strong> sua <Term id="reserva">reserva</Term> mais as sobras
-          somadas mês a mês.
-        </p>
+        </div>
         <details className="more">
           <summary id="tbl">Ver mês a mês</summary>
           <div className="table-wrap">

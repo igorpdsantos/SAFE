@@ -18,19 +18,15 @@ export function Onboarding({ forceOpen, onClose }: { forceOpen?: boolean; onClos
   if (hidden && !forceOpen) return null;
   return (
     <section className="card stack" aria-labelledby="onboarding-title">
-      <h2 id="onboarding-title" style={{ margin: 0 }}>
-        Como o SAFE funciona
-      </h2>
+      <h2 id="onboarding-title">Como o SAFE funciona</h2>
       <ol className="how">
         {STEPS.map((s, i) => (
           <li key={s.text}>
             <div className="art">{s.art}</div>
-            <p style={{ margin: 0 }}>
-              <strong className="eyebrow" style={{ display: 'block' }}>
-                Passo {i + 1}
-              </strong>
-              {s.text}
-            </p>
+            <div className="stack-xs">
+              <p className="eyebrow">Passo {i + 1}</p>
+              <p>{s.text}</p>
+            </div>
           </li>
         ))}
       </ol>

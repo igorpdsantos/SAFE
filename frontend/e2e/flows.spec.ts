@@ -212,6 +212,29 @@ test('9 – excluir conta → confirmação; novo login cria conta vazia', async
   expect(me.termsUpToDate).toBe(false);
 });
 
+test('SPEC-14 – entenda os dados: séries com fonte, filtro de período e nada de terceiros', async ({
+  page,
+}) => {
+  await readyUser(page, 'entenda');
+  const externas: string[] = [];
+  page.on('request', (r) => {
+    if (!r.url().startsWith('http://localhost:5173')) externas.push(r.url());
+  });
+  await page.goto('/');
+  await page.getByRole('link', { name: 'Entenda os dados' }).click();
+  await expect(page.getByRole('heading', { name: 'Entenda os dados' })).toBeVisible();
+  await expect(page.getByText(/Não representam a sua situação individual/)).toBeVisible();
+  await expect(page.getByText(/Fonte:.*SGS, série 29037/)).toBeVisible();
+  await expect(page.getByText(/extraído em 31\/10\/2026/).first()).toBeVisible();
+  await page.getByRole('button', { name: '1 ano' }).click();
+  await expect(page.getByText(/^Mostrando de /)).toContainText('a 10/26');
+  await page.getByText('Escolher os meses').click();
+  await page.getByLabel('De', { exact: true }).selectOption('2026-01');
+  await page.getByLabel('Até', { exact: true }).selectOption('2026-03');
+  await expect(page.getByText('Mostrando de 01/26 a 03/26.')).toBeVisible();
+  expect(externas).toEqual([]);
+});
+
 test.describe('10 – celular (375 px)', () => {
   test.use({ viewport: { width: 375, height: 740 }, isMobile: true, hasTouch: true });
 

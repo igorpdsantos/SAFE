@@ -1954,3 +1954,18 @@ form .more-body > * + * {
 .brand-static {
   --logo-ink: var(--surface);
 }
+
+/* Entenda os dados: dois gráficos por linha no desktop. */
+.chart-grid {
+  display: grid;
+  gap: var(--s-4);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (max-width: 900px) {
+  .chart-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.keep {
+  white-space: nowrap;
+}

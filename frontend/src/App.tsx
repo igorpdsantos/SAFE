@@ -18,6 +18,9 @@ const Account = lazy(() => import('./pages/Account').then((m) => ({ default: m.A
 const AccountDeleted = lazy(() =>
   import('./pages/AccountDeleted').then((m) => ({ default: m.AccountDeleted })),
 );
+const Understand = lazy(() =>
+  import('./pages/Understand').then((m) => ({ default: m.Understand })),
+);
 const Glossary = lazy(() => import('./pages/Glossary').then((m) => ({ default: m.Glossary })));
 const LegalPage = lazy(() => import('./pages/Legal').then((m) => ({ default: m.LegalPage })));
 
@@ -60,6 +63,7 @@ export function App() {
           }
         >
           <Route path="/conta" element={<Account />} />
+          <Route path="/entenda" element={<Understand />} />
         </Route>
         <Route
           element={

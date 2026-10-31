@@ -176,3 +176,14 @@ export interface TermsCurrent {
   privacyUrl: string;
   accepted: boolean;
 }
+
+/** Série pública agregada da aba "Entenda os dados" (SPEC-14). */
+export interface ContextSeries {
+  id: string;
+  name: string;
+  source: string;
+  url: string;
+  extractedAt: string;
+  unit: string;
+  points: { date: string; value: string }[];
+}

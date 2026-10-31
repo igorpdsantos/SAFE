@@ -1,5 +1,6 @@
 import {
   BookOpen,
+  ChartColumn,
   Calculator,
   ChartLine,
   Ellipsis,
@@ -37,6 +38,7 @@ const MAIN: NavItem[] = [
 ];
 const MORE: NavItem[] = [
   { to: '/conta', label: 'Conta', icon: icon(UserRound) },
+  { to: '/entenda', label: 'Entenda os dados', icon: icon(ChartColumn) },
   { to: '/glossario', label: 'Glossário', icon: icon(BookOpen) },
 ];
 /** No celular, a barra inferior mostra só 4 destinos + "Mais" (menos coisa para ler). */

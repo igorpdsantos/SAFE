@@ -168,8 +168,8 @@
 ## Fase 10 · Opcional (só com tudo acima pronto)
 - [x] **T-08.9** `A` (D-12) `POST /simulations/:id/register` + botão "Registrar como dívida" (SPEC-08 §3) · início 2026-10-30 22:00 · Igor + IA · feito 2026-10-30 22:03
 - [x] **T-14.1** `B` CSVs de contexto em `backend/data/context/` + `npm run context:update` (SPEC-14 §2) · início 2026-10-31 00:52 · Igor + IA · PEIC (13 meses) + BCB 29037, 29265 e Selic 4189 (5 anos), gerando `series.generated.ts` · feito 2026-10-31 00:53
-- [~] **T-14.2** `B` `GET /context/series` (§3) · início 2026-10-31 00:53 · Igor + IA
-- [ ] **T-14.3** `B` Tela `/entenda` com filtro, glossário e "como o SAFE calcula" (§4)
+- [x] **T-14.2** `B` `GET /context/series` (§3) · início 2026-10-31 00:53 · Igor + IA · público, from/to (AAAA-MM), 400 para período inválido; teste garante módulo = CSVs · feito 2026-10-31 00:54
+- [~] **T-14.3** `B` Tela `/entenda` com filtro, glossário e "como o SAFE calcula" (§4) · início 2026-10-31 00:54 · Igor + IA
 - [ ] **T-14.4** `B` Acrescentar RF25/UC11/HU24 ao PRD e uma frase no artigo (§5)
 
 ---

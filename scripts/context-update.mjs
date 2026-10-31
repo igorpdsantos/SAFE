@@ -41,13 +41,55 @@ const BCB = [
 
 // Séries que a API entrega: arquivo + coluna (a peic.csv tem quatro colunas).
 const SERIES = [
-  { id: 'peic_endividadas', file: 'peic.csv', column: 'endividadas', name: 'Famílias com dívidas', unit: '% das famílias' },
-  { id: 'peic_em_atraso', file: 'peic.csv', column: 'em_atraso', name: 'Famílias com contas ou dívidas em atraso', unit: '% das famílias' },
-  { id: 'peic_sem_condicao', file: 'peic.csv', column: 'sem_condicao_de_pagar', name: 'Famílias que dizem não ter como pagar o que está atrasado', unit: '% das famílias' },
-  { id: 'peic_renda_comprometida', file: 'peic.csv', column: 'renda_comprometida', name: 'Parte da renda comprometida com dívidas, segundo as famílias', unit: '% da renda' },
-  { id: 'bcb_endividamento', file: 'bcb-29037.csv', column: 'valor', name: 'Dívidas das famílias em relação à renda de 12 meses', unit: '% da renda de 12 meses' },
-  { id: 'bcb_comprometimento', file: 'bcb-29265.csv', column: 'valor', name: 'Parte da renda mensal que vai para parcelas', unit: '% da renda mensal' },
-  { id: 'bcb_selic', file: 'selic.csv', column: 'valor', name: 'Taxa básica de juros (Selic)', unit: '% ao ano' },
+  {
+    id: 'peic_endividadas',
+    file: 'peic.csv',
+    column: 'endividadas',
+    name: 'Famílias com dívidas',
+    unit: '% das famílias',
+  },
+  {
+    id: 'peic_em_atraso',
+    file: 'peic.csv',
+    column: 'em_atraso',
+    name: 'Famílias com contas ou dívidas em atraso',
+    unit: '% das famílias',
+  },
+  {
+    id: 'peic_sem_condicao',
+    file: 'peic.csv',
+    column: 'sem_condicao_de_pagar',
+    name: 'Famílias que dizem não ter como pagar o que está atrasado',
+    unit: '% das famílias',
+  },
+  {
+    id: 'peic_renda_comprometida',
+    file: 'peic.csv',
+    column: 'renda_comprometida',
+    name: 'Parte da renda comprometida com dívidas, segundo as famílias',
+    unit: '% da renda',
+  },
+  {
+    id: 'bcb_endividamento',
+    file: 'bcb-29037.csv',
+    column: 'valor',
+    name: 'Dívidas das famílias em relação à renda de 12 meses',
+    unit: '% da renda de 12 meses',
+  },
+  {
+    id: 'bcb_comprometimento',
+    file: 'bcb-29265.csv',
+    column: 'valor',
+    name: 'Parte da renda mensal que vai para parcelas',
+    unit: '% da renda mensal',
+  },
+  {
+    id: 'bcb_selic',
+    file: 'selic.csv',
+    column: 'valor',
+    name: 'Taxa básica de juros (Selic)',
+    unit: '% ao ano',
+  },
 ];
 
 const today = new Date();

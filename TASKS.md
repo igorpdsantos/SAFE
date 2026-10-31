@@ -58,7 +58,7 @@
 - [x] **T-01.8** `A` Frontend Vite + React + TS vazio com proxy `/api` (mesma origem) · início 2026-10-29 18:02 · Igor + IA · feito 2026-10-29 18:03
 - [x] **T-01.9** `A` GitHub Actions: lint → typecheck → test → cobertura → `npm audit --audit-level=high` · início 2026-10-29 18:03 · Igor + IA · feito 2026-10-29 18:04
 - [x] **T-01.10** `A` Atualizar o README existente (seções 5, 6 e 7) com os comandos, scripts e arquivos de configuração reais → pronto quando: todos os critérios de aceite da SPEC-01 §5 passam · início 2026-10-29 18:04 · Igor + IA · feito 2026-10-29 18:05
-- [~] **T-01.11** `A` Deploy na Vercel com CD: API como função (São Paulo), jobs de retenção no agendador da Vercel, cabeçalhos de segurança no estático, migrations antes de cada deploy da `main` (GitHub Actions); banco Neon e Redis Upstash · início 2026-10-30 23:45 · Igor + IA
+- [x] **T-01.11** `A` Deploy na Vercel com CD: API como função (São Paulo), jobs de retenção no agendador da Vercel, cabeçalhos de segurança no estático, migrations antes de cada deploy da `main` (GitHub Actions); banco Neon e Redis Upstash · início 2026-10-30 23:45 · Igor + IA · no ar em https://safe-tcc.vercel.app; 1º deploy automático: migrations aplicadas, health e CSP verificados · feito 2026-10-31 00:24
 
 ## Fase 2 · Motor e projeção — [SPEC-05](specs/SPEC-05-motor-ire.md), [SPEC-06](specs/SPEC-06-projecao.md)
 > Pode começar em paralelo com a Fase 1 (só precisa de `decimal.js`).

@@ -70,12 +70,11 @@ export function Term({ id, children }: { id: GlossaryId; children?: ReactNode })
       </button>
       {open && (
         <span id={popId} role="tooltip" className="popover">
-          <strong style={{ display: 'block', marginBottom: 4 }}>{title}</strong>
-          <span style={{ display: 'block' }}>{entry.short}</span>
+          <strong className="popover-title">{title}</strong>
+          <span className="popover-body">{entry.short}</span>
           <button
             type="button"
-            className="btn btn-link"
-            style={{ paddingLeft: 0 }}
+            className="btn btn-link flush"
             onClick={() => {
               setOpen(false);
               help.open(id);

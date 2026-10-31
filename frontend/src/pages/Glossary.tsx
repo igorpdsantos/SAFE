@@ -1,5 +1,7 @@
+import { ArrowLeft, Search } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { PageHeader } from '../components/PageHeader';
 import { glossary } from '../content/glossary';
 
 const normalize = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
@@ -19,39 +21,43 @@ export function Glossary() {
   }, [q]);
 
   return (
-    <div className="main stack">
-      <p>
-        <Link to="/">← Voltar</Link>
-      </p>
-      <h1>Glossário</h1>
-      <p className="muted">
-        As palavras de finanças que aparecem no SAFE, explicadas de um jeito simples.
-      </p>
+    <div className="doc-page stack reveal">
+      <Link className="back-link" to="/">
+        <ArrowLeft size={18} aria-hidden="true" /> Voltar
+      </Link>
+      <PageHeader
+        eyebrow="Ajuda"
+        title="Glossário"
+        lead="As palavras de finanças que aparecem no SAFE, explicadas de um jeito simples."
+      />
       <div className="field">
         <label htmlFor="busca">Buscar um termo</label>
-        <input
-          id="busca"
-          className="input"
-          type="search"
-          autoComplete="off"
-          placeholder="Ex.: parcela, reserva, juros"
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-        />
+        <div className="search">
+          <Search size={20} aria-hidden="true" />
+          <input
+            id="busca"
+            className="input"
+            type="search"
+            autoComplete="off"
+            placeholder="Ex.: parcela, reserva, juros"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+          />
+        </div>
       </div>
       <p className="small muted" role="status">
         {items.length} {items.length === 1 ? 'termo' : 'termos'}
       </p>
-      <dl className="stack">
+      <dl className="glossary-list">
         {items.map((e) => (
-          <div key={e.id} id={e.id} className="card">
+          <div key={e.id} id={e.id} className="card stack-sm">
             <dt>
-              <h2 style={{ margin: 0 }}>
+              <h2>
                 {e.term}
                 {e.acronym && e.acronym !== e.term ? ` (${e.acronym})` : ''}
               </h2>
             </dt>
-            <dd style={{ margin: '0.5rem 0 0' }}>
+            <dd className="prose">
               <p>{e.long || e.short}</p>
               {e.example && (
                 <p className="small">
@@ -59,7 +65,7 @@ export function Glossary() {
                 </p>
               )}
               {e.whyItMatters && (
-                <p className="small muted" style={{ margin: 0 }}>
+                <p className="small muted">
                   <strong>Por que importa:</strong> {e.whyItMatters}
                 </p>
               )}

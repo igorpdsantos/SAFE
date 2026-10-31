@@ -5,6 +5,7 @@ import { api, ApiError, userMessage } from '../api/client';
 import { keys, useTerms } from '../api/hooks';
 import { CookieNotice } from '../components/CookieNotice';
 import { LegalText } from '../components/Markdown';
+import { LogoMark } from '../components/Art';
 import { LoadError, Loading } from '../components/States';
 import { Term } from '../components/Term';
 import { handleSessionEnd } from '../lib/session';
@@ -56,12 +57,11 @@ export function Terms() {
   };
 
   const box = (key: keyof typeof checks, label: ReactNode) => (
-    <label className="row" style={{ alignItems: 'flex-start', flexWrap: 'nowrap', gap: '0.6rem' }}>
+    <label className="check">
       <input
         type="checkbox"
         checked={checks[key]}
         onChange={(e) => setChecks((c) => ({ ...c, [key]: e.target.checked }))}
-        style={{ width: 22, height: 22, marginTop: 2, flexShrink: 0 }}
       />
       <span>{label}</span>
     </label>
@@ -69,64 +69,73 @@ export function Terms() {
 
   return (
     <div className="center-page">
-      <div className="card stack" style={{ width: 'min(640px, 100%)' }}>
+      <div className="card card-lg stack reveal" style={{ width: 'min(640px, 100%)' }}>
+        <div className="brand brand-static" style={{ color: 'var(--brand-strong)' }}>
+          <LogoMark />
+          <span className="brand-text">
+            <span className="brand-name">SAFE</span>
+            <span className="brand-tag">Apoio à decisão financeira</span>
+          </span>
+        </div>
         <h1>Antes de começar</h1>
         <p>
           Para usar o SAFE, você precisa aceitar os Termos de Uso, ler a Política de Privacidade e
           confirmar que tem 18 anos ou mais. Seus dados ficam protegidos pela{' '}
           <Term id="lgpd">LGPD</Term>.
         </p>
-        <div className="notice small">
+        <div className="notice notice-brand small">
           <strong>Em resumo:</strong> o SAFE calcula o risco do seu orçamento e simula compras
           parceladas. Ele não recomenda produtos nem decide por você. Usamos só o necessário e você
           pode exportar ou excluir seus dados quando quiser.
         </div>
-        {box(
-          'terms',
-          <>
-            Li e aceito os{' '}
-            <button
-              type="button"
-              className="btn-link btn"
-              onClick={() => setShow(show === 'termos' ? null : 'termos')}
-            >
-              Termos de Uso
-            </button>
-          </>,
-        )}
-        {show === 'termos' && (
-          <div className="card" style={{ maxHeight: 320, overflowY: 'auto' }}>
-            <LegalText url={terms.data.termsUrl} />
-          </div>
-        )}
-        {box(
-          'privacy',
-          <>
-            Li a{' '}
-            <button
-              type="button"
-              className="btn-link btn"
-              onClick={() => setShow(show === 'privacidade' ? null : 'privacidade')}
-            >
-              Política de Privacidade
-            </button>
-          </>,
-        )}
-        {show === 'privacidade' && (
-          <div className="card" style={{ maxHeight: 320, overflowY: 'auto' }}>
-            <LegalText url={terms.data.privacyUrl} />
-          </div>
-        )}
-        {box('age', 'Declaro ter 18 anos ou mais')}
-        {box(
-          'research',
-          <>
-            <strong>(opcional)</strong> Aceito participar da pesquisa do nosso trabalho de conclusão
-            de curso com meus <Term id="anonimizado">dados anonimizados</Term>. É o meu{' '}
-            <Term id="consentimento">consentimento</Term>, e posso retirar quando quiser em "Minha
-            conta". Não marcar não muda nada no uso do SAFE.
-          </>,
-        )}
+        <div className="stack-sm">
+          {box(
+            'terms',
+            <>
+              Li e aceito os{' '}
+              <button
+                type="button"
+                className="btn btn-link flush"
+                onClick={() => setShow(show === 'termos' ? null : 'termos')}
+              >
+                Termos de Uso
+              </button>
+            </>,
+          )}
+          {show === 'termos' && (
+            <div className="card card-flat legal" style={{ maxHeight: 320, overflowY: 'auto' }}>
+              <LegalText url={terms.data.termsUrl} />
+            </div>
+          )}
+          {box(
+            'privacy',
+            <>
+              Li a{' '}
+              <button
+                type="button"
+                className="btn btn-link flush"
+                onClick={() => setShow(show === 'privacidade' ? null : 'privacidade')}
+              >
+                Política de Privacidade
+              </button>
+            </>,
+          )}
+          {show === 'privacidade' && (
+            <div className="card card-flat legal" style={{ maxHeight: 320, overflowY: 'auto' }}>
+              <LegalText url={terms.data.privacyUrl} />
+            </div>
+          )}
+          {box('age', 'Declaro ter 18 anos ou mais')}
+          {box(
+            'research',
+            <>
+              <strong>(opcional)</strong> Aceito participar da pesquisa do nosso trabalho de
+              conclusão de curso com meus <Term id="anonimizado">dados anonimizados</Term>. É o meu{' '}
+              <Term id="consentimento">consentimento</Term>, e posso retirar quando quiser em "Minha
+              conta". Não marcar não muda nada no uso do SAFE.
+            </>,
+          )}
+        </div>
         {error && (
           <p className="field-error" role="alert">
             {error}
@@ -134,7 +143,7 @@ export function Terms() {
         )}
         {declined ? (
           <div className="notice stack">
-            <p style={{ margin: 0 }}>Sem aceitar os termos não é possível usar o SAFE.</p>
+            <p>Sem aceitar os termos não é possível usar o SAFE.</p>
             <div className="row">
               <button type="button" className="btn" onClick={() => setDeclined(false)}>
                 Voltar
@@ -155,7 +164,7 @@ export function Terms() {
           <div className="row">
             <button
               type="button"
-              className="btn btn-primary"
+              className="btn btn-primary btn-lg"
               disabled={!ready || busy}
               onClick={submit}
             >

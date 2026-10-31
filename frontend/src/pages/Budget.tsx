@@ -1,12 +1,23 @@
-import { Pencil, Plus, Trash2 } from 'lucide-react';
+import {
+  Banknote,
+  CalendarClock,
+  Pencil,
+  PiggyBank,
+  Plus,
+  ReceiptText,
+  Trash2,
+  type LucideIcon,
+} from 'lucide-react';
 import { useId, useState, type ReactNode } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { ApiError, userMessage } from '../api/client';
 import { useBudgetList, useDeleteBudgetItem, useSaveBudgetItem } from '../api/hooks';
 import type { BudgetItems, BudgetKind, Debt, Expense, Income, Reserve } from '../api/types';
+import { EmptyArt } from '../components/Art';
 import { ConfirmDialog } from '../components/ConfirmDialog';
 import { FieldHelp } from '../components/FieldHelp';
 import { MoneyInput } from '../components/MoneyInput';
+import { PageHeader } from '../components/PageHeader';
 import { LoadError, Loading } from '../components/States';
 import { Term } from '../components/Term';
 import {
@@ -140,6 +151,11 @@ function Field({
       )}
     </div>
   );
+}
+
+/** Abre "Mais detalhes" quando o item já tem algo preenchido ali. */
+function hasOptional(kind: BudgetKind, f: Form): boolean {
+  return !!f.description || (kind === 'debts' && !!f.totalInstallments);
 }
 
 function ItemForm({
@@ -329,15 +345,6 @@ function ItemForm({
             },
             'Ex.: 10',
           )}
-          {number(
-            'totalInstallments',
-            'Total de parcelas do contrato (opcional)',
-            {
-              what: 'Em quantas vezes a dívida foi feita no começo.',
-              why: 'Só para você acompanhar quanto já pagou.',
-            },
-            'Ex.: 12',
-          )}
           {money(
             'balanceDue',
             <>
@@ -369,33 +376,54 @@ function ItemForm({
           'Ex.: 1.000,00',
         )}
 
-      <Field
-        label="Descrição (opcional)"
-        help={{
-          what: 'Um apelido para você reconhecer o item.',
-          why: 'Fica protegida com criptografia e só você vê.',
-        }}
-        error={errors.description}
+      <details
+        className="more"
+        open={hasOptional(kind, initial) || !!errors.description || !!errors.totalInstallments}
       >
-        {({ id, describedBy }) => (
-          <>
-            <p className="notice small" style={{ margin: 0 }}>
-              Não escreva nomes de pessoas, dados de saúde, número de conta ou de cartão.
-            </p>
-            <input
-              id={id}
-              className="input"
-              maxLength={60}
-              autoComplete="off"
-              aria-describedby={describedBy}
-              aria-invalid={!!errors.description}
-              placeholder="Ex.: Geladeira"
-              value={f.description ?? ''}
-              onChange={(e) => set('description')(e.target.value)}
-            />
-          </>
-        )}
-      </Field>
+        <summary>Mais detalhes (opcional)</summary>
+        <div className="stack more-body">
+          {kind === 'debts' && (
+            <>
+              {number(
+                'totalInstallments',
+                'Total de parcelas do contrato (opcional)',
+                {
+                  what: 'Em quantas vezes a dívida foi feita no começo.',
+                  why: 'Só para você acompanhar quanto já pagou.',
+                },
+                'Ex.: 12',
+              )}
+            </>
+          )}
+          <Field
+            label="Descrição (opcional)"
+            help={{
+              what: 'Um apelido para você reconhecer o item.',
+              why: 'Fica protegida com criptografia e só você vê.',
+            }}
+            error={errors.description}
+          >
+            {({ id, describedBy }) => (
+              <>
+                <p className="notice small">
+                  Não escreva nomes de pessoas, dados de saúde, número de conta ou de cartão.
+                </p>
+                <input
+                  id={id}
+                  className="input"
+                  maxLength={60}
+                  autoComplete="off"
+                  aria-describedby={describedBy}
+                  aria-invalid={!!errors.description}
+                  placeholder="Ex.: Geladeira"
+                  value={f.description ?? ''}
+                  onChange={(e) => set('description')(e.target.value)}
+                />
+              </>
+            )}
+          </Field>
+        </div>
+      </details>
 
       {general && (
         <p className="field-error" role="alert">
@@ -460,6 +488,36 @@ function describe(
   }
 }
 
+const KIND_ICON: Record<BudgetKind, LucideIcon> = {
+  incomes: Banknote,
+  expenses: ReceiptText,
+  debts: CalendarClock,
+  reserves: PiggyBank,
+};
+
+/** Total de cada parte, para a aba e o cabeçalho da lista. */
+function kindTotal(kind: BudgetKind, items: BudgetItems[BudgetKind][]): number {
+  return items.reduce((sum, item) => {
+    switch (kind) {
+      case 'incomes':
+        return sum + Number((item as Income).monthValue);
+      case 'expenses':
+        return sum + Number((item as Expense).value);
+      case 'debts':
+        return (item as Debt).active ? sum + Number((item as Debt).installmentValue) : sum;
+      default:
+        return sum + Number((item as Reserve).value);
+    }
+  }, 0);
+}
+
+const TOTAL_LABEL: Record<BudgetKind, string> = {
+  incomes: 'por mês',
+  expenses: 'por mês',
+  debts: 'em parcelas por mês',
+  reserves: 'guardados',
+};
+
 function KindPanel({ kind }: { kind: BudgetKind }) {
   const list = useBudgetList(kind);
   const remove = useDeleteBudgetItem(kind);
@@ -469,64 +527,91 @@ function KindPanel({ kind }: { kind: BudgetKind }) {
   if (list.isLoading) return <Loading />;
   if (list.isError) return <LoadError error={list.error} />;
   const items = list.data ?? [];
+  const Icon = KIND_ICON[kind];
+  const add = (
+    <button
+      type="button"
+      className="btn btn-primary"
+      onClick={() => setEditing({ form: EMPTY_FORM[kind] })}
+    >
+      <Plus size={18} aria-hidden="true" /> {ADD_LABEL[kind]}
+    </button>
+  );
+
+  if (editing)
+    return (
+      <ItemForm
+        kind={kind}
+        initial={editing.form}
+        editingId={editing.id}
+        onDone={() => setEditing(null)}
+      />
+    );
+
+  if (items.length === 0)
+    return (
+      <div className="empty">
+        <div className="art">
+          <EmptyArt kind={kind} />
+        </div>
+        <div className="stack">
+          <p>{EMPTY[kind]}</p>
+          <div>{add}</div>
+        </div>
+      </div>
+    );
 
   return (
     <div className="stack">
-      {editing ? (
-        <ItemForm
-          kind={kind}
-          initial={editing.form}
-          editingId={editing.id}
-          onDone={() => setEditing(null)}
-        />
-      ) : (
-        <div>
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={() => setEditing({ form: EMPTY_FORM[kind] })}
-          >
-            <Plus size={18} aria-hidden="true" /> {ADD_LABEL[kind]}
-          </button>
-        </div>
-      )}
-      {items.length === 0 ? (
-        <p className="notice">{EMPTY[kind]}</p>
-      ) : (
-        <ul className="list card">
-          {items.map((item) => {
-            const info = describe(kind, item);
-            return (
-              <li key={item.id} style={{ opacity: info.faded ? 0.6 : 1 }}>
-                <div>
-                  <strong>{info.title}</strong>
-                  <p className="small muted" style={{ margin: 0 }}>
-                    {info.detail}
-                  </p>
-                </div>
-                <div className="row" style={{ gap: '0.25rem' }}>
-                  <button
-                    type="button"
-                    className="btn"
-                    onClick={() => setEditing({ id: item.id, form: toForm(kind, item) })}
-                    aria-label={`Editar ${info.title}`}
-                  >
-                    <Pencil size={16} aria-hidden="true" /> Editar
-                  </button>
-                  <button
-                    type="button"
-                    className="btn"
-                    onClick={() => setToDelete(item.id)}
-                    aria-label={`Excluir ${info.title}`}
-                  >
-                    <Trash2 size={16} aria-hidden="true" /> Excluir
-                  </button>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-      )}
+      <div className="row spread">
+        {/* Com um item só, o total repetiria o valor do próprio item. */}
+        {items.length > 1 ? (
+          <p>
+            <span className="muted">Total: </span>
+            <span className="tile-value" style={{ fontSize: '1.5rem' }}>
+              {formatMoney(String(kindTotal(kind, items)))}
+            </span>{' '}
+            <span className="muted">{TOTAL_LABEL[kind]}</span>
+          </p>
+        ) : (
+          <span />
+        )}
+        {add}
+      </div>
+      <ul className="item-list">
+        {items.map((item) => {
+          const info = describe(kind, item);
+          return (
+            <li key={item.id} className="item" style={{ opacity: info.faded ? 0.6 : 1 }}>
+              <span className="item-icon" aria-hidden="true">
+                <Icon size={22} />
+              </span>
+              <div className="item-body stack-xs">
+                <strong>{info.title}</strong>
+                <p className="small muted">{info.detail}</p>
+              </div>
+              <div className="item-actions">
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={() => setEditing({ id: item.id, form: toForm(kind, item) })}
+                  aria-label={`Editar ${info.title}`}
+                >
+                  <Pencil size={16} aria-hidden="true" /> Editar
+                </button>
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={() => setToDelete(item.id)}
+                  aria-label={`Excluir ${info.title}`}
+                >
+                  <Trash2 size={16} aria-hidden="true" /> Excluir
+                </button>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
       {toDelete !== null && (
         <ConfirmDialog
           title="Excluir este item?"
@@ -545,17 +630,24 @@ function KindPanel({ kind }: { kind: BudgetKind }) {
   );
 }
 
+/** Contagem que aparece embaixo do nome de cada aba. */
+function TabMeta({ kind }: { kind: BudgetKind }) {
+  const list = useBudgetList(kind);
+  const n = list.data?.length ?? 0;
+  return <span className="tab-meta">{n === 0 ? 'vazio' : n === 1 ? '1 item' : `${n} itens`}</span>;
+}
+
 /** Meu orçamento: renda, despesas, dívidas e reserva (SPEC-04 §6). */
 export function Budget() {
   const [params, setParams] = useSearchParams();
   const current = (TABS.find((t) => t.kind === params.get('aba'))?.kind ?? 'incomes') as BudgetKind;
   return (
-    <div className="stack">
-      <h1>Meu orçamento</h1>
-      <p className="muted">
-        Conte sua situação. Com esses dados calculamos seu índice de risco. Você pode editar ou
-        excluir tudo quando quiser.
-      </p>
+    <div className="reveal">
+      <PageHeader
+        eyebrow="Seus dados"
+        title="Meu orçamento"
+        lead="Conte sua situação. Com esses dados calculamos seu índice de risco. Você pode editar ou excluir tudo quando quiser."
+      />
       <div className="tabs" role="tablist" aria-label="Partes do orçamento">
         {TABS.map((t) => (
           <button
@@ -568,7 +660,8 @@ export function Budget() {
             aria-controls={`panel-${t.kind}`}
             onClick={() => setParams({ aba: t.kind })}
           >
-            {t.label}
+            <span>{t.label}</span>
+            <TabMeta kind={t.kind} />
           </button>
         ))}
       </div>

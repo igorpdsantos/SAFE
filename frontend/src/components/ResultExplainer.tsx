@@ -13,17 +13,11 @@ export function ResultExplainer({
   interpretation?: ReactNode;
 }) {
   return (
-    <div className="stack" style={{ gap: 0 }}>
-      <div className="small muted">{title}</div>
-      <div style={{ fontSize: '1.5rem', fontWeight: 800 }}>{value}</div>
-      <p className="small" style={{ margin: '0.25rem 0 0' }}>
-        {meaning}
-      </p>
-      {interpretation && (
-        <p className="small" style={{ margin: '0.25rem 0 0', fontWeight: 600 }}>
-          {interpretation}
-        </p>
-      )}
+    <div>
+      <div className="small muted explainer-title">{title}</div>
+      <div className="tile-value explainer-value">{value}</div>
+      <p className="tile-meaning explainer-meaning">{meaning}</p>
+      {interpretation && <p className="small explainer-interpretation">{interpretation}</p>}
     </div>
   );
 }

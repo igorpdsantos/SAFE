@@ -17,7 +17,7 @@ export function LegalText({ url }: { url: string }) {
   if (isError || !data)
     return <p role="alert">Não conseguimos abrir este documento agora. Tente de novo.</p>;
   return (
-    <div className="legal">
+    <div className="legal prose">
       <ReactMarkdown skipHtml>{data}</ReactMarkdown>
     </div>
   );

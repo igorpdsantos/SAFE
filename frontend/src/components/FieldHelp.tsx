@@ -2,7 +2,7 @@
 export function FieldHelp({ id, what, why }: { id: string; what: string; why: string }) {
   return (
     <p id={id} className="field-help">
-      <strong>{what}</strong> · {why}
+      <strong>{what}</strong> {why}
     </p>
   );
 }

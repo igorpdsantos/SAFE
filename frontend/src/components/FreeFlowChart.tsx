@@ -14,6 +14,12 @@ import type { ProjectionPoint } from '../api/types';
 import { formatMoney } from '../lib/format';
 
 const money = (v: number) => formatMoney(String(v));
+const TOOLTIP = {
+  background: 'var(--surface)',
+  border: '1px solid var(--border)',
+  borderRadius: 12,
+  color: 'var(--text)',
+};
 
 /** Sobra do mês (barras) e saldo acumulado (linha), com linha em R$ 0 (SPEC-06 §4). */
 export function ProjectionChart({ points }: { points: ProjectionPoint[] }) {
@@ -26,18 +32,30 @@ export function ProjectionChart({ points }: { points: ProjectionPoint[] }) {
     <div style={{ width: '100%', height: 300 }} aria-hidden="true">
       <ResponsiveContainer>
         <ComposedChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: 8 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+          <CartesianGrid vertical={false} stroke="var(--border)" />
           <XAxis dataKey="label" tick={{ fontSize: 12, fill: 'var(--muted)' }} />
-          <YAxis tickFormatter={money} width={90} tick={{ fontSize: 12, fill: 'var(--muted)' }} />
-          <Tooltip formatter={(v) => money(Number(v))} />
+          <YAxis
+            tickFormatter={money}
+            width={96}
+            axisLine={false}
+            tickLine={false}
+            tick={{ fontSize: 12, fill: 'var(--muted)' }}
+          />
+          <Tooltip formatter={(v) => money(Number(v))} contentStyle={TOOLTIP} />
           <Legend />
           <ReferenceLine y={0} stroke="var(--danger)" />
-          <Bar dataKey="sobra" name="Sobra do mês" fill="var(--brand)" />
+          <Bar
+            dataKey="sobra"
+            name="Sobra do mês"
+            fill="var(--brand)"
+            radius={[6, 6, 0, 0]}
+            maxBarSize={36}
+          />
           <Line
             dataKey="saldo"
             name="Saldo acumulado"
-            stroke="var(--risk-3)"
-            strokeWidth={2}
+            stroke="var(--gold)"
+            strokeWidth={2.5}
             dot={false}
           />
         </ComposedChart>
@@ -63,10 +81,16 @@ export function CompareChart({
     <div style={{ width: '100%', height: 280 }} aria-hidden="true">
       <ResponsiveContainer>
         <ComposedChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: 8 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
+          <CartesianGrid vertical={false} stroke="var(--border)" />
           <XAxis dataKey="label" tick={{ fontSize: 12, fill: 'var(--muted)' }} />
-          <YAxis tickFormatter={money} width={90} tick={{ fontSize: 12, fill: 'var(--muted)' }} />
-          <Tooltip formatter={(v) => money(Number(v))} />
+          <YAxis
+            tickFormatter={money}
+            width={96}
+            axisLine={false}
+            tickLine={false}
+            tick={{ fontSize: 12, fill: 'var(--muted)' }}
+          />
+          <Tooltip formatter={(v) => money(Number(v))} contentStyle={TOOLTIP} />
           <Legend />
           <ReferenceLine y={0} stroke="var(--danger)" />
           <Line
@@ -77,7 +101,13 @@ export function CompareChart({
             strokeDasharray="5 4"
             dot={false}
           />
-          <Line dataKey="com" name="Com a compra" stroke="var(--brand)" strokeWidth={2} dot />
+          <Line
+            dataKey="com"
+            name="Com a compra"
+            stroke="var(--brand)"
+            strokeWidth={2.5}
+            dot={{ r: 3 }}
+          />
         </ComposedChart>
       </ResponsiveContainer>
     </div>

@@ -13,8 +13,10 @@ export const MoneyInput = forwardRef<HTMLInputElement, Props>(function MoneyInpu
   ref,
 ) {
   return (
-    <div className="row" style={{ gap: '0.4rem', flexWrap: 'nowrap' }}>
-      <span aria-hidden="true">R$</span>
+    <div className="money-input">
+      <span className="prefix" aria-hidden="true">
+        R$
+      </span>
       <input
         {...rest}
         ref={ref}

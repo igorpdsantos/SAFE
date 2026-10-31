@@ -60,8 +60,8 @@ export function HelpProvider({ children }: { children: ReactNode }) {
             aria-modal="true"
             aria-labelledby="help-title"
           >
-            <div className="row" style={{ justifyContent: 'space-between', flexWrap: 'nowrap' }}>
-              <h2 id="help-title" style={{ margin: 0 }}>
+            <div className="row spread nowrap">
+              <h2 id="help-title">
                 {entry.term}
                 {entry.acronym && entry.term !== entry.acronym ? ` (${entry.acronym})` : ''}
               </h2>
@@ -82,15 +82,15 @@ export function HelpProvider({ children }: { children: ReactNode }) {
               </div>
             )}
             {entry.whyItMatters && (
-              <div>
+              <div className="stack-sm">
                 <h3>Por que o SAFE olha para isso</h3>
                 <p>{entry.whyItMatters}</p>
               </div>
             )}
             {entry.related && entry.related.length > 0 && (
-              <div>
+              <div className="stack-sm">
                 <h3>Veja também</h3>
-                <div className="row">
+                <div className="row row-tight">
                   {entry.related.filter(isGlossaryId).map((id) => (
                     <button
                       key={id}

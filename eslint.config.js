@@ -9,6 +9,7 @@ export default tseslint.config(
       '**/node_modules/**',
       '**/dist/**',
       '**/coverage/**',
+      '.vercel/**',
       'backend/src/generated/**',
       'frontend/playwright-report/**',
       'frontend/test-results/**',

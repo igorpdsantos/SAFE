@@ -18,6 +18,8 @@ const schema = z.object({
   GOOGLE_REDIRECT_URI: z.url(),
   TERMS_VERSION: z.string().min(1),
   PRIVACY_VERSION: z.string().min(1),
+  /** Só no deploy (Vercel Cron): habilita a rota interna dos jobs de retenção. */
+  CRON_SECRET: z.string().min(32, 'deve ter pelo menos 32 caracteres').optional(),
 });
 
 export type Env = z.infer<typeof schema>;

@@ -239,6 +239,7 @@ Para aplicar as migrations no banco de testes: `DATABASE_URL=$TEST_DATABASE_URL 
 | `npm run test:e2e` | Fluxos completos no navegador (Playwright) |
 | `npm run db:migrate` | `prisma migrate dev` (cria e aplica migrations) |
 | `npm run build` | Compila a API (`backend/dist`) e o site (`frontend/dist`) |
+| `npm run build:vercel` | Monta o deploy da Vercel em `.vercel/output` (site + API como função) |
 | `npm run eval:<script>` | Avaliação do modelo: `personas`, `agreement`, `sensitivity`, `baseline`, `simulation-check`, `latency` (SPEC-12) |
 | `npm run privacy:reapply-deletions` | Depois de restaurar um backup, reaplica as exclusões de conta (SPEC-10 §4) |
 | `npm run test:e2e` | Os 10 fluxos E2E com Playwright |
@@ -257,7 +258,21 @@ Sem alguma variável obrigatória, a API não sobe e lista o que falta (por exem
   age -d -i <chave-privada> backups/safe-AAAA-MM-DD.dump.age | pg_restore --clean --dbname "$DATABASE_URL"
   npm run privacy:reapply-deletions   # apaga de novo quem pediu exclusão depois daquele backup
   ```
-- Os jobs de retenção (contas inativas há 12 meses, simulações com mais de 12 meses, auditoria com mais de 6 meses, aceites órfãos e a lista de exclusões com mais de 30 dias) rodam todo dia às 03:00 (America/Sao_Paulo), dentro da API.
+- Os jobs de retenção (contas inativas há 12 meses, simulações com mais de 12 meses, auditoria com mais de 6 meses, aceites órfãos e a lista de exclusões com mais de 30 dias) rodam todo dia às 03:00 (America/Sao_Paulo): no desenvolvimento, pelo `node-cron` da API; em produção, pelo agendador da Vercel (abaixo).
+
+### Deploy na Vercel (CI/CD, T-01.11)
+
+**Como funciona.** Front e API ficam no mesmo domínio (exigência dos cookies `__Host-`). O `npm run build:vercel` (`scripts/build-vercel.mjs`) monta o `.vercel/output` no formato [Build Output API](https://vercel.com/docs/build-output-api): o site do Vite como estático e a API inteira como **uma função Node 22 em São Paulo (`gru1`)**, com os cabeçalhos de segurança da SEGURANCA_LGPD §6.2 também nas páginas estáticas e o agendador chamando `/api/v1/internal/retention` às 06:00 UTC (03:00 em São Paulo). Banco: **Neon** (Postgres); Redis: **Upstash**, os dois na região São Paulo.
+
+**CD.** A cada push na `main`, depois do workflow `ci` verde, o `.github/workflows/deploy.yml`: aplica as migrations no banco de produção → roda o `build:vercel` → publica com `vercel deploy --prebuilt --prod` → confere `/api/v1/health` e o CSP no domínio de produção. O deploy automático pelo Git da Vercel fica desligado (`vercel.json`), para as migrations sempre virem antes. Também dá para disparar à mão em *Actions → deploy → Run workflow*.
+
+**Configuração inicial (uma vez):**
+1. Vercel: criar o projeto (`vercel link`) e, em *Storage*, criar o Neon e o Upstash Redis na região São Paulo, conectados ao projeto.
+2. Variáveis de **Production** no projeto Vercel: `NODE_ENV=production`, `APP_ORIGIN` (ex.: `https://safe-tcc.vercel.app`), `DATABASE_URL` (Neon, com pooler), `REDIS_URL` (Upstash, `rediss://…`), `SESSION_SECRET`, `DATA_ENC_KEY` (**novos**, nunca os do desenvolvimento), `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_REDIRECT_URI` (`<APP_ORIGIN>/api/v1/auth/google/callback`), `TERMS_VERSION`, `PRIVACY_VERSION`, `CRON_SECRET` e `LOG_LEVEL=info`.
+3. Google Cloud: no cliente OAuth, acrescentar a origem `<APP_ORIGIN>` e a URI de redirecionamento acima.
+4. GitHub (*Settings → Secrets and variables → Actions*): segredos `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID` (do `.vercel/project.json`) e `PROD_DATABASE_URL_UNPOOLED` (Neon, sem pooler); variável `PROD_URL` (= `APP_ORIGIN`).
+
+**Testar o pacote localmente** antes de publicar: `npm run build:vercel` e confira o `.vercel/output` (não vai para o Git).
 
 ---
 

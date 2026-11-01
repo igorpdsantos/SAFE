@@ -67,6 +67,32 @@ test('2 – cadastro do caso do artigo pela tela → painel mostra 0,19 "Baixo r
   await expect(page.locator('.risk.risk-1', { hasText: 'Confortável' })).toBeVisible();
 });
 
+test('T-04.10 – despesa variável pede faixa (menor e maior) e a faixa persiste ao editar', async ({
+  page,
+}) => {
+  await readyUser(page, 'faixa');
+  await page.goto('/orcamento?aba=expenses');
+  await page.getByRole('button', { name: 'Adicionar despesa' }).click();
+  // Fixa: um valor só.
+  await expect(page.getByLabel('Valor por mês')).toBeVisible();
+  await page.getByLabel(/Tipo de despesa/).selectOption('VARIAVEL');
+  // Variável: o valor único some e entram menor e maior.
+  await expect(page.getByLabel('Valor por mês')).toHaveCount(0);
+  await page.getByLabel('Categoria').selectOption('CONTAS_CASA');
+  await typeMoney(page, 'Menor valor do mês', '300,00');
+  await typeMoney(page, 'Maior valor do mês', '200,00');
+  await page.getByRole('button', { name: 'Salvar despesa' }).click();
+  await expect(page.getByText('O menor valor não pode ser maior que o maior valor')).toBeVisible();
+  await typeMoney(page, 'Maior valor do mês', '600,00');
+  await page.getByRole('button', { name: 'Salvar despesa' }).click();
+  await expect(page.getByText(/R\$ 300,00 a R\$ 600,00 por mês/)).toBeVisible();
+
+  await page.reload();
+  await page.getByRole('button', { name: /^Editar/ }).click();
+  await expect(page.getByLabel('Menor valor do mês')).toHaveValue('300,00');
+  await expect(page.getByLabel('Maior valor do mês')).toHaveValue('600,00');
+});
+
 test('3 – simulação 6000 / 12 / 600 → 0,38 "Risco moderado", CR e CP principais; orçamento inalterado', async ({
   page,
 }) => {

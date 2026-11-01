@@ -362,3 +362,127 @@ describe('T-04.7 – snapshot e resumo', () => {
     });
   });
 });
+
+describe('T-04.10 – despesa variável com faixa (SPEC-04 §2.6)', () => {
+  const faixa = {
+    category: 'CONTAS_CASA',
+    type: 'VARIAVEL',
+    valueMin: '300.00',
+    valueMax: '600.50',
+  };
+
+  it('persiste X e Y no banco; value fica igual ao máximo; a API devolve os três', async () => {
+    const { app, deps } = buildApp();
+    const s = await loginAccepted(app);
+    const res = await s.send('post', `${V}/expenses`).send(faixa).expect(201);
+    expect(res.body).toMatchObject({ value: '600.50', valueMin: '300.00', valueMax: '600.50' });
+    const row = await deps.prisma.expense.findFirstOrThrow({ where: { id: res.body.id } });
+    expect([row.value, row.valueMin, row.valueMax].map(String)).toEqual(['600.5', '300', '600.5']);
+    const list = await s.agent.get(`${V}/expenses`).expect(200);
+    expect(list.body.items[0]).toMatchObject({ valueMin: '300.00', valueMax: '600.50' });
+  });
+
+  it('despesa fixa continua com valor único e faixa nula', async () => {
+    const { app } = buildApp();
+    const s = await loginAccepted(app);
+    const res = await s
+      .send('post', `${V}/expenses`)
+      .send({ category: 'MORADIA', type: 'FIXA', value: '1200', valueMin: '1', valueMax: '2' })
+      .expect(201);
+    expect(res.body).toMatchObject({ value: '1200.00', valueMin: null, valueMax: null });
+  });
+
+  it('editar de variável para fixa limpa a faixa; de fixa para variável cria a faixa', async () => {
+    const { app } = buildApp();
+    const s = await loginAccepted(app);
+    const created = await s.send('post', `${V}/expenses`).send(faixa).expect(201);
+    const toFixed = await s
+      .send('put', `${V}/expenses/${created.body.id}`)
+      .send({ category: 'CONTAS_CASA', type: 'FIXA', value: '450' })
+      .expect(200);
+    expect(toFixed.body).toMatchObject({ value: '450.00', valueMin: null, valueMax: null });
+    const back = await s
+      .send('put', `${V}/expenses/${created.body.id}`)
+      .send({ ...faixa, valueMin: '100', valueMax: '200' })
+      .expect(200);
+    expect(back.body).toMatchObject({ value: '200.00', valueMin: '100.00', valueMax: '200.00' });
+  });
+
+  it('cliente antigo: variável só com value vira a faixa X = Y = value', async () => {
+    const { app } = buildApp();
+    const s = await loginAccepted(app);
+    const res = await s
+      .send('post', `${V}/expenses`)
+      .send({ category: 'LAZER', type: 'VARIAVEL', value: '100' })
+      .expect(201);
+    expect(res.body).toMatchObject({ value: '100.00', valueMin: '100.00', valueMax: '100.00' });
+  });
+
+  it.each([
+    [
+      { ...faixa, valueMin: '700' },
+      'valueMin',
+      'O menor valor não pode ser maior que o maior valor',
+    ],
+    [
+      { ...faixa, valueMin: undefined },
+      'valueMin',
+      'Digite o menor valor do mês, por exemplo 300,00',
+    ],
+    [
+      { ...faixa, valueMax: undefined },
+      'valueMax',
+      'Digite o maior valor do mês, por exemplo 600,00',
+    ],
+    [
+      { ...faixa, valueMin: '-1' },
+      'valueMin',
+      'Digite um valor de zero ou mais, por exemplo 300,00',
+    ],
+    [
+      { category: 'MORADIA', type: 'FIXA' },
+      'value',
+      'Digite um valor de zero ou mais, por exemplo 150,00',
+    ],
+  ])('%j → 400 em %s: "%s" e nada gravado', async (body, field, message) => {
+    const { app, deps } = buildApp();
+    const s = await loginAccepted(app);
+    const res = await s.send('post', `${V}/expenses`).send(body);
+    expect(res.status).toBe(400);
+    expect(res.body.error.fields[field]).toBe(message);
+    expect(await deps.prisma.expense.count()).toBe(0);
+  });
+
+  it('o cálculo usa o máximo: análise e resumo somam Y, não X', async () => {
+    const { app } = buildApp();
+    const s = await loginAccepted(app);
+    await s.send('post', `${V}/incomes`).send({ monthValue: '4000.00' }).expect(201);
+    await s.send('post', `${V}/expenses`).send(faixa).expect(201);
+    const summary = await s.agent.get(`${V}/budget/summary`).expect(200);
+    expect(summary.body.expenseTotal).toBe('600.50');
+    const analysis = await s.agent.get(`${V}/analysis`).expect(200);
+    expect(analysis.body.totals.expenses).toBe('600.50');
+  });
+
+  it('auditoria grava só os nomes dos campos da faixa, nunca os valores', async () => {
+    const { app, deps } = buildApp();
+    const s = await loginAccepted(app);
+    await s.send('post', `${V}/expenses`).send(faixa).expect(201);
+    const log = await deps.prisma.auditLog.findFirstOrThrow({
+      where: { userId: s.userId, operation: 'CREATE', entity: 'despesa' },
+    });
+    const text = JSON.stringify(log.details);
+    expect(text).toContain('valueMin');
+    expect(text).not.toContain('300');
+    expect(text).not.toContain('600');
+  });
+
+  it('IDOR: outro usuário não vê nem altera a faixa', async () => {
+    const { app } = buildApp();
+    const a = await loginAccepted(app, 'a@exemplo.com');
+    const b = await loginAccepted(app, 'b@exemplo.com');
+    const item = await a.send('post', `${V}/expenses`).send(faixa).expect(201);
+    expect((await b.agent.get(`${V}/expenses/${item.body.id}`)).status).toBe(404);
+    expect((await b.send('put', `${V}/expenses/${item.body.id}`).send(faixa)).status).toBe(404);
+  });
+});

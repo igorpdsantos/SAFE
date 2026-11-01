@@ -87,6 +87,8 @@ describe('T-15.5 – glossário e linguagem (SPEC-15 §6)', () => {
     expect(byName('Budget.tsx')).toContain('id="renda-liquida"');
     expect(byName('Budget.tsx')).toContain('id="despesa-fixa"');
     expect(byName('Budget.tsx')).toContain('id="despesa-variavel"');
+    expect(byName('Budget.tsx')).toContain('Menor valor do mês');
+    expect(byName('Budget.tsx')).toContain('Maior valor do mês');
     expect(byName('Budget.tsx')).toContain('id="parcela"');
     expect(byName('Budget.tsx')).toContain('id="saldo-devedor"');
     expect(byName('Budget.tsx')).toContain('id="reserva"');

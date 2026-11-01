@@ -34,7 +34,11 @@ export interface ExpenseInput {
   description: string | null;
   category: ExpenseCategory;
   type: ExpenseType;
+  /** Valor usado no cálculo: o próprio valor (fixa) ou o máximo da faixa (variável). */
   value: Decimal;
+  /** Faixa da despesa variável (SPEC-04 §2.6); `null` na fixa. */
+  valueMin: Decimal | null;
+  valueMax: Decimal | null;
 }
 export interface DebtInput {
   description: string | null;

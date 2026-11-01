@@ -130,6 +130,9 @@ export interface Expense {
   category: string;
   type: 'FIXA' | 'VARIAVEL';
   value: string;
+  /** Faixa da despesa variável (menor e maior valor do mês); `null` na fixa. `value` é o máximo. */
+  valueMin: string | null;
+  valueMax: string | null;
 }
 export interface Debt {
   id: number;

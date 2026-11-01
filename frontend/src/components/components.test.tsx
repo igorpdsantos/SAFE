@@ -1,7 +1,11 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
+import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, it } from 'vitest';
+import { keys } from '../api/hooks';
+import { Budget } from '../pages/Budget';
 import { HelpProvider } from './HelpPanel';
 import { IndicatorCard } from './IndicatorCard';
 import { MoneyInput } from './MoneyInput';
@@ -128,5 +132,54 @@ describe('HU09 – card do comprometimento da renda', () => {
     const pill = container.querySelector('.risk.risk-5');
     expect(pill).toHaveTextContent('Acima da sua renda');
     expect(pill?.querySelector('svg')).not.toBeNull();
+  });
+});
+
+describe('T-04.10 – despesa variável com faixa na tela Meu orçamento', () => {
+  it('troca "Valor por mês" por "Menor valor do mês" e "Maior valor do mês" ao escolher Variável e mostra a faixa na lista', async () => {
+    const user = userEvent.setup();
+    const qc = new QueryClient({
+      defaultOptions: { queries: { retry: false, staleTime: Infinity } },
+    });
+    qc.setQueryData(keys.budget('incomes'), []);
+    qc.setQueryData(keys.budget('expenses'), [
+      {
+        id: 1,
+        description: 'Luz, Água e Internet',
+        category: 'CONTAS_CASA',
+        type: 'VARIAVEL',
+        value: '600.00',
+        valueMin: '400.00',
+        valueMax: '600.00',
+      },
+    ]);
+    qc.setQueryData(keys.budget('debts'), []);
+    qc.setQueryData(keys.budget('reserves'), []);
+
+    render(
+      <QueryClientProvider client={qc}>
+        <MemoryRouter initialEntries={['/orcamento?aba=expenses']}>
+          <HelpProvider>
+            <Budget />
+          </HelpProvider>
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    expect(screen.getByText(/R\$ 400,00 a R\$ 600,00 por mês/)).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Adicionar despesa' }));
+    expect(screen.getByLabelText('Valor por mês')).toBeInTheDocument();
+    expect(screen.queryByLabelText('Menor valor do mês')).toBeNull();
+
+    await user.selectOptions(screen.getByRole('combobox', { name: /Tipo de despesa/ }), 'VARIAVEL');
+    expect(screen.queryByLabelText('Valor por mês')).toBeNull();
+    expect(screen.getByLabelText('Menor valor do mês')).toBeInTheDocument();
+    expect(screen.getByLabelText('Maior valor do mês')).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Cancelar' }));
+    await user.click(screen.getByRole('button', { name: /^Editar/ }));
+    expect(screen.getByLabelText('Menor valor do mês')).toHaveValue('400,00');
+    expect(screen.getByLabelText('Maior valor do mês')).toHaveValue('600,00');
   });
 });

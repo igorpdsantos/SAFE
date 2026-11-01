@@ -120,9 +120,9 @@ const entries = [
     id: 'despesa-variavel',
     term: 'Despesa variável',
     short: 'Gasto que muda de mês para mês, como mercado e transporte.',
-    long: 'São gastos que acontecem todo mês, mas com valor que sobe ou desce. Para cadastrar, use uma média dos últimos meses.',
+    long: 'São gastos que acontecem todo mês, mas com valor que sobe ou desce. Para cadastrar, informe uma faixa com o menor e o maior valor do mês. Nos cálculos, o SAFE usa o maior valor da faixa para manter uma margem de segurança.',
     example:
-      'Se você gastou R$ 500, R$ 700 e R$ 600 de mercado nos últimos três meses, cadastre R$ 600.',
+      'Se sua conta de mercado fica entre R$ 500 e R$ 700 por mês, cadastre R$ 500 no menor valor e R$ 700 no maior valor.',
     whyItMatters: 'Esquecer esses gastos faz parecer que sobra mais dinheiro do que de fato sobra.',
     related: ['despesa-fixa', 'capacidade-pagamento'],
   },

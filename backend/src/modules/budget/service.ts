@@ -74,6 +74,8 @@ export function toDto<K extends BudgetKind>(
         category: e.category,
         type: e.type,
         value: money(e.value),
+        valueMin: e.valueMin === null ? null : money(e.valueMin),
+        valueMax: e.valueMax === null ? null : money(e.valueMax),
       };
     }
     case 'debts': {

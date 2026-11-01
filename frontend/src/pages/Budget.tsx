@@ -269,7 +269,7 @@ function ItemForm({
             Quanto você recebe por mês (<Term id="renda-liquida">renda líquida</Term>)
           </>,
           {
-            what: 'Quanto você recebe por mês, já sem INSS e imposto de renda. Se você tem consignado, some a parcela de volta e cadastre o consignado em Dívidas.',
+            what: 'Quanto você recebe por mês, já sem previdência (INSS) e imposto de renda. Se você tem consignado, some a parcela de volta e cadastre o consignado em Dívidas.',
             why: 'Usamos para comparar seus gastos e parcelas com o que você ganha.',
           },
           'Ex.: 2.700,00',

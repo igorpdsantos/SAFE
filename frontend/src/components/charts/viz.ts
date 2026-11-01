@@ -14,8 +14,11 @@ export const monthShort = (d: string) => `${d.slice(5, 7)}/${d.slice(2, 4)}`;
 export const monthName = (d: string) => `${MONTHS[Number(d.slice(5, 7)) - 1]}/${d.slice(2, 4)}`;
 
 export const pct = (v: number, places = 1) => `${formatDecimal(String(v), places)}%`;
-export const pp = (v: number) =>
-  `${v > 0 ? '+' : v < 0 ? '−' : ''}${formatDecimal(String(Math.abs(v)), 1)} p.p.`;
+export const pp = (v: number) => {
+  const abs = Math.abs(v);
+  const unit = abs < 2 ? 'ponto percentual' : 'pontos percentuais';
+  return `${v > 0 ? '+' : v < 0 ? '−' : ''}${formatDecimal(String(abs), 1)} ${unit}`;
+};
 
 /** Série de qualquer origem: pública (com fonte e data) ou calculada com os dados do usuário. */
 export interface VizSeries {

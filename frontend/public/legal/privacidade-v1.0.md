@@ -15,7 +15,7 @@ O SAFE é um projeto de Trabalho de Conclusão de Curso de Engenharia de Softwar
 Contato de privacidade: **safe.tcc.usjt@gmail.com**.
 
 ## 2. Quais dados usamos e por quê
-| Dado | Para que usamos | Base legal (LGPD) |
+| Dado | Para que usamos | Base legal — Lei Geral de Proteção de Dados (LGPD) |
 |---|---|---|
 | Identificador da sua conta Google e e-mail | Reconhecer você no login | Execução de contrato (art. 7º, V) |
 | Declaração de que você tem 18 anos ou mais | Cumprir a lei sobre dados de menores | Obrigação legal e contrato |

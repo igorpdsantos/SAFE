@@ -14,9 +14,9 @@ const TERM: Record<IndicatorKey, GlossaryId> = {
 
 const TITLE: Record<IndicatorKey, string> = {
   cr: 'Comprometimento da renda',
-  cp: 'Folga mensal',
-  lf: 'Reserva de emergência',
-  ne: 'Tamanho das dívidas',
+  cp: 'Folga mensal (capacidade de pagamento)',
+  lf: 'Reserva de emergência (liquidez)',
+  ne: 'Tamanho das dívidas (nível de endividamento)',
 };
 
 const risk = (v: IndicatorView) => Number(v.risk);

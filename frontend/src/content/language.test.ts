@@ -75,4 +75,26 @@ describe('T-15.5 – glossário e linguagem (SPEC-15 §6)', () => {
   it('nenhuma tela usa dangerouslySetInnerHTML', () => {
     for (const f of files) expect(f.src.includes('dangerouslySetInnerHTML'), f.path).toBe(false);
   });
+
+  it('T-15.6 – checklist da SPEC-15 §5 atendido em todas as telas', () => {
+    const byName = (name: string) => files.find((f) => f.path.endsWith(name))!.src;
+    expect(byName('Login.tsx')).toContain('id="oauth-google"');
+    expect(byName('Login.tsx')).toContain('Recebemos só seu e-mail');
+    expect(byName('Terms.tsx')).toContain('id="lgpd"');
+    expect(byName('Terms.tsx')).toContain('id="anonimizado"');
+    expect(byName('Terms.tsx')).toContain('id="consentimento"');
+    expect(byName('CookieNotice.tsx')).toContain('id="cookie"');
+    expect(byName('Budget.tsx')).toContain('id="renda-liquida"');
+    expect(byName('Budget.tsx')).toContain('id="despesa-fixa"');
+    expect(byName('Budget.tsx')).toContain('id="despesa-variavel"');
+    expect(byName('Budget.tsx')).toContain('id="parcela"');
+    expect(byName('Budget.tsx')).toContain('id="saldo-devedor"');
+    expect(byName('Budget.tsx')).toContain('id="reserva"');
+    expect(byName('IndicatorCard.tsx')).toContain('Folga mensal (capacidade de pagamento)');
+    expect(byName('IndicatorCard.tsx')).toContain('Reserva de emergência (liquidez)');
+    expect(byName('IndicatorCard.tsx')).toContain('Tamanho das dívidas (nível de endividamento)');
+    expect(byName('FactorList.tsx')).toContain('FACTOR_TERM');
+    expect(byName('Account.tsx')).toContain('id="consentimento"');
+    expect(byName('Account.tsx')).toContain('safe.tcc.usjt@gmail.com');
+  });
 });

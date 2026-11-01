@@ -1,6 +1,7 @@
 import { Download, FlaskConical, LogOut, ShieldCheck, Trash2, UserRound } from 'lucide-react';
 import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
 import { api, userMessage } from '../api/client';
 import { keys, useConsent, useMyData } from '../api/hooks';
 import { PageHeader } from '../components/PageHeader';
@@ -117,8 +118,8 @@ export function Account() {
           </h2>
           <p className="muted">
             Se você quiser, seus <Term id="anonimizado">dados anonimizados</Term> ajudam no estudo
-            do SAFE. É opcional e você pode mudar quando quiser. Isso não muda nada no uso do
-            sistema.
+            do SAFE. É o seu <Term id="consentimento">consentimento</Term> opcional e você pode
+            retirar quando quiser. Isso não muda nada no uso do sistema.
           </p>
         </div>
         <label className="check">
@@ -224,6 +225,11 @@ export function Account() {
           </>
         )}
       </section>
+      <p className="small muted">
+        Dúvidas sobre seus dados ou privacidade: consulte a{' '}
+        <Link to="/privacidade">Política de Privacidade</Link> ou escreva para{' '}
+        <a href="mailto:safe.tcc.usjt@gmail.com">safe.tcc.usjt@gmail.com</a>.
+      </p>
     </div>
   );
 }

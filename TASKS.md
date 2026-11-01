@@ -131,7 +131,7 @@
 - [x] **T-07.5** `B` Dashboard (card do IRE, 4 indicadores com `<Term>` e `<ResultExplainer>`, "Por que meu risco é este?", alertas, checklist sem dados) — SPEC-07 §5 · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
 - [x] **T-08.8** `B` Tela "Simular" (formulário explicado, 4 blocos, banners por desfecho, premissas, "simular outros valores") — SPEC-08 §4 · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
 - [x] **T-06.3** `B` Tela "Projeção" (gráfico + tabela + resumo + premissas) — SPEC-06 §4 · início 2026-10-29 18:49 · Igor + IA · feito 2026-10-29 18:49
-- [ ] **T-15.6** `B` Revisão de linguagem de todas as telas com o checklist da SPEC-15 §5, feita por alguém que não escreveu a tela
+- [x] **T-15.6** `B` Revisão de linguagem de todas as telas com o checklist da SPEC-15 §5, feita por alguém que não escreveu a tela · início 2026-10-31 22:46 · Gustavo de Cássio + IA · feito 2026-10-31 23:16
 - [x] **T-15.7** `B` Alinhar o glossário com a D-16 (renda e consignado) e precisar o texto do rotativo pelas fontes consultadas · início 2026-10-29 17:49 · Igor + IA · feito 2026-10-29 17:49
 - [ ] **T-11.7** `B` Verificação manual da SPEC-11 §7 (DevTools: storage, cookies, rede externa; 375 px; 4 navegadores; Lighthouse ≥ 90) · parte automatizada no E2E (armazenamento, logout entre abas, voltar, 375 px no Chromium)
 - [x] **T-11.8** `B` Redesign visual do frontend: identidade própria (tipografia no bundle, paleta, ilustrações SVG locais), layout novo e responsivo, mantendo RNF05, SPEC-15 e as regras de navegador da SPEC-11 §4 · início 2026-10-30 22:22 · Igor + IA · feito 2026-10-30 22:40

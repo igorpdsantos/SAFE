@@ -98,10 +98,10 @@ const entries = [
     id: 'renda-liquida',
     term: 'Renda líquida',
     short:
-      'O que você recebe por mês, já sem INSS e imposto de renda. Não tire o consignado: ele entra como dívida.',
-    long: 'É o que você recebe no mês depois dos descontos obrigatórios, como INSS e imposto de renda. Se você tem consignado, some a parcela de volta e cadastre o consignado em Dívidas, para ele não contar duas vezes. Se você tem mais de uma fonte, como salário e um trabalho extra, cadastre cada uma.',
+      'O que você recebe por mês, já sem previdência (INSS) e imposto de renda. Não tire o consignado: ele entra como dívida.',
+    long: 'É o que você recebe no mês depois dos descontos obrigatórios, como previdência (INSS) e imposto de renda. Se você tem consignado, some a parcela de volta e cadastre o consignado em Dívidas, para ele não contar duas vezes. Se você tem mais de uma fonte, como salário e um trabalho extra, cadastre cada uma.',
     example:
-      'Salário de R$ 3.000, R$ 300 de INSS e imposto e R$ 200 de consignado: caem R$ 2.500 na conta. Sua renda líquida é R$ 2.700, e o consignado de R$ 200 vai em Dívidas.',
+      'Salário de R$ 3.000, R$ 300 de previdência e imposto e R$ 200 de consignado: caem R$ 2.500 na conta. Sua renda líquida é R$ 2.700, e o consignado de R$ 200 vai em Dívidas.',
     whyItMatters:
       'Todos os cálculos do SAFE partem da renda líquida. Sem ela, não dá para calcular seu índice de risco.',
     related: ['comprometimento-renda'],

@@ -1,6 +1,14 @@
-import type { Factor } from '../api/types';
+import type { Factor, IndicatorKey } from '../api/types';
+import type { GlossaryId } from '../content/glossary';
 import { formatPercent } from '../lib/format';
 import { Term } from './Term';
+
+const FACTOR_TERM: Record<IndicatorKey, GlossaryId> = {
+  cr: 'comprometimento-renda',
+  cp: 'capacidade-pagamento',
+  lf: 'liquidez',
+  ne: 'nivel-endividamento',
+};
 
 /** Participação de cada fator no índice; "principal" escrito, não só destacado (SPEC-11 §5). */
 export function FactorList({ factors }: { factors: Factor[] }) {
@@ -10,7 +18,7 @@ export function FactorList({ factors }: { factors: Factor[] }) {
         <li key={f.key} className="factor">
           <div className="row spread row-tight">
             <span style={{ fontWeight: f.isMain ? 700 : 400 }}>
-              {f.name}{' '}
+              <Term id={FACTOR_TERM[f.key]}>{f.name}</Term>{' '}
               {f.isMain && (
                 <span className="badge">
                   <Term id="fator-principal">principal</Term>

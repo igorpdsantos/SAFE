@@ -190,7 +190,9 @@ export function ProjectionPage() {
         <p className="ctx-note">
           <CircleAlert size={16} aria-hidden="true" />
           <span>
-            <strong>Premissas:</strong> {p.assumptions.join('; ')}.
+            <strong>Premissas:</strong> consideramos que sua renda e suas despesas continuam iguais
+            todos os meses e que cada dívida deixa de contar assim que termina a última parcela
+            informada ({p.assumptions.join('; ').toLowerCase()}).
           </span>
         </p>
       )}

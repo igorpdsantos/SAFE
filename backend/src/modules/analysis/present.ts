@@ -9,6 +9,7 @@ import type {
   Totals,
 } from '../../engine/types.js';
 import { toMoneyString, toRatioString } from '../../lib/decimal.js';
+import type { ExpenseBreakdown } from '../budget/service.js';
 
 /** "1,5 mês" / "3,0 meses": singular abaixo de 2. */
 export function monthsText(value: Decimal, suffix = ''): string {
@@ -36,6 +37,21 @@ export function totalsDto(t: Totals) {
     installments: toMoneyString(t.installments),
     debtBalance: toMoneyString(t.balance),
     reserve: toMoneyString(t.reserve),
+  };
+}
+
+/** Números do card "Seus números" no Painel (T-04.10 / SPEC-07 §5), com os 3 cenários. */
+export function monthlyNumbersDto(t: Totals, e: ExpenseBreakdown) {
+  const afterFixedAndInstallments = t.income.minus(e.fixed).minus(t.installments);
+  return {
+    fixedExpenses: toMoneyString(e.fixed),
+    variableExpensesMin: toMoneyString(e.variableMin),
+    variableExpensesMax: toMoneyString(e.variableMax),
+    freeAfterExpenses: {
+      worst: toMoneyString(afterFixedAndInstallments.minus(e.variableMax)),
+      average: toMoneyString(afterFixedAndInstallments.minus(e.variableAvg)),
+      best: toMoneyString(afterFixedAndInstallments.minus(e.variableMin)),
+    },
   };
 }
 

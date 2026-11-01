@@ -44,6 +44,15 @@ export interface Alert {
   createdAt: string;
 }
 
+export type VariableScenario = 'worst' | 'average' | 'best';
+
+export interface MonthlyNumbers {
+  fixedExpenses: string;
+  variableExpensesMin: string;
+  variableExpensesMax: string;
+  freeAfterExpenses: Record<VariableScenario, string>;
+}
+
 export interface Analysis {
   calculatedAt: string;
   totals: {
@@ -53,6 +62,7 @@ export interface Analysis {
     debtBalance: string;
     reserve: string;
   };
+  monthlyNumbers: MonthlyNumbers;
   indicators: Record<IndicatorKey, IndicatorView>;
   ire: Ire;
   factors: Factor[] | null;

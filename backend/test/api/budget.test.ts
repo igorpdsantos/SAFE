@@ -453,15 +453,33 @@ describe('T-04.10 – despesa variável com faixa (SPEC-04 §2.6)', () => {
     expect(await deps.prisma.expense.count()).toBe(0);
   });
 
-  it('o cálculo usa o máximo: análise e resumo somam Y, não X', async () => {
+  it('o cálculo usa o máximo: análise e resumo somam Y, não X, e monthlyNumbers traz os 3 cenários', async () => {
     const { app } = buildApp();
     const s = await loginAccepted(app);
     await s.send('post', `${V}/incomes`).send({ monthValue: '4000.00' }).expect(201);
+    await s
+      .send('post', `${V}/expenses`)
+      .send({ category: 'MORADIA', type: 'FIXA', value: '1000.00' })
+      .expect(201);
     await s.send('post', `${V}/expenses`).send(faixa).expect(201);
+    await s
+      .send('post', `${V}/debts`)
+      .send({ category: 'OUTROS', installmentValue: '400.00', remainingInstallments: 5 })
+      .expect(201);
     const summary = await s.agent.get(`${V}/budget/summary`).expect(200);
-    expect(summary.body.expenseTotal).toBe('600.50');
+    expect(summary.body.expenseTotal).toBe('1600.50');
     const analysis = await s.agent.get(`${V}/analysis`).expect(200);
-    expect(analysis.body.totals.expenses).toBe('600.50');
+    expect(analysis.body.totals.expenses).toBe('1600.50');
+    expect(analysis.body.monthlyNumbers).toEqual({
+      fixedExpenses: '1000.00',
+      variableExpensesMin: '300.00',
+      variableExpensesMax: '600.50',
+      freeAfterExpenses: {
+        worst: '1999.50', // 4000 - 1000 - 600.50 - 400
+        average: '2149.75', // 4000 - 1000 - 450.25 - 400
+        best: '2300.00', // 4000 - 1000 - 300.00 - 400
+      },
+    });
   });
 
   it('auditoria grava só os nomes dos campos da faixa, nunca os valores', async () => {

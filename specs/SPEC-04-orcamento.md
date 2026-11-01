@@ -50,7 +50,8 @@ CRUD das quatro entidades que formam a situação financeira do usuário, com va
 - Compatibilidade: se uma despesa `VARIAVEL` chegar só com `value`, o servidor trata como faixa `X = Y = value`.
 - Erros (L9): "Digite o menor valor do mês, por exemplo 300,00", "Digite o maior valor do mês, por exemplo 600,00" e "O menor valor não pode ser maior que o maior valor".
 - Resposta da API (despesa): acrescenta `valueMin` e `valueMax` (string ou `null`); `value` é o valor usado no cálculo.
-- Interface: ao escolher o tipo "Variável", o campo "Valor por mês" vira dois campos, "Menor valor do mês" e "Maior valor do mês", cada um com `<FieldHelp>`. A lista mostra "R$ 300,00 a R$ 600,00 por mês" e avisa que o cálculo usa o maior valor.
+- Interface ("Meu orçamento"): ao escolher o tipo "Variável", o campo "Valor por mês" vira dois campos, "Menor valor do mês" e "Maior valor do mês", cada um com `<FieldHelp>`. A lista mostra "R$ 300,00 a R$ 600,00 por mês" e avisa que o cálculo usa o maior valor.
+- Interface ("Seus números" no Painel, SPEC-07 §5): mostra **Renda líquida mensal**, **Despesas fixas mensais**, **Despesas variáveis mensais** (somando a faixa $X$ a $Y$), **Parcelas do mês** e **Renda depois de despesas e parcelas**, com seletor entre três cenários para as despesas variáveis: **Pior cenário** (máximo $Y$), **Cenário médio** (média entre mínimo e máximo de cada despesa variável) e **Melhor cenário** (mínimo $X$).
 
 ## 3. Endpoints (todos: `requireAuth` + `requireTermsAccepted`; os que alteram, também `requireCsrf`)
 Para cada recurso `R` ∈ {`incomes`, `expenses`, `debts`, `reserves`}:

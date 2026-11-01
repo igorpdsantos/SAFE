@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ApiError } from '../api/client';
 import { useAnalysis, useBudgetList, useMarkAlertRead } from '../api/hooks';
-import type { BudgetKind, IndicatorKey } from '../api/types';
+import type { BudgetKind, IndicatorKey, VariableScenario } from '../api/types';
 import { AlertBanner } from '../components/AlertBanner';
 import { FactorList } from '../components/FactorList';
 import { useHelp } from '../components/HelpPanel';
@@ -17,6 +17,18 @@ import { Term } from '../components/Term';
 import { formatDecimal, formatMoney } from '../lib/format';
 
 const ORDER: IndicatorKey[] = ['cr', 'cp', 'lf', 'ne'];
+
+const SCENARIOS: { key: VariableScenario; label: string }[] = [
+  { key: 'worst', label: 'Pior cenário' },
+  { key: 'average', label: 'Cenário médio' },
+  { key: 'best', label: 'Melhor cenário' },
+];
+
+const SCENARIO_NOTE: Record<VariableScenario, string> = {
+  worst: 'Considera o maior valor de cada despesa variável.',
+  average: 'Considera a média entre o menor e o maior valor de cada despesa variável.',
+  best: 'Considera o menor valor de cada despesa variável.',
+};
 
 /** Checklist quando ainda falta a renda (SPEC-07 §5): um passo de cada vez, só o próximo em destaque. */
 function EmptyChecklist() {
@@ -107,6 +119,7 @@ export function Dashboard() {
   const markRead = useMarkAlertRead();
   const help = useHelp();
   const [onboarding, setOnboarding] = useState(false);
+  const [scenario, setScenario] = useState<VariableScenario>('worst');
 
   const header = (
     <PageHeader eyebrow="Painel" title="Seu orçamento hoje">
@@ -130,6 +143,7 @@ export function Dashboard() {
   }
   if (analysis.isError || !analysis.data) return <LoadError error={analysis.error} />;
   const a = analysis.data;
+  const m = a.monthlyNumbers;
   const top = a.alerts[0];
 
   return (
@@ -216,13 +230,25 @@ export function Dashboard() {
           <dl className="numbers">
             <div>
               <dt className="small muted">
-                <Term id="renda-liquida">Renda líquida</Term>
+                <Term id="renda-liquida">Renda líquida</Term> mensal
               </dt>
               <dd>{formatMoney(a.totals.income)}</dd>
             </div>
             <div>
-              <dt className="small muted">Despesas do mês</dt>
-              <dd>{formatMoney(a.totals.expenses)}</dd>
+              <dt className="small muted">
+                <Term id="despesa-fixa">Despesas fixas</Term> mensais
+              </dt>
+              <dd>{formatMoney(m.fixedExpenses)}</dd>
+            </div>
+            <div>
+              <dt className="small muted">
+                <Term id="despesa-variavel">Despesas variáveis</Term> mensais
+              </dt>
+              <dd>
+                {m.variableExpensesMin === '0.00' && m.variableExpensesMax === '0.00'
+                  ? formatMoney('0.00')
+                  : `${formatMoney(m.variableExpensesMin)} a ${formatMoney(m.variableExpensesMax)}`}
+              </dd>
             </div>
             <div>
               <dt className="small muted">
@@ -231,10 +257,25 @@ export function Dashboard() {
               <dd>{formatMoney(a.totals.installments)}</dd>
             </div>
             <div className="numbers-total">
-              <dt className="small muted">Renda depois das parcelas</dt>
-              <dd>{formatMoney(a.residualIncome)}</dd>
+              <dt className="small muted">Renda depois de despesas e parcelas</dt>
+              <dd>{formatMoney(m.freeAfterExpenses[scenario])}</dd>
             </div>
           </dl>
+          <div className="stack-xs">
+            <div className="seg" role="group" aria-label="Cenário das despesas variáveis">
+              {SCENARIOS.map((s) => (
+                <button
+                  key={s.key}
+                  type="button"
+                  aria-pressed={scenario === s.key}
+                  onClick={() => setScenario(s.key)}
+                >
+                  {s.label}
+                </button>
+              ))}
+            </div>
+            <p className="small muted">{SCENARIO_NOTE[scenario]}</p>
+          </div>
           <Link className="btn btn-link" to="/projecao" style={{ alignSelf: 'flex-start' }}>
             Ver os próximos meses <ArrowRight size={16} aria-hidden="true" />
           </Link>

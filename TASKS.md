@@ -101,6 +101,7 @@
 - [x] **T-04.6** `A` Efeitos de escrita: auditoria só com nomes de campos (na transação), invalidar cache e emitir `budgetChanged` (§4) · início 2026-10-29 18:24 · Igor + IA · feito 2026-10-29 18:24
 - [x] **T-04.7** `A` `buildSnapshot(userId, today)` só com dívidas ativas (§5) · início 2026-10-29 18:24 · Igor + IA · feito 2026-10-29 18:24
 - [x] **T-04.8** `A` Testes da SPEC-04 §7, incluindo IDOR com 2 usuários e relógio falso para parcelas · início 2026-10-29 18:24 · Igor + IA · feito 2026-10-29 18:24
+- [~] **T-04.10** `A+B` Despesa variável com faixa (mínimo X e máximo Y) em vez de valor único: migration aditiva (`value_min`, `value_max`), API, motor usa o máximo, tela "Meu orçamento" (SPEC-04 §2.6) · início 2026-11-01 00:03 · Gustavo de Cássio + IA
 
 ## Fase 5 · Análise e simulação — [SPEC-07](specs/SPEC-07-analise-alertas.md), [SPEC-08](specs/SPEC-08-simulacao.md)
 - [x] **T-07.1** `A` `analysisService.getAnalysis` + DTO formatado em pt-BR (`display`, `level`, `exceedsIncome`) (§2, §3) · início 2026-10-29 18:24 · Igor + IA · feito 2026-10-29 18:29

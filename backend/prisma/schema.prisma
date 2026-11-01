@@ -70,6 +70,8 @@ model Expense {
   description Bytes?
   category    String   @db.VarChar(30)
   value       Decimal  @db.Decimal(15, 2)
+  valueMin    Decimal? @map("value_min") @db.Decimal(15, 2)
+  valueMax    Decimal? @map("value_max") @db.Decimal(15, 2)
   type        String   @map("expense_type") @db.VarChar(8)
   createdAt   DateTime @default(now()) @map("dt_user_creation") @db.Timestamptz(3)
   updatedAt   DateTime @default(now()) @updatedAt @map("last_modified_date") @db.Timestamptz(3)

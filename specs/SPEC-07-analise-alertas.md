@@ -42,6 +42,12 @@ refresh(userId): Promise<void>              // chamado pelo evento budgetChanged
            "recommendation": "…" },
   "factors": [ { "key": "lf", "name": "Reserva de emergência (liquidez)", "points": "0.1000", "share": "0.5195", "isMain": true }, … ] | null,
   "residualIncome": "3600.00",
+  "monthlyNumbers": {
+    "fixedExpenses": "2000.00",
+    "variableExpensesMin": "0.00",
+    "variableExpensesMax": "0.00",
+    "freeAfterExpenses": { "worst": "1600.00", "average": "1600.00", "best": "1600.00" }
+  },
   "alerts": [ { "id": 3, "type": "FAIXA_3", "severity": 3, "message": "…", "createdAt": "…" } ] }
 ```
 - `cr.level` (HU09 critério 6): `OK` < 30%, `ATENCAO` 30–50%, `ALTO` > 50%. `cr > 100%` → `display` "115,00%" + `exceedsIncome: true` (critério 7).
@@ -68,6 +74,7 @@ Rodapé fixo: "O índice é um apoio para entender sua situação, não um diagn
 - **Card do IRE:** valor (0,19), faixa com cor + ícone + rótulo (RNF05), recomendação e "o que isso significa?" (abre explicação das faixas).
 - **4 cards de indicador:** nome amigável, valor `display`, barra do risco normalizado (0–1) com texto "risco 0,20 de 1". Saturado → selo "no limite da escala".
 - **"Por que meu risco é este?":** lista de fatores (`factors`) com barra de participação; principais em destaque. `factors = null` → "Não há fatores de risco no momento."
+- **"Seus números" (T-07.6):** exibe **Renda líquida mensal**, **Despesas fixas mensais**, **Despesas variáveis mensais** (mostrando a faixa entre a soma dos mínimos $X$ e a soma dos máximos $Y$), **Parcelas do mês** e **Renda depois de despesas e parcelas**, com seletor de cenário (`Pior cenário` usando $Y$, `Cenário médio` usando a média $\sum \frac{x_i + y_i}{2}$ e `Melhor cenário` usando $X$).
 - **Alertas:** banner no topo com o mais grave; botão "Marcar como lido".
 - **Estado sem dados:** checklist "Cadastre renda → despesas → dívidas → reserva" com links.
 

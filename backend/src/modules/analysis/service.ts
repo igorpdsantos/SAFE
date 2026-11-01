@@ -1,5 +1,5 @@
 import { DEFAULT_CONFIG } from '../../engine/config.js';
-import { Decimal } from '../../engine/decimal.js';
+import { Decimal, ZERO } from '../../engine/decimal.js';
 import { diagnose } from '../../engine/diagnose.js';
 import { InsufficientDataError } from '../../engine/errors.js';
 import type { Diagnosis } from '../../engine/types.js';
@@ -8,9 +8,9 @@ import { businessDate, type Clock } from '../../lib/clock.js';
 import { AppError } from '../../lib/errors.js';
 import type { PrismaClient } from '../../lib/prisma.js';
 import type { Redis } from '../../lib/redis.js';
-import type { BudgetService } from '../budget/service.js';
+import type { BudgetService, ExpenseBreakdown } from '../budget/service.js';
 import { ALL_ALERT_TYPES, alertMessage, requiredAlerts } from './alerts.js';
-import { factorsDto, indicatorsDto, ireDto, totalsDto } from './present.js';
+import { factorsDto, indicatorsDto, ireDto, monthlyNumbersDto, totalsDto } from './present.js';
 
 /** Limita o valor ao que a coluna NUMERIC aceita (renda minúscula pode gerar razões enormes). */
 function fitColumn(value: Decimal, integerDigits: number, places = 4): string {
@@ -24,10 +24,20 @@ export const noIncomeError = (
 
 export type AnalysisDto = ReturnType<typeof toAnalysisDto>;
 
-export function toAnalysisDto(d: Diagnosis, calculatedAt: Date) {
+export function toAnalysisDto(
+  d: Diagnosis,
+  calculatedAt: Date,
+  expenses: ExpenseBreakdown = {
+    fixed: d.totals.expenses,
+    variableMin: ZERO,
+    variableMax: ZERO,
+    variableAvg: ZERO,
+  },
+) {
   return {
     calculatedAt: calculatedAt.toISOString(),
     totals: totalsDto(d.totals),
+    monthlyNumbers: monthlyNumbersDto(d.totals, expenses),
     indicators: indicatorsDto(d),
     ire: ireDto(d.ire),
     factors: factorsDto(d.contributions),
@@ -51,7 +61,7 @@ export class AnalysisService {
   async refresh(userId: number): Promise<AnalysisDto | null> {
     const now = this.clock.now();
     const today = businessDate(now);
-    const snapshot = await this.budget.buildSnapshot(userId, today);
+    const { snapshot, expenses } = await this.budget.buildSnapshotWithExpenses(userId, today);
     let d: Diagnosis;
     try {
       d = diagnose(snapshot, DEFAULT_CONFIG);
@@ -113,16 +123,15 @@ export class AnalysisService {
       }
     });
 
-    const dto = toAnalysisDto(d, now);
+    const dto = toAnalysisDto(d, now, expenses);
     await writeCache(this.redis, cacheKeys.analysis(userId), dto);
     return dto;
   }
 
   /** GET /analysis: cache; se faltar, recalcula (e grava o histórico do dia, D-09). */
   async getAnalysis(userId: number) {
-    const dto =
-      (await readCache<AnalysisDto>(this.redis, cacheKeys.analysis(userId))) ??
-      (await this.refresh(userId));
+    const cached = await readCache<AnalysisDto>(this.redis, cacheKeys.analysis(userId));
+    const dto = cached && 'monthlyNumbers' in cached ? cached : await this.refresh(userId);
     if (!dto) throw noIncomeError();
     return { ...dto, alerts: await this.unreadAlerts(userId) };
   }

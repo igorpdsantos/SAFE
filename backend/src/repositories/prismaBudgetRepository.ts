@@ -76,6 +76,8 @@ const SPECS: { [K in BudgetKind]: KindSpec<K> } = {
       category: i.category,
       type: i.type,
       value: i.value.toFixed(2),
+      valueMin: i.valueMin === null ? null : i.valueMin.toFixed(2),
+      valueMax: i.valueMax === null ? null : i.valueMax.toFixed(2),
     }),
     fromRow: (r, d): Expense => {
       const row = asRow(r);
@@ -85,6 +87,8 @@ const SPECS: { [K in BudgetKind]: KindSpec<K> } = {
         category: row.category as ExpenseCategory,
         type: row.type as ExpenseType,
         value: dec(row.value as Num),
+        valueMin: row.valueMin == null ? null : dec(row.valueMin as Num),
+        valueMax: row.valueMax == null ? null : dec(row.valueMax as Num),
       };
     },
   },

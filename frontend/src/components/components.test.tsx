@@ -1,7 +1,12 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
+import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, it } from 'vitest';
+import { keys } from '../api/hooks';
+import { Budget } from '../pages/Budget';
+import { Dashboard } from '../pages/Dashboard';
 import { HelpProvider } from './HelpPanel';
 import { IndicatorCard } from './IndicatorCard';
 import { MoneyInput } from './MoneyInput';
@@ -128,5 +133,126 @@ describe('HU09 – card do comprometimento da renda', () => {
     const pill = container.querySelector('.risk.risk-5');
     expect(pill).toHaveTextContent('Acima da sua renda');
     expect(pill?.querySelector('svg')).not.toBeNull();
+  });
+});
+
+describe('T-04.10 – despesa variável com faixa na tela Meu orçamento', () => {
+  it('troca "Valor por mês" por "Menor valor do mês" e "Maior valor do mês" ao escolher Variável e mostra a faixa na lista', async () => {
+    const user = userEvent.setup();
+    const qc = new QueryClient({
+      defaultOptions: { queries: { retry: false, staleTime: Infinity } },
+    });
+    qc.setQueryData(keys.budget('incomes'), []);
+    qc.setQueryData(keys.budget('expenses'), [
+      {
+        id: 1,
+        description: 'Luz, Água e Internet',
+        category: 'CONTAS_CASA',
+        type: 'VARIAVEL',
+        value: '600.00',
+        valueMin: '400.00',
+        valueMax: '600.00',
+      },
+    ]);
+    qc.setQueryData(keys.budget('debts'), []);
+    qc.setQueryData(keys.budget('reserves'), []);
+
+    render(
+      <QueryClientProvider client={qc}>
+        <MemoryRouter initialEntries={['/orcamento?aba=expenses']}>
+          <HelpProvider>
+            <Budget />
+          </HelpProvider>
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    expect(screen.getByText(/R\$ 400,00 a R\$ 600,00 por mês/)).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Adicionar despesa' }));
+    expect(screen.getByLabelText('Valor por mês')).toBeInTheDocument();
+    expect(screen.queryByLabelText('Menor valor do mês')).toBeNull();
+
+    await user.selectOptions(screen.getByRole('combobox', { name: /Tipo de despesa/ }), 'VARIAVEL');
+    expect(screen.queryByLabelText('Valor por mês')).toBeNull();
+    expect(screen.getByLabelText('Menor valor do mês')).toBeInTheDocument();
+    expect(screen.getByLabelText('Maior valor do mês')).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Cancelar' }));
+    await user.click(screen.getByRole('button', { name: /^Editar/ }));
+    expect(screen.getByLabelText('Menor valor do mês')).toHaveValue('400,00');
+    expect(screen.getByLabelText('Maior valor do mês')).toHaveValue('600,00');
+  });
+
+  it('mostra o card "Seus números" no Painel com despesas fixas, faixa de variáveis e os 3 cenários', async () => {
+    const user = userEvent.setup();
+    const qc = new QueryClient({
+      defaultOptions: { queries: { retry: false, staleTime: Infinity } },
+    });
+    const ind = { value: '0.1000', display: '10,00%', risk: '0.2000', saturated: false };
+    qc.setQueryData(keys.analysis, {
+      calculatedAt: '2026-11-01T00:00:00Z',
+      totals: {
+        income: '5300.00',
+        expenses: '3300.00',
+        installments: '800.00',
+        debtBalance: '4000.00',
+        reserve: '6000.00',
+      },
+      monthlyNumbers: {
+        fixedExpenses: '2500.00',
+        variableExpensesMin: '400.00',
+        variableExpensesMax: '800.00',
+        freeAfterExpenses: {
+          worst: '1200.00',
+          average: '1400.00',
+          best: '1600.00',
+        },
+      },
+      indicators: {
+        cr: { ...ind, level: 'OK', exceedsIncome: false },
+        cp: { ...ind, display: 'R$ 1.200,00' },
+        lf: { ...ind, display: '2,0 meses' },
+        ne: { ...ind, display: '1,0 mês de renda' },
+      },
+      ire: {
+        raw: '0.1925',
+        value: '0.19',
+        band: 1,
+        label: 'Baixo risco',
+        color: 'risk-1',
+        icon: 'check-circle',
+        recommendation: 'Equilibrado.',
+      },
+      factors: null,
+      residualIncome: '4500.00',
+      alerts: [],
+    });
+
+    render(
+      <QueryClientProvider client={qc}>
+        <MemoryRouter initialEntries={['/']}>
+          <HelpProvider>
+            <Dashboard />
+          </HelpProvider>
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    expect(screen.getByText('R$ 5.300,00')).toBeInTheDocument();
+    expect(screen.getByText('R$ 2.500,00')).toBeInTheDocument();
+    expect(screen.getByText('R$ 400,00 a R$ 800,00')).toBeInTheDocument();
+    expect(screen.getByText('R$ 800,00')).toBeInTheDocument();
+    expect(screen.getByText('Renda depois de despesas e parcelas')).toBeInTheDocument();
+
+    // Padrão: Pior cenário (R$ 1.200,00)
+    const total = document.querySelector('.numbers-total dd');
+    expect(total).toHaveTextContent('R$ 1.200,00');
+
+    await user.click(screen.getByRole('button', { name: 'Cenário médio' }));
+    expect(total).toHaveTextContent('R$ 1.400,00');
+
+    await user.click(screen.getByRole('button', { name: 'Melhor cenário' }));
+    expect(total).toHaveTextContent('R$ 1.600,00');
   });
 });

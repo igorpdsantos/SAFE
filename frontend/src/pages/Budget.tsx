@@ -65,7 +65,7 @@ type Form = Record<string, string>;
 
 const EMPTY_FORM: Record<BudgetKind, Form> = {
   incomes: { monthValue: '', description: '' },
-  expenses: { category: '', type: '', value: '', description: '' },
+  expenses: { category: '', type: '', value: '', valueMin: '', valueMax: '', description: '' },
   debts: {
     category: '',
     installmentValue: '',
@@ -84,7 +84,14 @@ function toForm(kind: BudgetKind, item: BudgetItems[BudgetKind]): Form {
       return { monthValue: (item as Income).monthValue, description: d };
     case 'expenses': {
       const e = item as Expense;
-      return { category: e.category, type: e.type, value: e.value, description: d };
+      return {
+        category: e.category,
+        type: e.type,
+        value: e.value,
+        valueMin: e.valueMin ?? e.value,
+        valueMax: e.valueMax ?? e.value,
+        description: d,
+      };
     }
     case 'debts': {
       const x = item as Debt;
@@ -110,6 +117,15 @@ function toBody(kind: BudgetKind, f: Form): Record<string, unknown> {
     case 'incomes':
       return { monthValue: f.monthValue, description };
     case 'expenses':
+      if (f.type === 'VARIAVEL') {
+        return {
+          category: f.category,
+          type: f.type,
+          valueMin: f.valueMin,
+          valueMax: f.valueMax,
+          description,
+        };
+      }
       return { category: f.category, type: f.type, value: f.value, description };
     case 'debts':
       return {
@@ -297,14 +313,37 @@ function ItemForm({
             },
             EXPENSE_CATEGORY_LABELS,
           )}
-          {money(
-            'value',
-            'Valor por mês',
-            {
-              what: 'Quanto você gasta com isso num mês. Para gastos que variam, use uma média.',
-              why: 'Usamos para calcular quanto sobra no mês e quanto tempo sua reserva duraria.',
-            },
-            'Ex.: 150,00',
+          {f.type === 'VARIAVEL' ? (
+            <>
+              {money(
+                'valueMin',
+                'Menor valor do mês',
+                {
+                  what: 'Quanto essa conta costuma dar nos meses mais baixos.',
+                  why: 'Registra o começo da faixa em que esse gasto costuma ficar.',
+                },
+                'Ex.: 400,00',
+              )}
+              {money(
+                'valueMax',
+                'Maior valor do mês',
+                {
+                  what: 'Quanto essa conta costuma chegar nos meses mais altos.',
+                  why: 'Usamos o maior valor da faixa para calcular quanto sobra no mês com margem de segurança.',
+                },
+                'Ex.: 600,00',
+              )}
+            </>
+          ) : (
+            money(
+              'value',
+              'Valor por mês',
+              {
+                what: 'Quanto você gasta com isso num mês.',
+                why: 'Usamos para calcular quanto sobra no mês e quanto tempo sua reserva duraria.',
+              },
+              'Ex.: 150,00',
+            )
           )}
         </>
       )}
@@ -468,9 +507,13 @@ function describe(
       };
     case 'expenses': {
       const e = item as Expense;
+      const amount =
+        e.type === 'VARIAVEL' && e.valueMin && e.valueMax && e.valueMin !== e.valueMax
+          ? `${formatMoney(e.valueMin)} a ${formatMoney(e.valueMax)} por mês`
+          : `${formatMoney(e.value)} por mês`;
       return {
         title: name ?? EXPENSE_CATEGORY_LABELS[e.category] ?? e.category,
-        detail: `${formatMoney(e.value)} por mês · ${EXPENSE_CATEGORY_LABELS[e.category]} · ${EXPENSE_TYPE_LABELS[e.type]}`,
+        detail: `${amount} · ${EXPENSE_CATEGORY_LABELS[e.category]} · ${EXPENSE_TYPE_LABELS[e.type]}`,
       };
     }
     case 'debts': {
@@ -513,7 +556,7 @@ function kindTotal(kind: BudgetKind, items: BudgetItems[BudgetKind][]): number {
 
 const TOTAL_LABEL: Record<BudgetKind, string> = {
   incomes: 'por mês',
-  expenses: 'por mês',
+  expenses: 'por mês (pelo maior valor das variáveis)',
   debts: 'em parcelas por mês',
   reserves: 'guardados',
 };

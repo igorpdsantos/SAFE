@@ -43,6 +43,16 @@ CRUD das quatro entidades que formam a situação financeira do usuário, com va
 - `<FieldHelp>` do campo de renda: "Quanto você recebe por mês, já sem INSS e imposto de renda. Se você tem consignado, some a parcela de volta e cadastre o consignado em Dívidas." Placeholder "Ex.: 2.700,00".
 - Ao escolher a categoria `CONSIGNADO` numa dívida, a interface lembra: "Confira se você somou a parcela deste consignado de volta à sua renda, para ela não contar duas vezes."
 
+### 2.6 Despesa variável com faixa (T-04.10)
+- Despesa `VARIAVEL` é informada como **faixa**: `valueMin` (X, o menor valor do mês) e `valueMax` (Y, o maior). Regras: `0 ≤ X ≤ Y ≤ 10.000.000,00`. Despesa `FIXA` continua com `value` único e `valueMin`/`valueMax` ficam `null`.
+- O motor, a projeção e a simulação usam **sempre o máximo (Y)**: é a leitura conservadora (D-10). Por isso o servidor grava `value = valueMax` e todo o cálculo continua lendo `value`, sem mudança no motor.
+- Banco: colunas anuláveis `value_min` e `value_max` em `despesa`, com `CHECK` (ambas nulas ou ambas preenchidas, `value_min ≤ value_max`, `value = value_max` quando há faixa). A migration copia as variáveis já cadastradas para `value_min = value_max = value`.
+- Compatibilidade: se uma despesa `VARIAVEL` chegar só com `value`, o servidor trata como faixa `X = Y = value`.
+- Erros (L9): "Digite o menor valor do mês, por exemplo 300,00", "Digite o maior valor do mês, por exemplo 600,00" e "O menor valor não pode ser maior que o maior valor".
+- Resposta da API (despesa): acrescenta `valueMin` e `valueMax` (string ou `null`); `value` é o valor usado no cálculo.
+- Interface ("Meu orçamento"): ao escolher o tipo "Variável", o campo "Valor por mês" vira dois campos, "Menor valor do mês" e "Maior valor do mês", cada um com `<FieldHelp>`. A lista mostra "R$ 300,00 a R$ 600,00 por mês" e avisa que o cálculo usa o maior valor.
+- Interface ("Seus números" no Painel, SPEC-07 §5): mostra **Renda líquida mensal**, **Despesas fixas mensais**, **Despesas variáveis mensais** (somando a faixa $X$ a $Y$), **Parcelas do mês** e **Renda depois de despesas e parcelas**, com seletor entre três cenários para as despesas variáveis: **Pior cenário** (máximo $Y$), **Cenário médio** (média entre mínimo e máximo de cada despesa variável) e **Melhor cenário** (mínimo $X$).
+
 ## 3. Endpoints (todos: `requireAuth` + `requireTermsAccepted`; os que alteram, também `requireCsrf`)
 Para cada recurso `R` ∈ {`incomes`, `expenses`, `debts`, `reserves`}:
 

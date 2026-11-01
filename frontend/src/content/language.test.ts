@@ -87,9 +87,15 @@ describe('T-15.5 – glossário e linguagem (SPEC-15 §6)', () => {
     expect(byName('Budget.tsx')).toContain('id="renda-liquida"');
     expect(byName('Budget.tsx')).toContain('id="despesa-fixa"');
     expect(byName('Budget.tsx')).toContain('id="despesa-variavel"');
+    expect(byName('Budget.tsx')).toContain('Menor valor do mês');
+    expect(byName('Budget.tsx')).toContain('Maior valor do mês');
     expect(byName('Budget.tsx')).toContain('id="parcela"');
     expect(byName('Budget.tsx')).toContain('id="saldo-devedor"');
     expect(byName('Budget.tsx')).toContain('id="reserva"');
+    expect(byName('Dashboard.tsx')).toContain('Renda depois de despesas e parcelas');
+    expect(byName('Dashboard.tsx')).toContain('Pior cenário');
+    expect(byName('Dashboard.tsx')).toContain('Cenário médio');
+    expect(byName('Dashboard.tsx')).toContain('Melhor cenário');
     expect(byName('IndicatorCard.tsx')).toContain('Folga mensal (capacidade de pagamento)');
     expect(byName('IndicatorCard.tsx')).toContain('Reserva de emergência (liquidez)');
     expect(byName('IndicatorCard.tsx')).toContain('Tamanho das dívidas (nível de endividamento)');

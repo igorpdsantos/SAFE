@@ -67,12 +67,70 @@ export const incomeSchema = z.object({
   monthValue: money({ positive: true, example: '2.500,00' }),
 });
 
-export const expenseSchema = z.object({
-  description,
-  category: z.enum(EXPENSE_CATEGORIES, { error: 'Escolha uma categoria da lista' }),
-  type: z.enum(EXPENSE_TYPES, { error: 'Escolha se a despesa é fixa ou variável' }),
-  value: money({ positive: false, example: '150,00' }),
-});
+export const expenseSchema = z
+  .object({
+    description,
+    category: z.enum(EXPENSE_CATEGORIES, { error: 'Escolha uma categoria da lista' }),
+    type: z.enum(EXPENSE_TYPES, { error: 'Escolha se a despesa é fixa ou variável' }),
+    value: money({ positive: false, example: '150,00' }).nullish(),
+    valueMin: money({ positive: false, example: '300,00' }).nullish(),
+    valueMax: money({ positive: false, example: '600,00' }).nullish(),
+  })
+  .superRefine((e, ctx) => {
+    if (e.type === 'VARIAVEL') {
+      const min = e.valueMin ?? e.value ?? null;
+      const max = e.valueMax ?? e.value ?? null;
+      if (min === null) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['valueMin'],
+          message: 'Digite o menor valor do mês, por exemplo 300,00',
+        });
+      }
+      if (max === null) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['valueMax'],
+          message: 'Digite o maior valor do mês, por exemplo 600,00',
+        });
+      }
+      if (min !== null && max !== null && min.greaterThan(max)) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['valueMin'],
+          message: 'O menor valor não pode ser maior que o maior valor',
+        });
+      }
+    } else if (e.value === null || e.value === undefined) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['value'],
+        message: 'Digite um valor de zero ou mais, por exemplo 150,00',
+      });
+    }
+  })
+  .transform((e) => {
+    if (e.type === 'VARIAVEL') {
+      const min = (e.valueMin ?? e.value)!;
+      const max = (e.valueMax ?? e.value)!;
+      return {
+        description: e.description,
+        category: e.category,
+        type: e.type,
+        value: max,
+        valueMin: min,
+        valueMax: max,
+      };
+    }
+    return {
+      description: e.description,
+      category: e.category,
+      type: e.type,
+      value: e.value!,
+      valueMin: null,
+      valueMax: null,
+    };
+  });
 
 export const debtSchema = z
   .object({

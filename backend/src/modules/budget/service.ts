@@ -30,6 +30,33 @@ export function debtStatus(debt: Debt, today: string) {
   return { remainingNow, active: remainingNow >= 1, balanceUsed };
 }
 
+export interface ExpenseBreakdown {
+  fixed: Decimal;
+  variableMin: Decimal;
+  variableMax: Decimal;
+  variableAvg: Decimal;
+}
+
+/** Soma separada das despesas fixas e da faixa (mínimo, máximo e média) das variáveis (T-04.10). */
+export function expenseBreakdownFrom(expenses: BudgetItems['expenses'][]): ExpenseBreakdown {
+  let fixed = ZERO;
+  let variableMin = ZERO;
+  let variableMax = ZERO;
+  let variableAvg = ZERO;
+  for (const e of expenses) {
+    if (e.type === 'VARIAVEL') {
+      const min = e.valueMin ?? e.value;
+      const max = e.valueMax ?? e.value;
+      variableMin = variableMin.plus(min);
+      variableMax = variableMax.plus(max);
+      variableAvg = variableAvg.plus(min.plus(max).dividedBy(2));
+    } else {
+      fixed = fixed.plus(e.value);
+    }
+  }
+  return { fixed, variableMin, variableMax, variableAvg };
+}
+
 /** A única porta entre o banco e o motor: só dívidas ativas, com parcelas e saldo de hoje (SPEC-04 §5). */
 export function snapshotFrom(data: BudgetData, today: string): BudgetSnapshot {
   return {
@@ -74,6 +101,8 @@ export function toDto<K extends BudgetKind>(
         category: e.category,
         type: e.type,
         value: money(e.value),
+        valueMin: e.valueMin === null ? null : money(e.valueMin),
+        valueMax: e.valueMax === null ? null : money(e.valueMax),
       };
     }
     case 'debts': {
@@ -188,5 +217,17 @@ export class BudgetService {
   /** Snapshot de hoje para o motor (SPEC-04 §5). */
   async buildSnapshot(userId: number, today = this.today()): Promise<BudgetSnapshot> {
     return snapshotFrom(await this.repo.all(userId), today);
+  }
+
+  /** Snapshot de hoje + destrinchamento das despesas fixas e variáveis para o Painel (T-04.10). */
+  async buildSnapshotWithExpenses(
+    userId: number,
+    today = this.today(),
+  ): Promise<{ snapshot: BudgetSnapshot; expenses: ExpenseBreakdown }> {
+    const data = await this.repo.all(userId);
+    return {
+      snapshot: snapshotFrom(data, today),
+      expenses: expenseBreakdownFrom(data.expenses),
+    };
   }
 }

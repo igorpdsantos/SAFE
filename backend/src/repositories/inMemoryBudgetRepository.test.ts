@@ -29,7 +29,14 @@ describe('T-04.2 – InMemoryBudgetRepository', () => {
     await repo.create(
       1,
       'expenses',
-      { description: null, category: 'MORADIA', type: 'FIXA', value: d('2000') },
+      {
+        description: null,
+        category: 'MORADIA',
+        type: 'FIXA',
+        value: d('2000'),
+        valueMin: null,
+        valueMax: null,
+      },
       ctx,
     );
     await repo.create(

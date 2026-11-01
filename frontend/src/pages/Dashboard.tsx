@@ -256,13 +256,13 @@ export function Dashboard() {
               </dt>
               <dd>{formatMoney(a.totals.installments)}</dd>
             </div>
-            <div className="numbers-total">
-              <dt className="small muted">Renda depois de despesas e parcelas</dt>
-              <dd>{formatMoney(m.freeAfterExpenses[scenario])}</dd>
-            </div>
           </dl>
-          <div className="stack-xs">
-            <div className="seg" role="group" aria-label="Cenário das despesas variáveis">
+          <div className="stack-sm">
+            <div
+              className="seg seg-stretch"
+              role="group"
+              aria-label="Cenário das despesas variáveis"
+            >
               {SCENARIOS.map((s) => (
                 <button
                   key={s.key}
@@ -274,7 +274,15 @@ export function Dashboard() {
                 </button>
               ))}
             </div>
-            <p className="small muted">{SCENARIO_NOTE[scenario]}</p>
+            <dl className="numbers">
+              <div className="numbers-total">
+                <dt className="numbers-total-label">
+                  <span>Renda depois de despesas e parcelas</span>
+                  <span className="small muted">{SCENARIO_NOTE[scenario]}</span>
+                </dt>
+                <dd>{formatMoney(m.freeAfterExpenses[scenario])}</dd>
+              </div>
+            </dl>
           </div>
           <Link className="btn btn-link" to="/projecao" style={{ alignSelf: 'flex-start' }}>
             Ver os próximos meses <ArrowRight size={16} aria-hidden="true" />

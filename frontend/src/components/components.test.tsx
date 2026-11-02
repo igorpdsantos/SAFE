@@ -3,10 +3,11 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { keys } from '../api/hooks';
 import { Budget } from '../pages/Budget';
 import { Dashboard } from '../pages/Dashboard';
+import { Simulate } from '../pages/Simulate';
 import { HelpProvider } from './HelpPanel';
 import { IndicatorCard } from './IndicatorCard';
 import { MoneyInput } from './MoneyInput';
@@ -254,5 +255,142 @@ describe('T-04.10 – despesa variável com faixa na tela Meu orçamento', () =>
 
     await user.click(screen.getByRole('button', { name: 'Melhor cenário' }));
     expect(total).toHaveTextContent('R$ 1.600,00');
+  });
+});
+
+describe('T-08.10 – avaliação da simulação de 1 a 5 estrelas na aba Simular', () => {
+  it('exibe o card de 1 a 5 estrelas antes do card "Já fez esta compra?" e envia a nota', async () => {
+    const user = userEvent.setup();
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockImplementation(async (url, init) => {
+      const path = String(url);
+      if (path.endsWith('/simulations') && init?.method === 'POST') {
+        return new Response(
+          JSON.stringify({
+            id: 41,
+            rating: null,
+            financialCost: '0.00',
+            current: {
+              ire: {
+                raw: '0.1925',
+                value: '0.19',
+                band: 1,
+                label: 'Baixo risco',
+                color: 'risk-1',
+                icon: 'check-circle',
+              },
+            },
+            projected: {
+              ire: {
+                raw: '0.3775',
+                value: '0.38',
+                band: 2,
+                label: 'Risco moderado',
+                color: 'risk-2',
+                icon: 'info',
+              },
+            },
+            deltaIre: '0.1850',
+            outcome: 'AGRAVAMENTO',
+            alertSeverity: 2,
+            factors: [
+              {
+                key: 'cr',
+                name: 'Comprometimento da renda',
+                before: '10,00%',
+                after: '25,00%',
+                riskBefore: '0.2000',
+                riskAfter: '0.5000',
+                points: '0.1200',
+                share: '0.6486',
+                isMain: true,
+                unchanged: false,
+                saturatedBoth: false,
+              },
+            ],
+            residualIncomeAfter: '3000.00',
+            explanation: 'Esta compra elevaria o comprometimento da sua renda.',
+            projection: {
+              without: {
+                horizon: 12,
+                points: [
+                  {
+                    month: 1,
+                    label: 'nov/2026',
+                    free: '1600.00',
+                    balance: '6000.00',
+                    debtsActive: 1,
+                  },
+                ],
+                firstNonPositiveFreeMonth: null,
+                firstNegativeBalanceMonth: null,
+              },
+              with: {
+                horizon: 12,
+                points: [
+                  {
+                    month: 1,
+                    label: 'nov/2026',
+                    free: '1000.00',
+                    balance: '12000.00',
+                    debtsActive: 2,
+                  },
+                ],
+                firstNonPositiveFreeMonth: null,
+                firstNegativeBalanceMonth: null,
+              },
+            },
+            assumptions: ['A compra não usa sua reserva'],
+          }),
+          { status: 200, headers: { 'Content-Type': 'application/json' } },
+        );
+      }
+      if (path.endsWith('/simulations/41/rating') && init?.method === 'PATCH') {
+        const body = JSON.parse(String(init.body));
+        return new Response(JSON.stringify({ id: 41, rating: body.rating }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+      throw new Error(`Unexpected fetch: ${path}`);
+    });
+
+    const qc = new QueryClient({
+      defaultOptions: { queries: { retry: false, staleTime: Infinity } },
+    });
+
+    render(
+      <QueryClientProvider client={qc}>
+        <MemoryRouter initialEntries={['/simular']}>
+          <HelpProvider>
+            <Simulate />
+          </HelpProvider>
+        </MemoryRouter>
+      </QueryClientProvider>,
+    );
+
+    await user.type(screen.getByLabelText('Valor da compra à vista'), '120000');
+    await user.type(screen.getByLabelText('Número de parcelas'), '12');
+    await user.type(screen.getByLabelText(/Valor de cada/, { selector: 'input' }), '10000');
+    await user.click(screen.getByRole('button', { name: 'Simular compra' }));
+
+    const rateHeading = await screen.findByRole('heading', {
+      name: 'Esta simulação foi útil para a sua decisão?',
+    });
+    const registerHeading = screen.getByRole('heading', { name: 'Já fez esta compra?' });
+
+    // Verifica que o card de avaliação vem antes do card "Já fez esta compra?"
+    expect(
+      rateHeading.compareDocumentPosition(registerHeading) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+
+    const star5 = screen.getByRole('button', { name: /5 estrelas — Muito esclarecedora/ });
+    await user.click(star5);
+
+    expect(await screen.findByText(/Obrigado pela avaliação/)).toHaveTextContent(
+      '5 estrelas (Muito esclarecedora)',
+    );
+    expect(star5).toHaveAttribute('aria-pressed', 'true');
+
+    fetchSpy.mockRestore();
   });
 });

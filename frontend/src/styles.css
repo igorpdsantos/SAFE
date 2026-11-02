@@ -1407,6 +1407,65 @@ details.more[open] > summary::before {
 .factor-bars .row {
   justify-content: space-between;
 }
+.star-rating {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3);
+}
+.star-buttons {
+  display: inline-flex;
+  gap: var(--s-2);
+  flex-wrap: wrap;
+}
+.star-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-1);
+  min-width: 52px;
+  min-height: 46px;
+  padding: var(--s-2) var(--s-3);
+  border-radius: 12px;
+  border: 1.5px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--muted);
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+  transition:
+    transform 0.15s var(--ease),
+    background 0.2s var(--ease),
+    border-color 0.2s var(--ease),
+    color 0.2s var(--ease);
+}
+.star-btn:hover {
+  border-color: var(--gold);
+  background: color-mix(in srgb, var(--gold-soft) 45%, var(--surface));
+}
+.star-btn:active {
+  transform: translateY(1px);
+}
+.star-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.star-btn.is-filled {
+  color: var(--gold);
+  border-color: color-mix(in srgb, var(--gold) 65%, var(--border-strong));
+  background: color-mix(in srgb, var(--gold-soft) 55%, var(--surface));
+}
+.star-btn.is-filled svg {
+  fill: currentcolor;
+}
+.star-btn.is-selected {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--gold) 25%, transparent);
+}
+.star-num {
+  font-size: 0.9rem;
+  color: var(--text);
+}
 
 /* ---------- Estados vazios ---------- */
 .empty {

@@ -235,3 +235,57 @@ describe('T-08.9 – POST /simulations/:id/register (D-12)', () => {
     expect((await deps.prisma.simulation.findFirstOrThrow()).state).toBe('ATIVA');
   });
 });
+
+describe('T-08.10 – PATCH /simulations/:id/rating', () => {
+  it('salva a nota de 1 a 5 estrelas, permite atualizar e inclui na listagem e na exportação', async () => {
+    const { app, deps } = buildApp();
+    const s = await loginAccepted(app);
+    await seedArticle(s);
+    const sim = await s.send('post', `${V}/simulations`).send(ARTICLE).expect(200);
+    expect(sim.body.rating).toBeNull();
+
+    const r1 = await s
+      .send('patch', `${V}/simulations/${sim.body.id}/rating`)
+      .send({ rating: 4 })
+      .expect(200);
+    expect(r1.body).toEqual({ id: sim.body.id, rating: 4 });
+    expect((await deps.prisma.simulation.findFirstOrThrow()).rating).toBe(4);
+
+    const r2 = await s
+      .send('patch', `${V}/simulations/${sim.body.id}/rating`)
+      .send({ rating: 5 })
+      .expect(200);
+    expect(r2.body).toEqual({ id: sim.body.id, rating: 5 });
+
+    const list = await s.agent.get(`${V}/simulations`).expect(200);
+    expect(list.body.items[0].rating).toBe(5);
+
+    const exp = await s.agent.get(`${V}/me/export`).expect(200);
+    const exported = JSON.parse(exp.text);
+    expect(exported.simulations[0].rating).toBe(5);
+  });
+
+  it('rejeita nota fora de 1..5 ou não inteira (400), outro usuário (404) e sem CSRF (403)', async () => {
+    const { app } = buildApp();
+    const a = await loginAccepted(app, 'a@exemplo.com');
+    const b = await loginAccepted(app, 'b@exemplo.com');
+    await seedArticle(a);
+    const sim = await a.send('post', `${V}/simulations`).send(ARTICLE).expect(200);
+
+    for (const bad of [{ rating: 0 }, { rating: 6 }, { rating: 3.5 }, { rating: '5' }, {}]) {
+      const res = await a.send('patch', `${V}/simulations/${sim.body.id}/rating`).send(bad);
+      expect(res.status).toBe(400);
+      expect(res.body.error.fields).toHaveProperty('rating');
+    }
+
+    expect(
+      (await b.send('patch', `${V}/simulations/${sim.body.id}/rating`).send({ rating: 5 })).status,
+    ).toBe(404);
+    expect((await a.send('patch', `${V}/simulations/9999/rating`).send({ rating: 5 })).status).toBe(
+      404,
+    );
+    expect(
+      (await a.agent.patch(`${V}/simulations/${sim.body.id}/rating`).send({ rating: 5 })).status,
+    ).toBe(403);
+  });
+});

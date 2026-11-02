@@ -25,6 +25,14 @@ const body = z.object({
   installmentValue: moneyField('Digite o valor de cada parcela, maior que zero. Ex.: 100,00'),
 });
 
+const ratingBody = z.object({
+  rating: z
+    .number({ error: 'Escolha uma nota de 1 a 5 estrelas.' })
+    .int('Escolha uma nota inteira de 1 a 5 estrelas.')
+    .min(1, 'Escolha uma nota de 1 a 5 estrelas.')
+    .max(5, 'Escolha uma nota de 1 a 5 estrelas.'),
+});
+
 function simulationId(raw: string): number {
   const id = z.coerce.number().int().positive().safeParse(raw);
   if (!id.success) throw notFound('Esta simulação não existe ou não é sua.');
@@ -52,6 +60,11 @@ export function simulationsRouter(deps: AppDeps): Router {
       state: z.literal('DESCARTADA', { error: 'Só é possível descartar a simulação' }),
     }).parse(req.body);
     res.json(await deps.simulations.discard(res.locals.session!.userId, id));
+  });
+  router.patch('/:id/rating', async (req, res) => {
+    const id = simulationId(req.params.id);
+    const { rating } = ratingBody.parse(req.body);
+    res.json(await deps.simulations.rate(res.locals.session!.userId, id, rating));
   });
   router.post('/:id/register', async (req, res) => {
     const id = simulationId(req.params.id);

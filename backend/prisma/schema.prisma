@@ -142,6 +142,7 @@ model Simulation {
   outcome          String   @db.VarChar(20)
   createdAt        DateTime @default(now()) @map("dt_simulation") @db.Timestamptz(3)
   state            String   @default("ATIVA") @db.VarChar(15)
+  rating           Int?     @map("rating") @db.SmallInt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 

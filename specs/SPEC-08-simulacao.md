@@ -98,9 +98,11 @@ Exemplo do artigo: "Esta compra elevaria o comprometimento da sua renda com dív
 - Grava `simulacao_financeira { simulated_value, qtd_installments, value_installment, current_risk, estimated_risk, outcome, dt_simulation, state: 'ATIVA' }`. **Nada mais é gravado**: renda, despesas, dívidas, reserva, indicador, histórico e alertas ficam iguais.
 - Sem renda → 409 `INSUFFICIENT_DATA` (E03). Falha → 500 (E04).
 
-**`GET /api/v1/simulations`** → últimas 20 simulações (`id`, data, V, n, p, risco atual e estimado, desfecho).
+**`GET /api/v1/simulations`** → últimas 20 simulações (`id`, data, V, n, p, risco atual e estimado, desfecho, `rating`).
 
 **`PATCH /api/v1/simulations/:id`** `{ "state": "DESCARTADA" }` → 200.
+
+**`PATCH /api/v1/simulations/:id/rating`** `{ "rating": 1..5 }` → 200 `{ "id": 41, "rating": 5 }`. Grava a avaliação de utilidade na coluna `rating` de `simulacao_financeira` e a inclui na exportação (`/me/export`).
 
 **(D-12, opcional)** `POST /api/v1/simulations/:id/register` → cria a dívida real (`installmentValue = p`, `remainingInstallments = n`, `balanceDue = null`, `category = 'CREDIARIO'`, editável depois) e marca `state = 'EFETIVADA'`. Dispara `budgetChanged`.
 
@@ -113,6 +115,7 @@ Exemplo do artigo: "Esta compra elevaria o comprometimento da sua renda com dív
 - **Bloco 2 — Fatores:** tabela com Indicador · Antes · Depois · Pontos · Participação. Principais em negrito com selo "principal". `unchanged` → "não alterado por esta decisão". `saturatedBoth` → "no limite da escala".
 - **Bloco 3 — Explicação:** `explanation` em destaque + custo financeiro implícito ("Você pagará R$ 1.200,00 a mais que o valor à vista").
 - **Bloco 4 — Projeção:** gráfico com duas linhas de sobra mensal (sem e com a compra), meses ≤ 0 marcados.
+- **Card de avaliação da simulação (T-08.10):** antes do card "Já fez esta compra?", permite avaliar a utilidade da simulação de 1 a 5 estrelas ("Esta simulação foi útil para a sua decisão?"), salvando em `simulacao_financeira`.
 - Botões: "Simular outros valores" (FA01: mantém o formulário preenchido) e, se D-12 entrar, "Registrar como dívida".
 - Rodapé: "Simulação: nada foi salvo no seu orçamento. A decisão é sua."
 

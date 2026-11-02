@@ -389,11 +389,11 @@ describe('T-08.10 – avaliação da simulação de 1 a 5 estrelas na aba Simula
       footerNote.compareDocumentPosition(registerHeading) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
 
-    const star5 = screen.getByRole('button', { name: /5 estrelas — Muito esclarecedora/ });
+    const star5 = screen.getByRole('button', { name: /5 estrelas — Muito útil/ });
     await user.click(star5);
 
     expect(await screen.findByText(/Obrigado pela avaliação/)).toHaveTextContent(
-      '5 estrelas (Muito esclarecedora)',
+      '5 estrelas (Muito útil)',
     );
     expect(star5).toHaveAttribute('aria-pressed', 'true');
 

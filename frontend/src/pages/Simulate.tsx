@@ -252,11 +252,11 @@ interface SimulationInput {
 }
 
 const STAR_LABELS: Record<number, string> = {
-  1: 'Pouco útil',
-  2: 'Razoável',
-  3: 'Útil',
-  4: 'Muito útil',
-  5: 'Muito esclarecedora',
+  1: 'Nada útil',
+  2: 'Pouco útil',
+  3: 'Razoavelmente útil',
+  4: 'Útil',
+  5: 'Muito útil',
 };
 
 /** T-08.10: avaliação de 1 a 5 estrelas sobre a utilidade da simulação para a decisão. */
@@ -315,7 +315,7 @@ function RateSimulation({ sim }: { sim: Simulation }) {
         <span className="small muted star-hint" aria-live="polite">
           {active > 0
             ? `${active} de 5 estrelas · ${STAR_LABELS[active]}`
-            : '1 = pouco útil · 5 = muito esclarecedora'}
+            : '1 = nada útil · 5 = muito útil'}
         </span>
       </div>
       {rate.isError && <LoadError error={rate.error} />}

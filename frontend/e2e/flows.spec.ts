@@ -117,7 +117,7 @@ test('3 – simulação 6000 / 12 / 600 → 0,38 "Risco moderado", CR e CP princ
   await expect(
     page.getByRole('heading', { name: 'Esta simulação foi útil para a sua decisão?' }),
   ).toBeVisible();
-  await page.getByRole('button', { name: /5 estrelas — Muito esclarecedora/ }).click();
+  await page.getByRole('button', { name: /5 estrelas — Muito útil/ }).click();
   await expect(page.getByText(/Obrigado pela avaliação/)).toBeVisible();
   expect(await (await page.request.get('/api/v1/budget/summary')).json()).toEqual(before);
 });

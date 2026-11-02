@@ -105,6 +105,16 @@ export function useSimulate() {
   });
 }
 
+export function useRateSimulation() {
+  return useMutation({
+    mutationFn: ({ id, rating }: { id: number; rating: number }) =>
+      api<{ id: number; rating: number }>(`/simulations/${id}/rating`, {
+        method: 'PATCH',
+        body: { rating },
+      }),
+  });
+}
+
 /** D-12: a simulação vira uma dívida real; o orçamento e tudo que deriva dele é recarregado. */
 export function useRegisterSimulation() {
   const invalidate = useInvalidateBudget();

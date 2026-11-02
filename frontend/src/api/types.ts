@@ -104,6 +104,7 @@ export type Outcome = 'SEM_AGRAVAMENTO' | 'AGRAVAMENTO' | 'CRITICO';
 
 export interface Simulation {
   id: number;
+  rating?: number | null;
   financialCost: string;
   current: { ire: Ire };
   projected: { ire: Ire };

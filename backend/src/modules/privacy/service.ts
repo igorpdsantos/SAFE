@@ -114,6 +114,7 @@ export class PrivacyService {
         estimatedRisk: dec(s.estimatedRisk),
         outcome: s.outcome,
         state: s.state,
+        rating: s.rating,
       })),
       alerts: alerts.map((a) => ({
         type: a.type,

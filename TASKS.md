@@ -171,6 +171,7 @@
 
 ## Fase 10 · Opcional (só com tudo acima pronto)
 - [x] **T-08.9** `A` (D-12) `POST /simulations/:id/register` + botão "Registrar como dívida" (SPEC-08 §3) · início 2026-10-30 22:00 · Igor + IA · feito 2026-10-30 22:03
+- [x] **T-08.10** `A+B` Avaliação da utilidade da simulação de 1 a 5 estrelas (card antes de "Já fez esta compra?", coluna `rating` em `simulacao_financeira`, `PATCH /simulations/:id/rating` e exportação `/me/export`) (SPEC-08 §3, §4) · início 2026-11-02 14:47 · Gustavo de Cássio + IA · feito 2026-11-02 15:04
 - [x] **T-14.1** `B` CSVs de contexto em `backend/data/context/` + `npm run context:update` (SPEC-14 §2) · início 2026-10-31 00:52 · Igor + IA · PEIC (13 meses) + BCB 29037, 29265 e Selic 4189 (5 anos), gerando `series.generated.ts` · feito 2026-10-31 00:53
 - [x] **T-14.2** `B` `GET /context/series` (§3) · início 2026-10-31 00:53 · Igor + IA · público, from/to (AAAA-MM), 400 para período inválido; teste garante módulo = CSVs · feito 2026-10-31 00:54
 - [x] **T-14.3** `B` Tela `/entenda` com filtro, glossário e "como o SAFE calcula" (§4) · início 2026-10-31 00:54 · Igor + IA · rota /entenda (menu "Você" e "Mais"): 4 gráficos com fonte/unidade/data e tabela, filtro 1/3/5 anos ou meses, "Como o SAFE calcula", glossário e aviso; E2E SPEC-14 · feito 2026-10-31 00:58

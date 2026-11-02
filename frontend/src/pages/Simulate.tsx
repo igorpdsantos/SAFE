@@ -1,8 +1,8 @@
-import { ArrowRight, Siren } from 'lucide-react';
+import { ArrowRight, Siren, Star } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ApiError } from '../api/client';
-import { useRegisterSimulation, useSimulate } from '../api/hooks';
+import { useRateSimulation, useRegisterSimulation, useSimulate } from '../api/hooks';
 import type { Simulation, SimulationFactor } from '../api/types';
 import { FieldHelp } from '../components/FieldHelp';
 import { ScaleArt } from '../components/Art';
@@ -239,6 +239,7 @@ function Result({ sim }: { sim: Simulation }) {
         insight={projectionInsight(sim)}
         sourceNote="Calculado pelo SAFE com o seu orçamento e os valores desta simulação."
       />
+      <RateSimulation key={`rate-${sim.id}`} sim={sim} />
       <p className="small muted">Simulação: nada foi salvo no seu orçamento. A decisão é sua.</p>
     </div>
   );
@@ -248,6 +249,87 @@ interface SimulationInput {
   value: string;
   installments: number;
   installmentValue: string;
+}
+
+const STAR_LABELS: Record<number, string> = {
+  1: 'Nada útil',
+  2: 'Pouco útil',
+  3: 'Razoavelmente útil',
+  4: 'Útil',
+  5: 'Muito útil',
+};
+
+/** T-08.10: avaliação de 1 a 5 estrelas sobre a utilidade da simulação para a decisão. */
+function RateSimulation({ sim }: { sim: Simulation }) {
+  const [selected, setSelected] = useState<number | null>(sim.rating ?? null);
+  const [hovered, setHovered] = useState<number | null>(null);
+  const rate = useRateSimulation();
+  const active = hovered ?? selected ?? 0;
+
+  const choose = (star: number) => {
+    setSelected(star);
+    rate.mutate({ id: sim.id, rating: star });
+  };
+
+  return (
+    <section className="card stack" aria-labelledby="rate-sim-title">
+      <div className="stack-xs">
+        <h2 id="rate-sim-title">Esta simulação foi útil para a sua decisão?</h2>
+        <p className="small muted">
+          Avalie de 1 a 5 estrelas o quanto este resultado ajudou você a entender o impacto da
+          compra no seu orçamento.
+        </p>
+      </div>
+      <div
+        className="star-rating"
+        role="group"
+        aria-label="Avaliação de 1 a 5 estrelas sobre a utilidade da simulação"
+        onMouseLeave={() => setHovered(null)}
+      >
+        <div className="star-buttons">
+          {[1, 2, 3, 4, 5].map((star) => {
+            const filled = star <= active;
+            const isSelected = selected === star;
+            const label = `${star} ${star === 1 ? 'estrela' : 'estrelas'} — ${STAR_LABELS[star]}`;
+            return (
+              <button
+                key={star}
+                type="button"
+                className={`star-btn${filled ? ' is-filled' : ''}${isSelected ? ' is-selected' : ''}`}
+                aria-label={label}
+                aria-pressed={isSelected}
+                disabled={rate.isPending}
+                onMouseEnter={() => setHovered(star)}
+                onFocus={() => setHovered(star)}
+                onBlur={() => setHovered(null)}
+                onClick={() => choose(star)}
+              >
+                <Star size={22} aria-hidden="true" />
+                <span className="star-num" aria-hidden="true">
+                  {star}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+        <span className="small muted star-hint" aria-live="polite">
+          {active > 0
+            ? `${active} de 5 estrelas · ${STAR_LABELS[active]}`
+            : '1 = nada útil · 5 = muito útil'}
+        </span>
+      </div>
+      {rate.isError && <LoadError error={rate.error} />}
+      {rate.isSuccess && selected !== null && (
+        <p className="notice small" role="status">
+          Obrigado pela avaliação: registramos sua nota de{' '}
+          <strong>
+            {selected} {selected === 1 ? 'estrela' : 'estrelas'} ({STAR_LABELS[selected]})
+          </strong>
+          . Se quiser, toque em outra estrela para alterar.
+        </p>
+      )}
+    </section>
+  );
 }
 
 /** D-12: depois de fazer a compra de verdade, a pessoa pode levá-la para o orçamento. */

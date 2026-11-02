@@ -17,9 +17,10 @@ export const SIMULATION_ASSUMPTIONS = [
   'O risco projetado considera o mês em que todas as parcelas estão ativas',
 ];
 
-export function simulationDto(id: number, r: SimulationResult) {
+export function simulationDto(id: number, r: SimulationResult, rating: number | null = null) {
   return {
     id,
+    rating,
     financialCost: toMoneyString(r.financialCost),
     current: { ire: ireDto(r.current.ire) },
     projected: { ire: ireDto(r.projected.ire) },
@@ -114,7 +115,17 @@ export class SimulationService {
       estimatedRisk: new Decimal(s.estimatedRisk.toString()).toFixed(4),
       outcome: s.outcome,
       state: s.state,
+      rating: s.rating,
     }));
+  }
+
+  async rate(userId: number, id: number, rating: number) {
+    const { count } = await this.prisma.simulation.updateMany({
+      where: { id, userId },
+      data: { rating },
+    });
+    if (count === 0) throw notFound('Esta simulação não existe ou não é sua.');
+    return { id, rating };
   }
 
   async discard(userId: number, id: number) {

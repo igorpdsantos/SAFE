@@ -1878,9 +1878,13 @@ details.more[open] > summary::before {
   display: flex;
   width: 100%;
 }
-.seg-stretch button {
-  flex: 1;
+.seg.seg-stretch button {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: var(--s-1) var(--s-2);
+  line-height: 1.2;
   text-align: center;
+  white-space: normal;
 }
 .numbers .numbers-total {
   border-bottom: 0;

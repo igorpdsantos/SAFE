@@ -297,6 +297,8 @@ test.describe('10 – celular (375 px)', () => {
       () => document.documentElement.scrollWidth > window.innerWidth + 1,
     );
     expect(overflow).toBe(false);
+    // No celular, conteúdo largo demais alarga a própria janela de layout, e a conta acima não percebe.
+    expect(await page.evaluate(() => window.innerWidth)).toBe(375);
     await page.getByRole('link', { name: 'Simular', exact: true }).click();
     await typeMoney(page, 'Valor da compra à vista', '6000,00');
     await page.getByLabel('Número de parcelas').fill('12');

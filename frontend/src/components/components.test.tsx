@@ -376,11 +376,17 @@ describe('T-08.10 – avaliação da simulação de 1 a 5 estrelas na aba Simula
     const rateHeading = await screen.findByRole('heading', {
       name: 'Esta simulação foi útil para a sua decisão?',
     });
+    const footerNote = screen.getByText(
+      'Simulação: nada foi salvo no seu orçamento. A decisão é sua.',
+    );
     const registerHeading = screen.getByRole('heading', { name: 'Já fez esta compra?' });
 
-    // Verifica que o card de avaliação vem antes do card "Já fez esta compra?"
+    // Verifica a ordem: Avaliação da Simulação → aviso "nada foi salvo" → "Já fez esta compra?"
     expect(
-      rateHeading.compareDocumentPosition(registerHeading) & Node.DOCUMENT_POSITION_FOLLOWING,
+      rateHeading.compareDocumentPosition(footerNote) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    expect(
+      footerNote.compareDocumentPosition(registerHeading) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
 
     const star5 = screen.getByRole('button', { name: /5 estrelas — Muito esclarecedora/ });

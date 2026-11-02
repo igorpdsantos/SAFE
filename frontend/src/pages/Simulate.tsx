@@ -239,6 +239,7 @@ function Result({ sim }: { sim: Simulation }) {
         insight={projectionInsight(sim)}
         sourceNote="Calculado pelo SAFE com o seu orçamento e os valores desta simulação."
       />
+      <RateSimulation key={`rate-${sim.id}`} sim={sim} />
       <p className="small muted">Simulação: nada foi salvo no seu orçamento. A decisão é sua.</p>
     </div>
   );
@@ -535,7 +536,6 @@ export function Simulate() {
               </div>
             )
           )}
-          {simulate.data && <RateSimulation key={`rate-${simulate.data.id}`} sim={simulate.data} />}
           {simulate.data && simulate.variables && (
             <RegisterDebt key={simulate.data.id} sim={simulate.data} input={simulate.variables} />
           )}

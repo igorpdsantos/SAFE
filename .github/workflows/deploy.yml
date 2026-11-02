@@ -22,6 +22,8 @@ jobs:
       github.event_name == 'workflow_dispatch' ||
       (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push')
     runs-on: ubuntu-latest
+    # Um deploy bloqueado na Vercel deixa o CLI esperando; sem limite, o job fica preso por 6 h.
+    timeout-minutes: 15
     environment:
       name: production
       url: ${{ vars.PROD_URL }}
